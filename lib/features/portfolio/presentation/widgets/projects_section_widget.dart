@@ -113,7 +113,7 @@ class _FeaturedProjectCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Featured Project',
+                    'Flutter Project',
                     style: Theme.of(context).textTheme.labelMedium?.copyWith(color: AppTheme.accent),
                   ),
                   const SizedBox(height: 8),
@@ -123,6 +123,10 @@ class _FeaturedProjectCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   Text(project.summary, style: Theme.of(context).textTheme.bodyLarge),
+                  if (project.longDescription.isNotEmpty) ...[
+                    const SizedBox(height: 12),
+                    Text(project.longDescription, style: Theme.of(context).textTheme.bodyMedium),
+                  ],
                   const SizedBox(height: 16),
                   _buildProjectUrls(context),
                   const SizedBox(height: 16),
@@ -170,7 +174,7 @@ class _FeaturedProjectCard extends StatelessWidget {
               crossAxisAlignment: isReversed ? CrossAxisAlignment.start : CrossAxisAlignment.end,
               children: [
                 Text(
-                  'Featured Project',
+                  'Flutter Project',
                   style: Theme.of(context).textTheme.labelMedium?.copyWith(
                         color: AppTheme.accent,
                         fontFamily: 'JetBrains Mono',
@@ -198,12 +202,27 @@ class _FeaturedProjectCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  child: Text(
-                    project.summary,
-                    textAlign: isReversed ? TextAlign.left : TextAlign.right,
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: AppTheme.textPrimary,
+                  child: Column(
+                    crossAxisAlignment: isReversed ? CrossAxisAlignment.start : CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        project.summary,
+                        textAlign: isReversed ? TextAlign.left : TextAlign.right,
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                              color: AppTheme.textPrimary,
+                            ),
+                      ),
+                      if (project.longDescription.isNotEmpty) ...[
+                        const SizedBox(height: 12),
+                        Text(
+                          project.longDescription,
+                          textAlign: isReversed ? TextAlign.left : TextAlign.right,
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                color: AppTheme.textMuted,
+                              ),
                         ),
+                      ],
+                    ],
                   ),
                 ),
                 const SizedBox(height: 20),

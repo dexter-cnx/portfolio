@@ -166,17 +166,47 @@
         {
           "image": "assets/images/project_01.png",
           "title": "App Store",
-          "url": "https://apps.apple.com/"
+          "url": "https://apps.apple.com/th/app/welink/id6464281983"
         },
         {
           "image": "assets/images/project_01.png",
           "title": "Play Store",
-          "url": "https://play.google.com/"
+          "url": "https://play.google.com/store/apps/details?id=com.welinkapp.user"
         }
       ],
       "tags": [
         "Flutter",
-        "Web",
+        "Google Map",
+        "Restful API",
+        "Firebase"
+      ]
+    },
+    {
+      "name": "24Cafix Application set",
+      "summary": "24Cafix เป็นแอปพลิเคชั่นสำหรับเชื่อมต่อผู้คนเข้าด้วยกัน",
+      "longDescription": "WeLink เป็น แอปพลิเคชั่นที่มีทั้งระบบเรียกรถ เรียกบริการส่งอาหาร บริการงานต่างๆ ตลอดจนระบบร้านค้า ร้านอาหาร จองตั๋วงานรื่นเริง นอกจากนี้ยังมีส่วนแอปพลิเคชั่นสำหรับร้านค้า ร้านอาหาร และแอปพลิเคชั่นสำหรับไรเดอร์",
+      "repoUrl": "",
+      "liveUrl": "https://www.welinkcorp.com/",
+      "images": [
+        "assets/images/project_01.png",
+        "assets/images/project_01.png"
+      ],
+      "urls": [
+        {
+          "image": "assets/images/project_01.png",
+          "title": "App Store",
+          "url": "https://apps.apple.com/th/app/welink/id6464281983"
+        },
+        {
+          "image": "assets/images/project_01.png",
+          "title": "Play Store",
+          "url": "https://play.google.com/store/apps/details?id=com.welinkapp.user"
+        }
+      ],
+      "tags": [
+        "Flutter",
+        "Google Map",
+        "Restful API",
         "Firebase"
       ]
     }

@@ -28,44 +28,29 @@ class _ExperienceSectionWidgetState extends State<ExperienceSectionWidget> {
         children: [
           const SectionHeader(number: '02', title: "Where I've Worked"),
           const SizedBox(height: 40),
-          if (ResponsiveLayout.isDesktop(context))
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: 200,
-                  child: _buildCompanyTabs(),
-                ),
-                const SizedBox(width: 40),
-                Expanded(
-                  child: _buildExperienceDetail(),
-                ),
-              ],
-            )
-          else
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: _buildCompanyTabs(),
-                ),
-                const SizedBox(height: 30),
-                _buildExperienceDetail(),
-              ],
-            ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: 200,
+                child: _buildCompanyTabs(),
+              ),
+              const SizedBox(width: 40),
+              Expanded(
+                child: _buildExperienceDetail(),
+              ),
+            ],
+          ),
         ],
       ),
     );
   }
 
   Widget _buildCompanyTabs() {
-    final isDesktop = ResponsiveLayout.isDesktop(context);
-
     return Flex(
-      direction: isDesktop ? Axis.vertical : Axis.horizontal,
+      direction: Axis.vertical,
       mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: isDesktop ? CrossAxisAlignment.start : CrossAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: widget.experience.asMap().entries.map((entry) {
         final index = entry.key;
         final item = entry.value;
@@ -74,21 +59,14 @@ class _ExperienceSectionWidgetState extends State<ExperienceSectionWidget> {
         return InkWell(
           onTap: () => setState(() => _selectedIndex = index),
           child: Container(
+            width: double.infinity,
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
             decoration: BoxDecoration(
               border: Border(
-                left: isDesktop
-                    ? BorderSide(
-                        color: isSelected ? AppTheme.accent : AppTheme.textMuted.withValues(alpha: 0.1),
-                        width: 2,
-                      )
-                    : BorderSide.none,
-                bottom: !isDesktop
-                    ? BorderSide(
-                        color: isSelected ? AppTheme.accent : AppTheme.textMuted.withValues(alpha: 0.1),
-                        width: 2,
-                      )
-                    : BorderSide.none,
+                left: BorderSide(
+                  color: isSelected ? AppTheme.accent : AppTheme.textMuted.withValues(alpha: 0.1),
+                  width: 2,
+                ),
               ),
               color: isSelected ? AppTheme.accent.withValues(alpha: 0.05) : Colors.transparent,
             ),
