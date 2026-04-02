@@ -4,7 +4,7 @@ nav_experience,Experience,ประสบการณ์
 nav_projects,Projects,ผลงาน
 nav_contact,Contact,ติดต่อ
 btn_resume,Resume,เรซูเม่
-hero_eyebrow,"Hi, my name is Kitipong Sarajan","สวัสดี ฉันชื่อ กิติพงษ์ สาระจันทร์"
+hero_eyebrow,"Hi, my name is Kitipong Sarajan","สวัสดีครับผมชื่อ กิติพงษ์ สาระจันทร์"
 hero_headline,"Your Name.","ชื่อของคุณ."
 hero_subheadline,"I build clean, useful digital products.","ฉันสร้างผลิตภัณฑ์ดิจิทัลที่สะอาดและมีประโยชน์"
 hero_description,"Replace this with your strongest one-paragraph introduction.","แทนที่ข้อความนี้ด้วยการแนะนำตัวของคุณเอง"
@@ -12,11 +12,12 @@ hero_btn_contact,Get In Touch,ติดต่อ
 hero_btn_projects,View Projects,ผลงาน
 about_title,About Me,แนะนำตัว
 about_skills_header,"Here are a few technologies I've been working with recently:","นี่คือเทคโนโลยีบางส่วนที่ฉันใช้ทำงานล่าสุด:"
-exp_title,Where I've Worked,"บางส่วนของผลงานที่ผ่านมา"
-projects_title,Some Things I've Built,"ผลงานที่โดดเด่น"
+exp_title,Where I've Worked,"ประสบการณ์การทำงาน"
+projects_title,Some Things I've Built,"บางส่วนของผลงานที่ผ่านมา"
 projects_others_title,Other Noteworthy Projects,"ผลงานอื่นๆ ที่น่าสนใจ"
-contact_eyebrow,"04. What's Next?","04. มีอะไรต่อไป?"
+contact_eyebrow,"04. What's Next?","04. อะไรต่อไป?"
 contact_title,Get In Touch,ติดต่อ
 contact_body,"I’m open to interesting product work, collaborations, and Flutter engineering opportunities.","ฉันเปิดรับงานผลิตภัณฑ์ที่น่าสนใจ การทำงานร่วมกัน และโอกาสใหม่ๆ ในด้านวิศวกรรม Flutter"
-contact_btn,Say Hello,ทักทายฉันหน่อย
-footer_built_by,Built by Dexter-CNX with Flutter,"สร้างโดย Dexter-CNX  ด้วย Flutter"
+contact_btn,Say Hello,ทักทายกันหน่อย
+footer_built_by,Built by Dexter-CNX with Flutter,"สร้างโดย Dexter-CNX ด้วย Flutter"
+project_type,Flutter Project,โปรเจกต์ Flutter

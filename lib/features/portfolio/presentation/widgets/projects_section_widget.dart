@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../../../app/theme/app_theme.dart';
@@ -25,22 +26,24 @@ class ProjectsSectionWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SectionHeader(number: '03', title: "Some Things I've Built"),
+          SectionHeader(number: '03', title: "projects_title".tr()),
           const SizedBox(height: 40),
-          ...featured.asMap().entries.map((entry) => _FeaturedProjectCard(
-                project: entry.value,
-                isReversed: entry.key % 2 != 0,
-                onLinkTap: onLinkTap,
-              )),
+          ...featured.asMap().entries.map(
+            (entry) => _FeaturedProjectCard(
+              project: entry.value,
+              isReversed: entry.key % 2 != 0,
+              onLinkTap: onLinkTap,
+            ),
+          ),
           if (other.isNotEmpty) ...[
             const SizedBox(height: 100),
             Center(
               child: Text(
-                'Other Noteworthy Projects',
+                'projects_others_title'.tr(),
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      color: AppTheme.textPrimary,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  color: AppTheme.textPrimary,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
             const SizedBox(height: 40),
@@ -52,29 +55,29 @@ class ProjectsSectionWidget extends StatelessWidget {
   }
 
   Widget _buildOthersGrid(BuildContext context) {
-    return LayoutBuilder(builder: (context, constraints) {
-      final crossAxisCount = constraints.maxWidth > 1000
-          ? 3
-          : constraints.maxWidth > 600
-              ? 2
-              : 1;
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final crossAxisCount = constraints.maxWidth > 1000
+            ? 3
+            : constraints.maxWidth > 600
+            ? 2
+            : 1;
 
-      return GridView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: crossAxisCount,
-          crossAxisSpacing: 20,
-          mainAxisSpacing: 20,
-          childAspectRatio: 0.75,
-        ),
-        itemCount: other.length,
-        itemBuilder: (context, index) => _OtherProjectCard(
-          project: other[index],
-          onLinkTap: onLinkTap,
-        ),
-      );
-    });
+        return GridView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: crossAxisCount,
+            crossAxisSpacing: 20,
+            mainAxisSpacing: 20,
+            childAspectRatio: 0.75,
+          ),
+          itemCount: other.length,
+          itemBuilder: (context, index) =>
+              _OtherProjectCard(project: other[index], onLinkTap: onLinkTap),
+        );
+      },
+    );
   }
 }
 
@@ -84,7 +87,7 @@ class _FeaturedProjectCard extends StatelessWidget {
   final Function(String url) onLinkTap;
 
   const _FeaturedProjectCard({
-    required this.project, 
+    required this.project,
     required this.onLinkTap,
     this.isReversed = false,
   });
@@ -114,19 +117,29 @@ class _FeaturedProjectCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Flutter Project',
-                    style: Theme.of(context).textTheme.labelMedium?.copyWith(color: AppTheme.accent),
+                    'project_type'.tr(),
+                    style: Theme.of(
+                      context,
+                    ).textTheme.labelMedium?.copyWith(color: AppTheme.accent),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     project.name,
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: AppTheme.textPrimary),
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      color: AppTheme.textPrimary,
+                    ),
                   ),
                   const SizedBox(height: 16),
-                  Text(project.summary, style: Theme.of(context).textTheme.bodyLarge),
+                  Text(
+                    project.summary,
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
                   if (project.longDescription.isNotEmpty) ...[
                     const SizedBox(height: 12),
-                    Text(project.longDescription, style: Theme.of(context).textTheme.bodyMedium),
+                    Text(
+                      project.longDescription,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
                   ],
                   const SizedBox(height: 16),
                   _buildProjectUrls(context),
@@ -135,7 +148,12 @@ class _FeaturedProjectCard extends StatelessWidget {
                     spacing: 12,
                     runSpacing: 8,
                     children: project.tags
-                        .map((t) => Text(t, style: Theme.of(context).textTheme.labelSmall))
+                        .map(
+                          (t) => Text(
+                            t,
+                            style: Theme.of(context).textTheme.labelSmall,
+                          ),
+                        )
                         .toList(),
                   ),
                 ],
@@ -172,22 +190,24 @@ class _FeaturedProjectCard extends StatelessWidget {
             width: 500,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: isReversed ? CrossAxisAlignment.start : CrossAxisAlignment.end,
+              crossAxisAlignment: isReversed
+                  ? CrossAxisAlignment.start
+                  : CrossAxisAlignment.end,
               children: [
                 Text(
-                  'Flutter Project',
+                  'project_type'.tr(),
                   style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                        color: AppTheme.accent,
-                        fontFamily: 'JetBrains Mono',
-                      ),
+                    color: AppTheme.accent,
+                    fontFamily: 'JetBrains Mono',
+                  ),
                 ),
                 const SizedBox(height: 10),
                 Text(
                   project.name,
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                        color: AppTheme.textPrimary,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    color: AppTheme.textPrimary,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 const SizedBox(height: 20),
                 Container(
@@ -204,23 +224,28 @@ class _FeaturedProjectCard extends StatelessWidget {
                     ],
                   ),
                   child: Column(
-                    crossAxisAlignment: isReversed ? CrossAxisAlignment.start : CrossAxisAlignment.end,
+                    crossAxisAlignment: isReversed
+                        ? CrossAxisAlignment.start
+                        : CrossAxisAlignment.end,
                     children: [
                       Text(
                         project.summary,
-                        textAlign: isReversed ? TextAlign.left : TextAlign.right,
+                        textAlign: isReversed
+                            ? TextAlign.left
+                            : TextAlign.right,
                         style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                              color: AppTheme.textPrimary,
-                            ),
+                          color: AppTheme.textPrimary,
+                        ),
                       ),
                       if (project.longDescription.isNotEmpty) ...[
                         const SizedBox(height: 12),
                         Text(
                           project.longDescription,
-                          textAlign: isReversed ? TextAlign.left : TextAlign.right,
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                color: AppTheme.textMuted,
-                              ),
+                          textAlign: isReversed
+                              ? TextAlign.left
+                              : TextAlign.right,
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(color: AppTheme.textMuted),
                         ),
                       ],
                     ],
@@ -232,30 +257,43 @@ class _FeaturedProjectCard extends StatelessWidget {
                 Wrap(
                   spacing: 12,
                   runSpacing: 8,
-                  alignment: isReversed ? WrapAlignment.start : WrapAlignment.end,
+                  alignment: isReversed
+                      ? WrapAlignment.start
+                      : WrapAlignment.end,
                   children: project.tags
-                      .map((t) => Text(
-                            t,
-                            style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                                  color: AppTheme.textMuted,
-                                  fontFamily: 'JetBrains Mono',
-                                ),
-                          ))
+                      .map(
+                        (t) => Text(
+                          t,
+                          style: Theme.of(context).textTheme.labelSmall
+                              ?.copyWith(
+                                color: AppTheme.textMuted,
+                                fontFamily: 'JetBrains Mono',
+                              ),
+                        ),
+                      )
                       .toList(),
                 ),
                 const SizedBox(height: 20),
                 Row(
-                  mainAxisAlignment: isReversed ? MainAxisAlignment.start : MainAxisAlignment.end,
+                  mainAxisAlignment: isReversed
+                      ? MainAxisAlignment.start
+                      : MainAxisAlignment.end,
                   children: [
                     if (project.repoUrl.isNotEmpty)
                       IconButton(
                         onPressed: () => onLinkTap(project.repoUrl),
-                        icon: const Icon(Icons.code, color: AppTheme.textPrimary),
+                        icon: const Icon(
+                          Icons.code,
+                          color: AppTheme.textPrimary,
+                        ),
                       ),
                     if (project.liveUrl.isNotEmpty)
                       IconButton(
                         onPressed: () => onLinkTap(project.liveUrl),
-                        icon: const Icon(Icons.open_in_new, color: AppTheme.textPrimary),
+                        icon: const Icon(
+                          Icons.open_in_new,
+                          color: AppTheme.textPrimary,
+                        ),
                       ),
                   ],
                 ),
@@ -274,7 +312,9 @@ class _FeaturedProjectCard extends StatelessWidget {
       spacing: 12,
       runSpacing: 12,
       alignment: isReversed ? WrapAlignment.start : WrapAlignment.end,
-      children: project.urls.map((u) => _ProjectUrlItem(url: u, onLaunch: onLinkTap)).toList(),
+      children: project.urls
+          .map((u) => _ProjectUrlItem(url: u, onLaunch: onLinkTap))
+          .toList(),
     );
   }
 }
@@ -305,16 +345,21 @@ class _ProjectUrlItem extends StatelessWidget {
                 borderRadius: BorderRadius.circular(2),
                 child: url.image.endsWith('.svg')
                     ? SvgPicture.asset(url.image, width: 20, height: 20)
-                    : Image.asset(url.image, width: 20, height: 20, fit: BoxFit.cover),
+                    : Image.asset(
+                        url.image,
+                        width: 20,
+                        height: 20,
+                        fit: BoxFit.cover,
+                      ),
               ),
               const SizedBox(width: 8),
             ],
             Text(
               url.title,
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color: AppTheme.accent,
-                    fontFamily: 'JetBrains Mono',
-                  ),
+                color: AppTheme.accent,
+                fontFamily: 'JetBrains Mono',
+              ),
             ),
           ],
         ),
@@ -380,8 +425,11 @@ class _OtherProjectCardState extends State<_OtherProjectCard> {
                         Expanded(
                           child: Text(
                             widget.project.name,
-                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                  color: _isHovered ? AppTheme.accent : AppTheme.textPrimary,
+                            style: Theme.of(context).textTheme.titleMedium
+                                ?.copyWith(
+                                  color: _isHovered
+                                      ? AppTheme.accent
+                                      : AppTheme.textPrimary,
                                   fontWeight: FontWeight.w600,
                                 ),
                           ),
@@ -393,16 +441,26 @@ class _OtherProjectCardState extends State<_OtherProjectCard> {
                               IconButton(
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(),
-                                onPressed: () => widget.onLinkTap(widget.project.repoUrl),
-                                icon: const Icon(Icons.code, color: AppTheme.textMuted, size: 18),
+                                onPressed: () =>
+                                    widget.onLinkTap(widget.project.repoUrl),
+                                icon: const Icon(
+                                  Icons.code,
+                                  color: AppTheme.textMuted,
+                                  size: 18,
+                                ),
                               ),
                             if (widget.project.liveUrl.isNotEmpty) ...[
                               const SizedBox(width: 8),
                               IconButton(
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(),
-                                onPressed: () => widget.onLinkTap(widget.project.liveUrl),
-                                icon: const Icon(Icons.open_in_new, color: AppTheme.textMuted, size: 18),
+                                onPressed: () =>
+                                    widget.onLinkTap(widget.project.liveUrl),
+                                icon: const Icon(
+                                  Icons.open_in_new,
+                                  color: AppTheme.textMuted,
+                                  size: 18,
+                                ),
                               ),
                             ],
                           ],
@@ -415,22 +473,25 @@ class _OtherProjectCardState extends State<_OtherProjectCard> {
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: AppTheme.textMuted,
-                          ),
+                        color: AppTheme.textMuted,
+                      ),
                     ),
                     const Spacer(),
                     Wrap(
                       spacing: 10,
                       runSpacing: 6,
                       children: widget.project.tags
-                          .map((t) => Text(
-                                t,
-                                style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                                      color: AppTheme.textMuted,
-                                      fontFamily: 'JetBrains Mono',
-                                      fontSize: 10,
-                                    ),
-                              ))
+                          .map(
+                            (t) => Text(
+                              t,
+                              style: Theme.of(context).textTheme.labelSmall
+                                  ?.copyWith(
+                                    color: AppTheme.textMuted,
+                                    fontFamily: 'JetBrains Mono',
+                                    fontSize: 10,
+                                  ),
+                            ),
+                          )
                           .toList(),
                     ),
                   ],

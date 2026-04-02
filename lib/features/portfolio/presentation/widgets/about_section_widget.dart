@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import '../../../../app/theme/app_theme.dart';
 import '../../models/portfolio_models.dart';
@@ -17,7 +18,7 @@ class AboutSectionWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SectionHeader(number: '01', title: 'About Me'),
+          SectionHeader(number: '01', title: 'nav_about'.tr()),
           const SizedBox(height: 40),
           if (ResponsiveLayout.isDesktop(context))
             Row(
@@ -54,7 +55,7 @@ class AboutSectionWidget extends StatelessWidget {
             )),
         const SizedBox(height: 20),
         Text(
-          "Here are a few technologies I've been working with recently:",
+          "about_skills_header".tr(),
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: AppTheme.textMuted,
               ),

@@ -128,19 +128,15 @@ class _SocialLinkChipState extends State<_SocialLinkChip> {
   bool _isHovered = false;
 
   IconData _iconForLabel(String label) {
-    switch (label.toLowerCase()) {
-      case 'github':
-        return Icons.code;
-      case 'linkedin':
-        return Icons.work_outline;
-      case 'twitter':
-      case 'x':
-        return Icons.alternate_email;
-      case 'email':
-        return Icons.email_outlined;
-      default:
-        return Icons.link;
-    }
+    final l = label.toLowerCase();
+    if (l.contains('github')) return Icons.code;
+    if (l.contains('linkedin')) return Icons.work_outline;
+    if (l.contains('twitter') || l == 'x') return Icons.alternate_email;
+    if (l.contains('email') || l.contains('mail')) return Icons.email_outlined;
+    if (l.contains('game') || l.contains('play') || l.contains('เกม')) return Icons.videogame_asset_outlined;
+    if (l.contains('phone') || l.contains('โทร')) return Icons.phone_iphone_outlined;
+    if (l.contains('line')) return Icons.chat_bubble_outline;
+    return Icons.link;
   }
 
   @override

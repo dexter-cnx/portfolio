@@ -1,7 +1,7 @@
 {
   "site": {
     "name": "Dexter CNX Portfolio",
-    "ownerName": "Kitipong Sarachan",
+    "ownerName": "Kitipong Sarajan",
     "role": "Software Engineer",
     "location": "Chiang Mai, Thailand",
     "email": "cnxdev@gmail.com",
@@ -324,7 +324,7 @@
     "ctaLabel": "Say Hello",
     "ctaUrl": "mailto:cnxdev@gmail.com",
     "phone": "093-666-4880",
-    "lineId": "your.line.id"
+    "lineId": "cnxdev"
   },
   "socialLinks": [
     {

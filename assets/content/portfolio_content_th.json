@@ -20,7 +20,7 @@
     }
   },
   "hero": {
-    "eyebrow": "สวัสดีครับ ชื่อ",
+    "eyebrow": "สวัสดีครับผมชื่อ",
     "headline": "กิติพงษ์ สาระจันทร์.",
     "subheadline": "นักพัฒนาซอฟต์แวร์",
     "description": "",
@@ -320,11 +320,11 @@
   ],
   "contact": {
     "title": "อยากจะติดต่อ?",
-    "body": "สนใจรทำงานร่วมกันเกี่ยวกับผลิตภัณฑ์ที่น่าสนใข และโอกาสใหม่ๆ ในด้าน Mobile Application",
+    "body": "สนใจอยากจะพูดคุยเกี่ยวกับผลิตภัณฑ์ที่น่าสนใจ และโอกาสใหม่ๆ ในด้าน Mobile Application",
     "ctaLabel": "ทักทายกัน",
     "ctaUrl": "mailto:cnxdev@gmail.com",
     "phone": "093-666-4880",
-    "lineId": "your.line.id"
+    "lineId": "cnxdev"
   },
   "socialLinks": [
     {

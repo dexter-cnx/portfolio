@@ -72,8 +72,14 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
     }
 
     final uri = Uri.parse(url);
+
+    // For non-http(s) schemes like tel:, mailto:, use external application mode
+    final mode = (uri.scheme == 'http' || uri.scheme == 'https')
+        ? LaunchMode.platformDefault
+        : LaunchMode.externalApplication;
+
     if (await canLaunchUrl(uri)) {
-      await launchUrl(uri);
+      await launchUrl(uri, mode: mode);
     }
   }
 
@@ -240,7 +246,7 @@ class _PortfolioNavBar extends StatelessWidget implements PreferredSizeWidget {
           InkWell(
             onTap: () => onNavTap('hero'),
             child: Text(
-              'Kitiponf Sarajan',
+              'Kitipong Sarajan',
               style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                 color: AppTheme.accent,
                 fontFamily: 'JetBrains Mono',

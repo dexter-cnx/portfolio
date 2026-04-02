@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import '../../../../app/theme/app_theme.dart';
 import '../../models/portfolio_models.dart';
@@ -26,7 +27,7 @@ class _ExperienceSectionWidgetState extends State<ExperienceSectionWidget> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SectionHeader(number: '02', title: "Where I've Worked"),
+          SectionHeader(number: '02', title: "exp_title".tr()),
           const SizedBox(height: 40),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
