@@ -1,0 +1,103 @@
+{
+  "site": {
+    "name": "dev_portfolio",
+    "ownerName": "Your Name",
+    "role": "Flutter Developer",
+    "location": "Chiang Mai, Thailand",
+    "email": "hello@example.com",
+    "resumeUrl": "",
+    "sourceNote": "Prepared from learnfire-56264.web.app with values inferred where possible. Replace placeholders with final content.",
+    "seo": {
+      "title": "Your Name | Flutter Developer",
+      "description": "Portfolio website built with Flutter Web.",
+      "keywords": ["Flutter", "Dart", "Web", "Portfolio"]
+    }
+  },
+  "hero": {
+    "eyebrow": "Hi, my name is",
+    "headline": "Your Name.",
+    "subheadline": "I build clean, useful digital products.",
+    "description": "Replace this with your strongest one-paragraph introduction based on the LearnFire content.",
+    "primaryCta": {
+      "label": "Get In Touch",
+      "url": "mailto:hello@example.com"
+    },
+    "secondaryCta": {
+      "label": "View Projects",
+      "url": "#projects"
+    }
+  },
+  "about": {
+    "title": "About Me",
+    "paragraphs": [
+      "Replace this paragraph with a concise personal introduction.",
+      "Add a second paragraph describing current focus, strengths, and what kind of work you enjoy."
+    ],
+    "skills": [
+      "Flutter",
+      "Dart",
+      "Firebase",
+      "REST API",
+      "Clean Architecture",
+      "UI Engineering"
+    ],
+    "profileImage": "assets/images/profile_placeholder.png"
+  },
+  "experience": [
+    {
+      "company": "Company Name",
+      "title": "Role Title",
+      "period": "2024 — Present",
+      "url": "",
+      "summary": "Describe the scope and impact of the role.",
+      "highlights": [
+        "Shipped feature A",
+        "Improved system B",
+        "Led initiative C"
+      ],
+      "tech": ["Flutter", "Dart", "Firebase"]
+    }
+  ],
+  "featuredProjects": [
+    {
+      "name": "Project One",
+      "summary": "A short project description focused on outcome and value.",
+      "longDescription": "Optional expanded description for a featured card or detail modal.",
+      "repoUrl": "",
+      "liveUrl": "",
+      "image": "assets/images/project_01_placeholder.png",
+      "tags": ["Flutter", "Web", "Firebase"]
+    }
+  ],
+  "otherProjects": [
+    {
+      "name": "Project Two",
+      "summary": "Smaller project card summary.",
+      "repoUrl": "",
+      "liveUrl": "",
+      "tags": ["Dart", "Tooling"]
+    }
+  ],
+  "contact": {
+    "title": "Get In Touch",
+    "body": "I’m open to interesting product work, collaborations, and Flutter engineering opportunities.",
+    "ctaLabel": "Say Hello",
+    "ctaUrl": "mailto:hello@example.com"
+  },
+  "socialLinks": [
+    {
+      "label": "GitHub",
+      "url": "https://github.com/"
+    },
+    {
+      "label": "LinkedIn",
+      "url": "https://www.linkedin.com/"
+    }
+  ],
+  "nav": [
+    { "id": "about", "label": "About" },
+    { "id": "experience", "label": "Experience" },
+    { "id": "projects", "label": "Projects" },
+    { "id": "contact", "label": "Contact" }
+  ]
+}
