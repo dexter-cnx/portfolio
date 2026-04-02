@@ -187,22 +187,26 @@ class _ExperienceSectionWidgetState extends State<ExperienceSectionWidget> {
   IconData _getIconForSkill(String skill) {
     final s = skill.toLowerCase();
     if (s.contains('flutter')) return Icons.flutter_dash;
-    if (s.contains('dart')) return Icons.code;
-    if (s.contains('firebase')) return Icons.local_fire_department;
-    if (s.contains('api') || s.contains('rest')) return Icons.api;
-    if (s.contains('architecture')) return Icons.architecture;
-    if (s.contains('ui') || s.contains('ux') || s.contains('design'))
+    if (s.contains('dart')) { return Icons.code; }
+    if (s.contains('firebase')) { return Icons.local_fire_department; }
+    if (s.contains('api') || s.contains('rest')) { return Icons.api; }
+    if (s.contains('architecture')) { return Icons.architecture; }
+    if (s.contains('ui') || s.contains('ux') || s.contains('design')) {
       return Icons.design_services;
-    if (s.contains('c++') || s.contains('c ') || s == 'c')
+    }
+    if (s.contains('c++') || s.contains('c ') || s == 'c') {
       return Icons.data_object;
-    if (s.contains('python')) return Icons.terminal;
-    if (s.contains('unity') || s.contains('game') || s.contains('cocos'))
+    }
+    if (s.contains('python')) { return Icons.terminal; }
+    if (s.contains('unity') || s.contains('game') || s.contains('cocos')) {
       return Icons.videogame_asset;
-    if (s.contains('java') || s.contains('j2me')) return Icons.coffee;
-    if (s.contains('sql') || s.contains('db') || s.contains('database'))
+    }
+    if (s.contains('java') || s.contains('j2me')) { return Icons.coffee; }
+    if (s.contains('sql') || s.contains('db') || s.contains('database')) {
       return Icons.storage;
-    if (s.contains('github') || s.contains('git')) return Icons.merge;
-    if (s.contains('javascript') || s.contains('js')) return Icons.javascript;
+    }
+    if (s.contains('github') || s.contains('git')) { return Icons.merge; }
+    if (s.contains('javascript') || s.contains('js')) { return Icons.javascript; }
     return Icons.developer_mode;
   }
 }
