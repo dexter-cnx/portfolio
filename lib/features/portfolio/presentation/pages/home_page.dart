@@ -13,6 +13,7 @@ import '../widgets/responsive_layout.dart';
 import '../widgets/side_rails.dart';
 import '../widgets/fade_in_slide.dart';
 import '../widgets/resume_pdf_generator.dart';
+import '../widgets/mouse_glow_background.dart';
 
 class PortfolioHomePage extends StatefulWidget {
   final Function(String) onLocaleChanged;
@@ -141,8 +142,9 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
               }
             },
           ),
-          body: Stack(
-            children: [
+          body: MouseGlowBackground(
+            child: Stack(
+              children: [
               SingleChildScrollView(
                 controller: _scrollController,
                 child: Column(
@@ -208,7 +210,8 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
                     onEmailTap: _launchURL,
                   ),
                 ),
-            ],
+              ],
+            ),
           ),
         );
       },

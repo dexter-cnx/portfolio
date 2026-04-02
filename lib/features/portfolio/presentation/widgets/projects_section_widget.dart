@@ -81,7 +81,7 @@ class ProjectsSectionWidget extends StatelessWidget {
   }
 }
 
-class _FeaturedProjectCard extends StatelessWidget {
+class _FeaturedProjectCard extends StatefulWidget {
   final FeaturedProject project;
   final bool isReversed;
   final Function(String url) onLinkTap;
@@ -93,11 +93,21 @@ class _FeaturedProjectCard extends StatelessWidget {
   });
 
   @override
+  State<_FeaturedProjectCard> createState() => _FeaturedProjectCardState();
+}
+
+class _FeaturedProjectCardState extends State<_FeaturedProjectCard> {
+  bool _isHovered = false;
+
+  @override
   Widget build(BuildContext context) {
     final isDesktop = ResponsiveLayout.isDesktop(context);
 
     if (!isDesktop) {
-      return Container(
+      return MouseRegion(
+        onEnter: (_) => setState(() => _isHovered = true),
+        onExit: (_) => setState(() => _isHovered = false),
+        child: Container(
         margin: const EdgeInsets.only(bottom: 60),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4),
@@ -109,7 +119,7 @@ class _FeaturedProjectCard extends StatelessWidget {
           children: [
             AspectRatio(
               aspectRatio: 16 / 9,
-              child: _ProjectImageGallery(images: project.images),
+              child: _ProjectImageGallery(images: widget.project.images, isHovered: _isHovered),
             ),
             Padding(
               padding: const EdgeInsets.all(24),
@@ -124,20 +134,20 @@ class _FeaturedProjectCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    project.name,
+                    widget.project.name,
                     style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      color: AppTheme.textPrimary,
+                      color: _isHovered ? AppTheme.accent : AppTheme.textPrimary,
                     ),
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    project.summary,
+                    widget.project.summary,
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
-                  if (project.longDescription.isNotEmpty) ...[
+                  if (widget.project.longDescription.isNotEmpty) ...[
                     const SizedBox(height: 12),
                     Text(
-                      project.longDescription,
+                      widget.project.longDescription,
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                   ],
@@ -147,7 +157,7 @@ class _FeaturedProjectCard extends StatelessWidget {
                   Wrap(
                     spacing: 12,
                     runSpacing: 8,
-                    children: project.tags
+                    children: widget.project.tags
                         .map(
                           (t) => Text(
                             t,
@@ -161,36 +171,40 @@ class _FeaturedProjectCard extends StatelessWidget {
             ),
           ],
         ),
-      );
+      ),
+    );
     }
 
-    return Container(
-      height: 600, // Increased height to accommodate urls and long descriptions
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      child: Container(
+        height: 600, // Increased height to accommodate urls and long descriptions
       margin: const EdgeInsets.only(bottom: 100),
       child: Stack(
         children: [
           // Project Image Gallery
           Positioned(
-            left: isReversed ? null : 0,
-            right: isReversed ? 0 : null,
+            left: widget.isReversed ? null : 0,
+            right: widget.isReversed ? 0 : null,
             top: 0,
             bottom: 0,
             width: 700,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(4),
-              child: _ProjectImageGallery(images: project.images),
+              child: _ProjectImageGallery(images: widget.project.images, isHovered: _isHovered),
             ),
           ),
           // Project Content
           Positioned(
-            left: isReversed ? 0 : null,
-            right: isReversed ? null : 0,
+            left: widget.isReversed ? 0 : null,
+            right: widget.isReversed ? null : 0,
             top: 20,
             bottom: 20,
             width: 500,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: isReversed
+              crossAxisAlignment: widget.isReversed
                   ? CrossAxisAlignment.start
                   : CrossAxisAlignment.end,
               children: [
@@ -203,9 +217,9 @@ class _FeaturedProjectCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  project.name,
+                  widget.project.name,
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                    color: AppTheme.textPrimary,
+                    color: _isHovered ? AppTheme.accent : AppTheme.textPrimary,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -224,24 +238,24 @@ class _FeaturedProjectCard extends StatelessWidget {
                     ],
                   ),
                   child: Column(
-                    crossAxisAlignment: isReversed
+                    crossAxisAlignment: widget.isReversed
                         ? CrossAxisAlignment.start
                         : CrossAxisAlignment.end,
                     children: [
                       Text(
-                        project.summary,
-                        textAlign: isReversed
+                        widget.project.summary,
+                        textAlign: widget.isReversed
                             ? TextAlign.left
                             : TextAlign.right,
                         style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                           color: AppTheme.textPrimary,
                         ),
                       ),
-                      if (project.longDescription.isNotEmpty) ...[
+                      if (widget.project.longDescription.isNotEmpty) ...[
                         const SizedBox(height: 12),
                         Text(
-                          project.longDescription,
-                          textAlign: isReversed
+                          widget.project.longDescription,
+                          textAlign: widget.isReversed
                               ? TextAlign.left
                               : TextAlign.right,
                           style: Theme.of(context).textTheme.bodyMedium
@@ -257,10 +271,10 @@ class _FeaturedProjectCard extends StatelessWidget {
                 Wrap(
                   spacing: 12,
                   runSpacing: 8,
-                  alignment: isReversed
+                  alignment: widget.isReversed
                       ? WrapAlignment.start
                       : WrapAlignment.end,
-                  children: project.tags
+                  children: widget.project.tags
                       .map(
                         (t) => Text(
                           t,
@@ -275,21 +289,21 @@ class _FeaturedProjectCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
                 Row(
-                  mainAxisAlignment: isReversed
+                  mainAxisAlignment: widget.isReversed
                       ? MainAxisAlignment.start
                       : MainAxisAlignment.end,
                   children: [
-                    if (project.repoUrl.isNotEmpty)
+                    if (widget.project.repoUrl.isNotEmpty)
                       IconButton(
-                        onPressed: () => onLinkTap(project.repoUrl),
+                        onPressed: () => widget.onLinkTap(widget.project.repoUrl),
                         icon: const Icon(
                           Icons.code,
                           color: AppTheme.textPrimary,
                         ),
                       ),
-                    if (project.liveUrl.isNotEmpty)
+                    if (widget.project.liveUrl.isNotEmpty)
                       IconButton(
-                        onPressed: () => onLinkTap(project.liveUrl),
+                        onPressed: () => widget.onLinkTap(widget.project.liveUrl),
                         icon: const Icon(
                           Icons.open_in_new,
                           color: AppTheme.textPrimary,
@@ -302,18 +316,18 @@ class _FeaturedProjectCard extends StatelessWidget {
           ),
         ],
       ),
-    );
+    ));
   }
 
   Widget _buildProjectUrls(BuildContext context) {
-    if (project.urls.isEmpty) return const SizedBox.shrink();
+    if (widget.project.urls.isEmpty) return const SizedBox.shrink();
 
     return Wrap(
       spacing: 12,
       runSpacing: 12,
-      alignment: isReversed ? WrapAlignment.start : WrapAlignment.end,
-      children: project.urls
-          .map((u) => _ProjectUrlItem(url: u, onLaunch: onLinkTap))
+      alignment: widget.isReversed ? WrapAlignment.start : WrapAlignment.end,
+      children: widget.project.urls
+          .map((u) => _ProjectUrlItem(url: u, onLaunch: widget.onLinkTap))
           .toList(),
     );
   }
@@ -507,8 +521,9 @@ class _OtherProjectCardState extends State<_OtherProjectCard> {
 
 class _ProjectImageGallery extends StatefulWidget {
   final List<String> images;
+  final bool isHovered;
 
-  const _ProjectImageGallery({required this.images});
+  const _ProjectImageGallery({required this.images, this.isHovered = false});
 
   @override
   State<_ProjectImageGallery> createState() => _ProjectImageGalleryState();
@@ -555,7 +570,10 @@ class _ProjectImageGalleryState extends State<_ProjectImageGallery> {
 
           // Subtle tint overlay — IgnorePointer so swipe still works
           IgnorePointer(
-            child: Container(color: AppTheme.accent.withValues(alpha: 0.08)),
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 300),
+              color: widget.isHovered ? Colors.transparent : AppTheme.accent.withValues(alpha: 0.25),
+            ),
           ),
 
           // Page indicators

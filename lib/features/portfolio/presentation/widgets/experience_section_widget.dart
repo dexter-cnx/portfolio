@@ -4,7 +4,6 @@ import '../../../../app/theme/app_theme.dart';
 import '../../models/portfolio_models.dart';
 import 'section_header.dart';
 import 'section_wrapper.dart';
-import 'responsive_layout.dart';
 
 class ExperienceSectionWidget extends StatefulWidget {
   final List<Experience> experience;
@@ -12,7 +11,8 @@ class ExperienceSectionWidget extends StatefulWidget {
   const ExperienceSectionWidget({super.key, required this.experience});
 
   @override
-  State<ExperienceSectionWidget> createState() => _ExperienceSectionWidgetState();
+  State<ExperienceSectionWidget> createState() =>
+      _ExperienceSectionWidgetState();
 }
 
 class _ExperienceSectionWidgetState extends State<ExperienceSectionWidget> {
@@ -32,14 +32,9 @@ class _ExperienceSectionWidgetState extends State<ExperienceSectionWidget> {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                width: 200,
-                child: _buildCompanyTabs(),
-              ),
+              SizedBox(width: 200, child: _buildCompanyTabs()),
               const SizedBox(width: 40),
-              Expanded(
-                child: _buildExperienceDetail(),
-              ),
+              Expanded(child: _buildExperienceDetail()),
             ],
           ),
         ],
@@ -65,17 +60,21 @@ class _ExperienceSectionWidgetState extends State<ExperienceSectionWidget> {
             decoration: BoxDecoration(
               border: Border(
                 left: BorderSide(
-                  color: isSelected ? AppTheme.accent : AppTheme.textMuted.withValues(alpha: 0.1),
+                  color: isSelected
+                      ? AppTheme.accent
+                      : AppTheme.textMuted.withValues(alpha: 0.1),
                   width: 2,
                 ),
               ),
-              color: isSelected ? AppTheme.accent.withValues(alpha: 0.05) : Colors.transparent,
+              color: isSelected
+                  ? AppTheme.accent.withValues(alpha: 0.05)
+                  : Colors.transparent,
             ),
             child: Text(
               item.company,
               style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                    color: isSelected ? AppTheme.accent : AppTheme.textMuted,
-                  ),
+                color: isSelected ? AppTheme.accent : AppTheme.textMuted,
+              ),
             ),
           ),
         );
@@ -94,15 +93,15 @@ class _ExperienceSectionWidgetState extends State<ExperienceSectionWidget> {
             children: [
               TextSpan(
                 text: item.title,
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: AppTheme.textPrimary,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleLarge?.copyWith(color: AppTheme.textPrimary),
               ),
               TextSpan(
                 text: ' @ ${item.company}',
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: AppTheme.accent,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleLarge?.copyWith(color: AppTheme.accent),
               ),
             ],
           ),
@@ -110,43 +109,42 @@ class _ExperienceSectionWidgetState extends State<ExperienceSectionWidget> {
         const SizedBox(height: 8),
         Text(
           item.period,
-          style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                color: AppTheme.textMuted,
-              ),
+          style: Theme.of(
+            context,
+          ).textTheme.labelMedium?.copyWith(color: AppTheme.textMuted),
         ),
         if (item.summary.isNotEmpty) ...[
           const SizedBox(height: 16),
           Text(
             item.summary,
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: AppTheme.textMuted,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodyLarge?.copyWith(color: AppTheme.textMuted),
           ),
         ],
         const SizedBox(height: 24),
-        ...item.highlights.map((h) => Padding(
-              padding: const EdgeInsets.only(bottom: 12),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.only(top: 8),
-                    child: Icon(
-                      Icons.play_arrow,
-                      size: 12,
-                      color: AppTheme.accent,
-                    ),
+        ...item.highlights.map(
+          (h) => Padding(
+            padding: const EdgeInsets.only(bottom: 12),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.only(top: 8),
+                  child: Icon(
+                    Icons.play_arrow,
+                    size: 12,
+                    color: AppTheme.accent,
                   ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      h,
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
-                  ),
-                ],
-              ),
-            )),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(h, style: Theme.of(context).textTheme.bodyLarge),
+                ),
+              ],
+            ),
+          ),
+        ),
         if (item.tech.isNotEmpty) ...[
           const SizedBox(height: 24),
           _buildTechWrap(context, item.tech),
@@ -160,26 +158,28 @@ class _ExperienceSectionWidgetState extends State<ExperienceSectionWidget> {
       spacing: 8.0,
       runSpacing: 8.0,
       children: techs
-          .map((tech) => Chip(
-                avatar: Icon(
-                  _getIconForSkill(tech),
-                  size: 14,
-                  color: AppTheme.accent,
+          .map(
+            (tech) => Chip(
+              avatar: Icon(
+                _getIconForSkill(tech),
+                size: 14,
+                color: AppTheme.accent,
+              ),
+              label: Text(
+                tech,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: AppTheme.textPrimary,
+                  fontFamily: 'JetBrains Mono',
                 ),
-                label: Text(
-                  tech,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppTheme.textPrimary,
-                        fontFamily: 'JetBrains Mono',
-                      ),
-                ),
-                backgroundColor: Colors.transparent,
-                side: const BorderSide(color: AppTheme.accent, width: 1.0),
-                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 0),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-              ))
+              ),
+              backgroundColor: Colors.transparent,
+              side: const BorderSide(color: AppTheme.accent, width: 1.0),
+              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 0),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+            ),
+          )
           .toList(),
     );
   }
@@ -191,12 +191,16 @@ class _ExperienceSectionWidgetState extends State<ExperienceSectionWidget> {
     if (s.contains('firebase')) return Icons.local_fire_department;
     if (s.contains('api') || s.contains('rest')) return Icons.api;
     if (s.contains('architecture')) return Icons.architecture;
-    if (s.contains('ui') || s.contains('ux') || s.contains('design')) return Icons.design_services;
-    if (s.contains('c++') || s.contains('c ') || s == 'c') return Icons.data_object;
+    if (s.contains('ui') || s.contains('ux') || s.contains('design'))
+      return Icons.design_services;
+    if (s.contains('c++') || s.contains('c ') || s == 'c')
+      return Icons.data_object;
     if (s.contains('python')) return Icons.terminal;
-    if (s.contains('unity') || s.contains('game') || s.contains('cocos')) return Icons.videogame_asset;
+    if (s.contains('unity') || s.contains('game') || s.contains('cocos'))
+      return Icons.videogame_asset;
     if (s.contains('java') || s.contains('j2me')) return Icons.coffee;
-    if (s.contains('sql') || s.contains('db') || s.contains('database')) return Icons.storage;
+    if (s.contains('sql') || s.contains('db') || s.contains('database'))
+      return Icons.storage;
     if (s.contains('github') || s.contains('git')) return Icons.merge;
     if (s.contains('javascript') || s.contains('js')) return Icons.javascript;
     return Icons.developer_mode;
