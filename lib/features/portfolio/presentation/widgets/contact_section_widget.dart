@@ -6,12 +6,14 @@ import 'section_wrapper.dart';
 
 class ContactSectionWidget extends StatelessWidget {
   final Contact contact;
+  final List<SocialLink> socialLinks;
   final Function(String url) onCtaTap;
 
   const ContactSectionWidget({
     super.key,
     required this.contact,
     required this.onCtaTap,
+    this.socialLinks = const [],
   });
 
   @override
@@ -83,6 +85,20 @@ class ContactSectionWidget extends StatelessWidget {
               ],
             ),
 
+          // Social Links
+          if (socialLinks.isNotEmpty) ...[
+            const SizedBox(height: 40),
+            Wrap(
+              spacing: 16,
+              runSpacing: 12,
+              alignment: WrapAlignment.center,
+              children: socialLinks.map((link) => _SocialLinkChip(
+                label: link.label,
+                onTap: () => onCtaTap(link.url),
+              )).toList(),
+            ),
+          ],
+
           const SizedBox(height: 150),
           Text(
             'footer_built_by'.tr(),
@@ -93,6 +109,79 @@ class ContactSectionWidget extends StatelessWidget {
           ),
           const SizedBox(height: 20),
         ],
+      ),
+    );
+  }
+}
+
+class _SocialLinkChip extends StatefulWidget {
+  final String label;
+  final VoidCallback onTap;
+
+  const _SocialLinkChip({required this.label, required this.onTap});
+
+  @override
+  State<_SocialLinkChip> createState() => _SocialLinkChipState();
+}
+
+class _SocialLinkChipState extends State<_SocialLinkChip> {
+  bool _isHovered = false;
+
+  IconData _iconForLabel(String label) {
+    switch (label.toLowerCase()) {
+      case 'github':
+        return Icons.code;
+      case 'linkedin':
+        return Icons.work_outline;
+      case 'twitter':
+      case 'x':
+        return Icons.alternate_email;
+      case 'email':
+        return Icons.email_outlined;
+      default:
+        return Icons.link;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      child: InkWell(
+        onTap: widget.onTap,
+        borderRadius: BorderRadius.circular(4),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: _isHovered
+                  ? AppTheme.accent
+                  : AppTheme.textMuted.withValues(alpha: 0.3),
+            ),
+            borderRadius: BorderRadius.circular(4),
+            color: _isHovered ? AppTheme.accent.withValues(alpha: 0.08) : Colors.transparent,
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                _iconForLabel(widget.label),
+                size: 18,
+                color: _isHovered ? AppTheme.accent : AppTheme.textMuted,
+              ),
+              const SizedBox(width: 10),
+              Text(
+                widget.label,
+                style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                      color: _isHovered ? AppTheme.accent : AppTheme.textMuted,
+                      fontFamily: 'JetBrains Mono',
+                    ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

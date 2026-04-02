@@ -1,14 +1,14 @@
 {
   "site": {
     "name": "Dexter CNX Portfolio",
-    "ownerName": "Kitipong Sarahjan",
+    "ownerName": "Kitipong Sarachan",
     "role": "Software Engineer",
     "location": "Chiang Mai, Thailand",
     "email": "cnxdev@gmail.com",
     "resumeUrl": "",
-    "sourceNote": "Translated and prepared data from template and LearnFire",
+    "sourceNote": "Translated and prepared from template and LearnFire",
     "seo": {
-      "title": "Kitipong Sarahjan | Flutter Developer",
+      "title": "Kitipong Sarachan | Flutter Developer",
       "description": "Portfolio website built with Flutter Web",
       "keywords": [
         "Flutter",
@@ -21,30 +21,30 @@
   },
   "hero": {
     "eyebrow": "Hi, my name is",
-    "headline": "Kitipong Sarahjan.",
-    "subheadline": "Software Engineer",
+    "headline": "Kitipong Sarachan.",
+    "subheadline": "Software Developer",
     "description": "",
     "primaryCta": {
-      "label": "Get In Touch",
+      "label": "Contact Me",
       "url": "mailto:cnxdev@gmail.com"
     },
     "secondaryCta": {
-      "label": "Check out my work",
+      "label": "View My Work",
       "url": "#projects"
     }
   },
   "about": {
     "title": "About Me",
     "paragraphs": [
-      "I have over 20 years of experience in the software industry, specifically focusing on mobile device software since the PDA era with platforms like Palm and Pocket PC.",
-      "Evolving into the smartphone era, I transitioned from Java Phone and Symbian to current modern platforms like Android and iOS.",
-      "I am highly proficient in programming with C, C++, Java, and Dart (Flutter), and possess practical working knowledge of Python, JavaScript, Objective-C, and SQL.",
-      "I have extensive experience spanning the entire Software Development Life Cycle (SDLC).",
-      "I am a strong team player, capable of problem-solving under pressure to ensure successful project delivery.",
-      "I have remote work experience collaborating with international teams across different time zones, particularly in Europe and the United States.",
-      "I am experienced in integrating applications with modern backends including Firebase, GraphQL, and REST APIs.",
-      "I have full capability in deploying and publishing applications to both Google Play Store and Apple App Store.",
-      "I am a fast learner when it comes to new technologies and can effectively apply them to practical workloads."
+      "Over 20 years of experience in the software industry, particularly in mobile software, since the era of PDAs like Palm and Pocket PC.",
+      "Transitioned into the smartphone era, starting from Java Phone and Symbian to the current generation of Android and iOS.",
+      "Proficient in programming using C, C++, Java, Dart (Flutter), and also capable of using languages like Python, JavaScript, Objective-C, and SQL.",
+      "Experienced in the Software Development Life Cycle (SDLC) process.",
+      "Able to work as a team, help solve problems under pressure, and successfully complete projects.",
+      "Experienced in remote work with international teams across different time zones, such as Europe and the USA.",
+      "Experienced in connecting applications with Firebase, GraphQL, and Rest APIs.",
+      "Capable of deploying applications to both Google Play Store and Apple App Store.",
+      "Quick to learn new technologies and apply them effectively to work."
     ],
     "skills": [
       "Flutter",
@@ -65,15 +65,15 @@
   },
   "experience": [
     {
-      "company": "Kiragames Co., Ltd.  @ Chiang Mai",
+      "company": "Kiragames Co., Ltd. @ Chiang Mai",
       "title": "Senior Software Engineer",
       "period": "2011 — Present",
       "url": "",
-      "summary": "Overseeing the full-cycle application development process.",
+      "summary": "Supervise the entire app development process.",
       "highlights": [
-        "Managing mobile game application development",
-        "Modernizing legacy systems",
-        "Leading teams to develop new game applications"
+        "Supervise mobile game application development.",
+        "Modernize legacy systems.",
+        "Lead the development of new game applications."
       ],
       "tech": [
         "C++",
@@ -88,11 +88,11 @@
       "title": "Software Engineer",
       "period": "2008-2011",
       "url": "",
-      "summary": "Developed software for digital TV broadcast equipment systems.",
+      "summary": "Develop software for digital TV broadcast equipment systems.",
       "highlights": [
-        "Developed content management software components",
-        "Built a Build bot system for software testing and deployment",
-        "Managed and led the team in Thailand"
+        "Develop content management software.",
+        "Built bot system for software testing and deployment.",
+        "Managed the team in Thailand."
       ],
       "tech": [
         "C",
@@ -105,7 +105,7 @@
       "title": "Mobile Game Developer",
       "period": "2007",
       "url": "",
-      "summary": "Developed mobile games.",
+      "summary": "Develop mobile games.",
       "highlights": [],
       "tech": [
         "Java",
@@ -119,11 +119,11 @@
       "title": "Mobile Developer",
       "period": "2000-2007",
       "url": "",
-      "summary": "Developed games and applications for mobile devices.",
+      "summary": "Develop mobile games/applications.",
       "highlights": [
-        "Developed mobile applications",
-        "Developed mobile games",
-        "Implemented Thai language support systems",
+        "Develop mobile applications.",
+        "Develop mobile games.",
+        "Thai language system.",
         "Hand Writing Input"
       ],
       "tech": [
@@ -140,7 +140,7 @@
       "title": "Software Developer",
       "period": "1995-1998",
       "url": "",
-      "summary": "Developed business and accounting software.",
+      "summary": "Develop accounting and business software.",
       "highlights": [],
       "tech": [
         "Unix",
@@ -154,54 +154,176 @@
   "featuredProjects": [
     {
       "name": "WeLink Application set",
-      "summary": "WeLink is an application platform connecting people together.",
-      "longDescription": "WeLink is a multi-purpose application that features ride-hailing, food delivery, services, merchants, restaurants, and event ticketing. Additionally, it consists of dedicated applications for merchants/restaurants and riders.",
+      "summary": "WeLink, a platform that connects all services to every lifestyle.",
+      "longDescription": "WeLink is an application that includes car-hailing, food delivery services, various task services, as well as a shop and restaurant system, and festival ticket booking. It also has dedicated applications for shops, restaurants, and riders.",
       "repoUrl": "",
       "liveUrl": "https://www.welinkcorp.com/",
       "images": [
-        "assets/images/project_01.png",
-        "assets/images/project_01.png"
+        "assets/images/moblie-1.png",
+        "assets/images/photo-card-rider-3.png",
+        "assets/images/unnamed.webp"
       ],
       "urls": [
         {
-          "image": "assets/images/project_01.png",
+          "image": "assets/images/app_store_badge.svg",
           "title": "App Store",
-          "url": "https://apps.apple.com/"
+          "url": "https://apps.apple.com/th/app/welink/id6464281983"
         },
         {
-          "image": "assets/images/project_01.png",
+          "image": "assets/images/google_play_badge.png",
           "title": "Play Store",
-          "url": "https://play.google.com/"
+          "url": "https://play.google.com/store/apps/details?id=com.welinkapp.user"
         }
       ],
       "tags": [
         "Flutter",
-        "Web",
+        "Google Map",
+        "Restful API",
+        "Firebase"
+      ]
+    },
+    {
+      "name": "24 CARFIX Application set",
+      "summary": "24 CARFIX, an application for calling emergency car repair services 24 hours a day.",
+      "longDescription": "An application that gathers tow truck services, slide trucks, battery technicians, tire repair technicians, and locksmiths into one application.",
+      "repoUrl": "",
+      "liveUrl": "https://www.24carfix.com/",
+      "images": [
+        "assets/images/24carfix1.webp",
+        "assets/images/24carfix2.webp"
+      ],
+      "urls": [
+        {
+          "image": "assets/images/app_store_badge.svg",
+          "title": "App Store",
+          "url": "https://apps.apple.com/us/app/24-carfix/id1634275065"
+        },
+        {
+          "image": "assets/images/google_play_badge.png",
+          "title": "Play Store",
+          "url": "https://play.google.com/store/apps/details?id=com.carfix.customer"
+        }
+      ],
+      "tags": [
+        "Flutter",
+        "Google Map",
+        "Restful API",
+        "Firebase"
+      ]
+    },
+    {
+      "name": "BK Live",
+      "summary": "BK Live, a livestreaming application for all ages.",
+      "longDescription": "",
+      "repoUrl": "",
+      "liveUrl": "https://www.instagram.com/bkliveofficial/",
+      "images": [
+        "assets/images/bklive.jpg",
+        "assets/images/bklive2.jpg"
+      ],
+      "tags": [
+        "Flutter",
+        "TRTC",
+        "Restful API",
+        "Firebase"
+      ]
+    },
+    {
+      "name": "Zero Carbon",
+      "summary": "Carbon footprint calculation tool for carbon offset activities.",
+      "longDescription": "A tool to calculate the carbon footprint or greenhouse gas emissions of tourism activities such as ecotourism and adventure, agrotourism, gastrotourism, health tourism, cultural tourism, and tourism for all. Events such as sports competitions, music, concerts, festivals, and others. Meetings/seminars, international meetings, exhibitions, and incentive travel.",
+      "repoUrl": "",
+      "liveUrl": "https://hub.mnre.go.th/th/knowledge/detail/65663",
+      "images": [
+        "assets/images/ZeroCarbon.png"
+      ],
+      "urls": [
+        {
+          "image": "assets/images/app_store_badge.svg",
+          "title": "App Store",
+          "url": "https://apps.apple.com/us/app/zero-carbon-th/id6468645997"
+        },
+        {
+          "image": "assets/images/google_play_badge.png",
+          "title": "Play Store",
+          "url": "https://play.google.com/store/apps/details?id=com.tgo.cf.zerocarbon&hl=th"
+        }
+      ],
+      "tags": [
+        "Flutter",
+        "Google Map",
+        "Restful API",
+        "Firebase"
+      ]
+    },
+    {
+      "name": "POS Demo",
+      "summary": "Shop management system demo.",
+      "longDescription": "A demo of a shop management system (Point of Sale) that can manage products, sell products, and view reports.",
+      "repoUrl": "https://github.com/dexter-cnx/flutter-pos-demo",
+      "liveUrl": "https://dexter-cnx.github.io/flutter-pos-demo/",
+      "images": [
+        "assets/images/pos-demo.png",
+        "assets/images/pos2.png",
+        "assets/images/pos3.png"
+      ],
+      "urls": [
+        {
+          "title": "Test",
+          "url": "https://dexter-cnx.github.io/flutter-pos-demo/"
+        }
+      ],
+      "tags": [
+        "Flutter"
+      ]
+    },
+    {
+      "name": "Systemparts App",
+      "summary": "Application for buying and selling car parts.",
+      "longDescription": "An application for managing the purchase and sale of car parts.",
+      "images": [
+        "assets/images/part.jpg",
+        "assets/images/part1.jpg",
+        "assets/images/part2.jpg"
+      ],
+      "tags": [
+        "Flutter",
+        "Google Map",
+        "Restful API",
         "Firebase"
       ]
     }
   ],
   "otherProjects": [
     {
-      "name": "Other Project",
-      "summary": "A brief description of another interesting project.",
-      "repoUrl": "",
-      "liveUrl": "",
+      "name": "2ms",
+      "summary": "Stock management application.",
       "images": [
-        "assets/images/project_01.png"
+        "assets/images/2ms1.jpg",
+        "assets/images/2ms2.jpg"
       ],
       "tags": [
-        "Dart",
-        "Tooling"
+        "Flutter"
+      ]
+    },
+    {
+      "name": "Watch Clinic",
+      "summary": "App for watch service centers.",
+      "images": [
+        "assets/images/watch1.jpg",
+        "assets/images/watch2.jpg"
+      ],
+      "tags": [
+        "Flutter"
       ]
     }
   ],
   "contact": {
     "title": "Get In Touch",
-    "body": "I'm currently open to interesting product work, collaborations, and new opportunities in Flutter engineering.",
+    "body": "Interested in working together on exciting products and new opportunities in Mobile Application development.",
     "ctaLabel": "Say Hello",
     "ctaUrl": "mailto:cnxdev@gmail.com",
-    "phone": "08x-xxx-xxxx",
+    "phone": "093-666-4880",
     "lineId": "your.line.id"
   },
   "socialLinks": [
@@ -210,8 +332,8 @@
       "url": "https://github.com/dexter-cnx"
     },
     {
-      "label": "LinkedIn",
-      "url": "https://www.linkedin.com/"
+      "label": "Play Game",
+      "url": "https://learnfire-56264.web.app/cbm/index.html"
     }
   ],
   "nav": [
@@ -225,7 +347,7 @@
     },
     {
       "id": "projects",
-      "label": "Work"
+      "label": "Projects"
     },
     {
       "id": "contact",

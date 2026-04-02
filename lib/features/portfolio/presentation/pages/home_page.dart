@@ -17,10 +17,7 @@ import '../widgets/resume_pdf_generator.dart';
 class PortfolioHomePage extends StatefulWidget {
   final Function(String) onLocaleChanged;
 
-  const PortfolioHomePage({
-    super.key,
-    required this.onLocaleChanged,
-  });
+  const PortfolioHomePage({super.key, required this.onLocaleChanged});
 
   @override
   State<PortfolioHomePage> createState() => _PortfolioHomePageState();
@@ -43,7 +40,7 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
   void initState() {
     super.initState();
     // Pre-initialize to avoid errors during build initialization
-    _contentFuture = Future.value(PortfolioData.empty()); 
+    _contentFuture = Future.value(PortfolioData.empty());
   }
 
   @override
@@ -110,7 +107,9 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
       builder: (context, snapshot) {
         if (!snapshot.hasData || snapshot.data!.nav.isEmpty) {
           return const Scaffold(
-            body: Center(child: CircularProgressIndicator(color: AppTheme.accent)),
+            body: Center(
+              child: CircularProgressIndicator(color: AppTheme.accent),
+            ),
           );
         }
 
@@ -127,7 +126,10 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
             onLanguageToggle: _toggleLanguage,
             onResumeTap: () {
               if (data.site.resumeUrl.isEmpty) {
-                ResumePdfGenerator.generateAndDownload(data, context.locale.languageCode);
+                ResumePdfGenerator.generateAndDownload(
+                  data,
+                  context.locale.languageCode,
+                );
               } else {
                 _launchURL(data.site.resumeUrl);
               }
@@ -149,11 +151,17 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
                     ),
                     FadeInSlide(
                       delay: const Duration(milliseconds: 300),
-                      child: AboutSectionWidget(key: _aboutKey, about: data.about),
+                      child: AboutSectionWidget(
+                        key: _aboutKey,
+                        about: data.about,
+                      ),
                     ),
                     FadeInSlide(
                       delay: const Duration(milliseconds: 500),
-                      child: ExperienceSectionWidget(key: _experienceKey, experience: data.experience),
+                      child: ExperienceSectionWidget(
+                        key: _experienceKey,
+                        experience: data.experience,
+                      ),
                     ),
                     FadeInSlide(
                       delay: const Duration(milliseconds: 700),
@@ -167,8 +175,9 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
                     FadeInSlide(
                       delay: const Duration(milliseconds: 900),
                       child: ContactSectionWidget(
-                        key: _contactKey, 
+                        key: _contactKey,
                         contact: data.contact,
+                        socialLinks: data.socialLinks,
                         onCtaTap: _launchURL,
                       ),
                     ),
@@ -201,7 +210,6 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
   }
 }
 
-
 class _PortfolioNavBar extends StatelessWidget implements PreferredSizeWidget {
   final List<NavItem> nav;
   final String resumeUrl;
@@ -222,18 +230,21 @@ class _PortfolioNavBar extends StatelessWidget implements PreferredSizeWidget {
     final isMobile = ResponsiveLayout.isMobile(context);
 
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: isMobile ? 12 : 48, vertical: 8),
+      padding: EdgeInsets.symmetric(
+        horizontal: isMobile ? 12 : 48,
+        vertical: 8,
+      ),
       color: AppTheme.background.withValues(alpha: 0.9),
       child: Row(
         children: [
           InkWell(
             onTap: () => onNavTap('hero'),
             child: Text(
-              'PK',
+              'Kitiponf Sarajan',
               style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                    color: AppTheme.accent,
-                    fontFamily: 'JetBrains Mono',
-                  ),
+                color: AppTheme.accent,
+                fontFamily: 'JetBrains Mono',
+              ),
             ),
           ),
           const Spacer(),
@@ -245,34 +256,35 @@ class _PortfolioNavBar extends StatelessWidget implements PreferredSizeWidget {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    ...nav.map((item) => Padding(
-                          padding: const EdgeInsets.only(left: 32),
-                          child: TextButton(
-                            onPressed: () => onNavTap(item.id),
-                            child: Row(
-                              children: [
-                                Text(
-                                  '0${nav.indexOf(item) + 1}. ',
-                                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                                        color: AppTheme.accent,
-                                      ),
-                                ),
-                                Text(
-                                  item.label,
-                                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                                        color: AppTheme.textPrimary,
-                                      ),
-                                ),
-                              ],
-                            ),
+                    ...nav.map(
+                      (item) => Padding(
+                        padding: const EdgeInsets.only(left: 32),
+                        child: TextButton(
+                          onPressed: () => onNavTap(item.id),
+                          child: Row(
+                            children: [
+                              Text(
+                                '0${nav.indexOf(item) + 1}. ',
+                                style: Theme.of(context).textTheme.labelMedium
+                                    ?.copyWith(color: AppTheme.accent),
+                              ),
+                              Text(
+                                item.label,
+                                style: Theme.of(context).textTheme.labelMedium
+                                    ?.copyWith(color: AppTheme.textPrimary),
+                              ),
+                            ],
                           ),
-                        )),
+                        ),
+                      ),
+                    ),
                     const SizedBox(width: 32),
                     TextButton(
                       onPressed: onLanguageToggle,
                       child: Text(
                         context.locale.languageCode == 'en' ? 'TH' : 'EN',
-                        style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                        style: Theme.of(context).textTheme.labelMedium
+                            ?.copyWith(
                               color: AppTheme.accent,
                               fontFamily: 'JetBrains Mono',
                             ),
@@ -282,7 +294,10 @@ class _PortfolioNavBar extends StatelessWidget implements PreferredSizeWidget {
                     OutlinedButton(
                       onPressed: onResumeTap,
                       style: OutlinedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 12,
+                        ),
                       ),
                       child: Text('btn_resume'.tr()),
                     ),

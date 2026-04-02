@@ -154,22 +154,23 @@
   "featuredProjects": [
     {
       "name": "WeLink Application set",
-      "summary": "WeLink เป็นแอปพลิเคชั่นสำหรับเชื่อมต่อผู้คนเข้าด้วยกัน",
+      "summary": "WeLink แพลตฟอร์มที่เชื่อมโยงทุกบริการเชื่อมโยงกับทุกไลฟ์สไตล์",
       "longDescription": "WeLink เป็น แอปพลิเคชั่นที่มีทั้งระบบเรียกรถ เรียกบริการส่งอาหาร บริการงานต่างๆ ตลอดจนระบบร้านค้า ร้านอาหาร จองตั๋วงานรื่นเริง นอกจากนี้ยังมีส่วนแอปพลิเคชั่นสำหรับร้านค้า ร้านอาหาร และแอปพลิเคชั่นสำหรับไรเดอร์",
       "repoUrl": "",
       "liveUrl": "https://www.welinkcorp.com/",
       "images": [
-        "assets/images/project_01.png",
-        "assets/images/project_01.png"
+        "assets/images/moblie-1.png",
+        "assets/images/photo-card-rider-3.png",
+        "assets/images/unnamed.webp"
       ],
       "urls": [
         {
-          "image": "assets/images/project_01.png",
+          "image": "assets/images/app_store_badge.svg",
           "title": "App Store",
           "url": "https://apps.apple.com/th/app/welink/id6464281983"
         },
         {
-          "image": "assets/images/project_01.png",
+          "image": "assets/images/google_play_badge.png",
           "title": "Play Store",
           "url": "https://play.google.com/store/apps/details?id=com.welinkapp.user"
         }
@@ -182,26 +183,108 @@
       ]
     },
     {
-      "name": "24Cafix Application set",
-      "summary": "24Cafix เป็นแอปพลิเคชั่นสำหรับเชื่อมต่อผู้คนเข้าด้วยกัน",
-      "longDescription": "WeLink เป็น แอปพลิเคชั่นที่มีทั้งระบบเรียกรถ เรียกบริการส่งอาหาร บริการงานต่างๆ ตลอดจนระบบร้านค้า ร้านอาหาร จองตั๋วงานรื่นเริง นอกจากนี้ยังมีส่วนแอปพลิเคชั่นสำหรับร้านค้า ร้านอาหาร และแอปพลิเคชั่นสำหรับไรเดอร์",
+      "name": "24 CARFIX Application set",
+      "summary": "24 CARFIX แอพพลิเคชั่นสำหรับเรียกช่างซ่อมรถฉุกเฉิน​ถึงที่ 24 ชั่วโมง",
+      "longDescription": "แอพพลิเคชั่นที่รวบรวมบริการรถยก รถสไลด์ ช่างแบตเตอรี่ ช่างปะยาง ช่างกุญแจไว้ในแอพพลิเคชั่นเดียว",
       "repoUrl": "",
-      "liveUrl": "https://www.welinkcorp.com/",
+      "liveUrl": "https://www.24carfix.com/",
       "images": [
-        "assets/images/project_01.png",
-        "assets/images/project_01.png"
+        "assets/images/24carfix1.webp",
+        "assets/images/24carfix2.webp"
       ],
       "urls": [
         {
-          "image": "assets/images/project_01.png",
+          "image": "assets/images/app_store_badge.svg",
           "title": "App Store",
-          "url": "https://apps.apple.com/th/app/welink/id6464281983"
+          "url": "https://apps.apple.com/us/app/24-carfix/id1634275065"
         },
         {
-          "image": "assets/images/project_01.png",
+          "image": "assets/images/google_play_badge.png",
           "title": "Play Store",
-          "url": "https://play.google.com/store/apps/details?id=com.welinkapp.user"
+          "url": "https://play.google.com/store/apps/details?id=com.carfix.customer"
         }
+      ],
+      "tags": [
+        "Flutter",
+        "Google Map",
+        "Restful API",
+        "Firebase"
+      ]
+    },
+    {
+      "name": "BK Live",
+      "summary": "BK Live แอปพลิเคชันไลฟ์สตรีมสำหรับทุกเพศทุกวัย",
+      "longDescription": "",
+      "repoUrl": "",
+      "liveUrl": "https://www.instagram.com/bkliveofficial/",
+      "images": [
+        "assets/images/bklive.jpg",
+        "assets/images/bklive2.jpg"
+      ],
+      "tags": [
+        "Flutter",
+        "TRTC",
+        "Restful API",
+        "Firebase"
+      ]
+    },
+    {
+      "name": "Zero Carbon",
+      "summary": "เครื่องมือคำนวณคาร์บอนฟุตพริ้นท์ของกิจกรรมชดเชยคาร์บอน",
+      "longDescription": "เครื่องมือคำนวณคาร์บอนฟุตพริ้นท์หรือปริมาณการปล่อยก๊าซเรือนกระจกของกิจกรรมการท่องเที่ยว เช่น การท่องเที่ยวเชิงนิเวศและผจญภัย เชิงเกษตร เชิงอาหาร เชิงสุขภาพ เชิงวัฒนธรรม และการท่องเที่ยวเพื่อคนทั้งมวล การจัดงาน เช่น การแข่งขันกีฬา ดนตรี คอนเสิร์ต เทศกาลและงานอื่นๆ การจัดประชุม/สัมมนา การจัดประชุมนานาชาติ การจัดแสดงสินค้า และการท่องเที่ยวเพื่อเป็นรางวัล",
+      "repoUrl": "",
+      "liveUrl": "https://hub.mnre.go.th/th/knowledge/detail/65663",
+      "images": [
+        "assets/images/ZeroCarbon.png"
+      ],
+      "urls": [
+        {
+          "image": "assets/images/app_store_badge.svg",
+          "title": "App Store",
+          "url": "https://apps.apple.com/us/app/zero-carbon-th/id6468645997"
+        },
+        {
+          "image": "assets/images/google_play_badge.png",
+          "title": "Play Store",
+          "url": "https://play.google.com/store/apps/details?id=com.tgo.cf.zerocarbon&hl=th"
+        }
+      ],
+      "tags": [
+        "Flutter",
+        "Google Map",
+        "Restful API",
+        "Firebase"
+      ]
+    },
+    {
+      "name": "POS Demo",
+      "summary": "เดโมของระบบจัดการร้านค้า",
+      "longDescription": "เดโมของระบบจัดการร้านค้า (Point of Sale) สามารถจัดการสินค้า ขายสินค้า และดูรายงานได้",
+      "repoUrl": "https://github.com/dexter-cnx/flutter-pos-demo",
+      "liveUrl": "https://dexter-cnx.github.io/flutter-pos-demo/",
+      "images": [
+        "assets/images/pos-demo.png",
+        "assets/images/pos2.png",
+        "assets/images/pos3.png"
+      ],
+      "urls": [
+        {
+          "title": "ทดสอบ",
+          "url": "https://dexter-cnx.github.io/flutter-pos-demo/"
+        }
+      ],
+      "tags": [
+        "Flutter"
+      ]
+    },
+    {
+      "name": "Systemparts App",
+      "summary": "แอปพลิเคชันสำหรับซื้อขายอะไหล่รถยนต์",
+      "longDescription": "แอปพลิเคชันสำหรับจัดกาการซื้อขายอะไหล่รถยนต์",
+      "images": [
+        "assets/images/part.jpg",
+        "assets/images/part1.jpg",
+        "assets/images/part2.jpg"
       ],
       "tags": [
         "Flutter",
@@ -213,35 +296,44 @@
   ],
   "otherProjects": [
     {
-      "name": "โปรเจกต์อื่นๆ",
-      "summary": "คำอธิบายโปรเจกต์ย่อยๆ ที่มีความน่าสนใจ",
-      "repoUrl": "",
-      "liveUrl": "",
+      "name": "2ms",
+      "summary": "แอปสำนรับบริหารหุ้ย",
       "images": [
-        "assets/images/project_01.png"
+        "assets/images/2ms1.jpg",
+        "assets/images/2ms2.jpg"
       ],
       "tags": [
-        "Dart",
-        "Tooling"
+        "Flutter"
+      ]
+    },
+    {
+      "name": "Watch Clinic",
+      "summary": "แอปสำนรับศูนย์บริการนาฬิกา",
+      "images": [
+        "assets/images/watch1.jpg",
+        "assets/images/watch2.jpg"
+      ],
+      "tags": [
+        "Flutter"
       ]
     }
   ],
   "contact": {
-    "title": "ร่วมงานกันไหม?",
-    "body": "ฉันเปิดรับงานผลิตภัณฑ์ที่น่าสนใจ การทำงานร่วมกัน และโอกาสใหม่ๆ ในด้านวิศวกรรม Flutter",
-    "ctaLabel": "ทักทายฉัน",
+    "title": "อยากจะติดต่อ?",
+    "body": "สนใจรทำงานร่วมกันเกี่ยวกับผลิตภัณฑ์ที่น่าสนใข และโอกาสใหม่ๆ ในด้าน Mobile Application",
+    "ctaLabel": "ทักทายกัน",
     "ctaUrl": "mailto:cnxdev@gmail.com",
-    "phone": "08x-xxx-xxxx",
+    "phone": "093-666-4880",
     "lineId": "your.line.id"
   },
   "socialLinks": [
     {
       "label": "GitHub",
-      "url": "https://github.com/"
+      "url": "https://github.com/dexter-cnx"
     },
     {
-      "label": "LinkedIn",
-      "url": "https://www.linkedin.com/"
+      "label": "เล่นเกม",
+      "url": "https://learnfire-56264.web.app/cbm/index.html"
     }
   ],
   "nav": [

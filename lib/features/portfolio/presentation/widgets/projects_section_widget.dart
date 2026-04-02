@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../../../../app/theme/app_theme.dart';
 import '../../models/portfolio_models.dart';
 import 'section_header.dart';
@@ -65,7 +66,7 @@ class ProjectsSectionWidget extends StatelessWidget {
           crossAxisCount: crossAxisCount,
           crossAxisSpacing: 20,
           mainAxisSpacing: 20,
-          childAspectRatio: 1.2,
+          childAspectRatio: 0.75,
         ),
         itemCount: other.length,
         itemBuilder: (context, index) => _OtherProjectCard(
@@ -146,7 +147,7 @@ class _FeaturedProjectCard extends StatelessWidget {
     }
 
     return Container(
-      height: 500, // Increased height to accommodate urls
+      height: 600, // Increased height to accommodate urls and long descriptions
       margin: const EdgeInsets.only(bottom: 100),
       child: Stack(
         children: [
@@ -302,7 +303,9 @@ class _ProjectUrlItem extends StatelessWidget {
             if (url.image.isNotEmpty) ...[
               ClipRRect(
                 borderRadius: BorderRadius.circular(2),
-                child: Image.asset(url.image, width: 20, height: 20, fit: BoxFit.cover),
+                child: url.image.endsWith('.svg')
+                    ? SvgPicture.asset(url.image, width: 20, height: 20)
+                    : Image.asset(url.image, width: 20, height: 20, fit: BoxFit.cover),
               ),
               const SizedBox(width: 8),
             ],
@@ -340,7 +343,6 @@ class _OtherProjectCardState extends State<_OtherProjectCard> {
       onExit: (_) => setState(() => _isHovered = false),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.all(24),
         transform: Matrix4.translationValues(0.0, _isHovered ? -8.0 : 0.0, 0.0),
         decoration: BoxDecoration(
           color: AppTheme.surfaceContainer,
@@ -354,62 +356,86 @@ class _OtherProjectCardState extends State<_OtherProjectCard> {
               ),
           ],
         ),
+        clipBehavior: Clip.antiAlias,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Icon(Icons.folder_outlined, color: AppTheme.accent, size: 40),
-                Row(
+            // Image gallery at top
+            if (widget.project.images.isNotEmpty)
+              AspectRatio(
+                aspectRatio: 16 / 10,
+                child: _ProjectImageGallery(images: widget.project.images),
+              ),
+
+            // Content below
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    if (widget.project.repoUrl.isNotEmpty)
-                      IconButton(
-                        padding: EdgeInsets.zero,
-                        constraints: const BoxConstraints(),
-                        onPressed: () => widget.onLinkTap(widget.project.repoUrl),
-                        icon: const Icon(Icons.code, color: AppTheme.textMuted, size: 20),
-                      ),
-                    if (widget.project.liveUrl.isNotEmpty) ...[
-                      const SizedBox(width: 10),
-                      IconButton(
-                        padding: EdgeInsets.zero,
-                        constraints: const BoxConstraints(),
-                        onPressed: () => widget.onLinkTap(widget.project.liveUrl),
-                        icon: const Icon(Icons.open_in_new, color: AppTheme.textMuted, size: 20),
-                      ),
-                    ],
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            widget.project.name,
+                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  color: _isHovered ? AppTheme.accent : AppTheme.textPrimary,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                          ),
+                        ),
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            if (widget.project.repoUrl.isNotEmpty)
+                              IconButton(
+                                padding: EdgeInsets.zero,
+                                constraints: const BoxConstraints(),
+                                onPressed: () => widget.onLinkTap(widget.project.repoUrl),
+                                icon: const Icon(Icons.code, color: AppTheme.textMuted, size: 18),
+                              ),
+                            if (widget.project.liveUrl.isNotEmpty) ...[
+                              const SizedBox(width: 8),
+                              IconButton(
+                                padding: EdgeInsets.zero,
+                                constraints: const BoxConstraints(),
+                                onPressed: () => widget.onLinkTap(widget.project.liveUrl),
+                                icon: const Icon(Icons.open_in_new, color: AppTheme.textMuted, size: 18),
+                              ),
+                            ],
+                          ],
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      widget.project.summary,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: AppTheme.textMuted,
+                          ),
+                    ),
+                    const Spacer(),
+                    Wrap(
+                      spacing: 10,
+                      runSpacing: 6,
+                      children: widget.project.tags
+                          .map((t) => Text(
+                                t,
+                                style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                                      color: AppTheme.textMuted,
+                                      fontFamily: 'JetBrains Mono',
+                                      fontSize: 10,
+                                    ),
+                              ))
+                          .toList(),
+                    ),
                   ],
                 ),
-              ],
-            ),
-            const SizedBox(height: 24),
-            Text(
-              widget.project.name,
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: _isHovered ? AppTheme.accent : AppTheme.textPrimary,
-                  ),
-            ),
-            const SizedBox(height: 12),
-            Text(
-              widget.project.summary,
-              maxLines: 3,
-              overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-            const Spacer(),
-            Wrap(
-              spacing: 12,
-              runSpacing: 8,
-              children: widget.project.tags
-                  .map((t) => Text(
-                        t,
-                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                              color: AppTheme.textMuted,
-                              fontFamily: 'JetBrains Mono',
-                            ),
-                      ))
-                  .toList(),
+              ),
             ),
           ],
         ),
@@ -432,84 +458,137 @@ class _ProjectImageGalleryState extends State<_ProjectImageGallery> {
   int _currentPage = 0;
 
   @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     if (widget.images.isEmpty) {
       return Container(color: AppTheme.surfaceContainer);
     }
 
-    return Stack(
-      children: [
-        PageView.builder(
-          controller: _pageController,
-          itemCount: widget.images.length,
-          onPageChanged: (index) => setState(() => _currentPage = index),
-          itemBuilder: (context, index) {
-            return Image.asset(
-              widget.images[index],
-              fit: BoxFit.cover,
-              width: double.infinity,
-              height: double.infinity,
-            );
-          },
-        ),
-        // Overlay to match the previous design
-        Container(color: AppTheme.accent.withValues(alpha: 0.15)),
-        
-        // Indicators
-        if (widget.images.length > 1)
-          Positioned(
-            bottom: 20,
-            left: 0,
-            right: 0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: widget.images.asMap().entries.map((entry) {
-                return GestureDetector(
-                  onTap: () => _pageController.animateToPage(
-                    entry.key,
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeInOut,
-                  ),
-                  child: Container(
-                    width: 8,
-                    height: 8,
-                    margin: const EdgeInsets.symmetric(horizontal: 4),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: _currentPage == entry.key
-                          ? AppTheme.accent
-                          : Colors.white.withValues(alpha: 0.4),
+    return Container(
+      color: AppTheme.surfaceLow,
+      child: Stack(
+        children: [
+          // Swipeable PageView
+          PageView.builder(
+            controller: _pageController,
+            itemCount: widget.images.length,
+            onPageChanged: (index) => setState(() => _currentPage = index),
+            itemBuilder: (context, index) {
+              return Container(
+                color: AppTheme.surfaceLow,
+                padding: const EdgeInsets.all(8),
+                child: Image.asset(
+                  widget.images[index],
+                  fit: BoxFit.contain,
+                  width: double.infinity,
+                  height: double.infinity,
+                ),
+              );
+            },
+          ),
+
+          // Subtle tint overlay — IgnorePointer so swipe still works
+          IgnorePointer(
+            child: Container(color: AppTheme.accent.withValues(alpha: 0.08)),
+          ),
+
+          // Page indicators
+          if (widget.images.length > 1)
+            Positioned(
+              bottom: 12,
+              left: 0,
+              right: 0,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: widget.images.asMap().entries.map((entry) {
+                  final isActive = _currentPage == entry.key;
+                  return GestureDetector(
+                    onTap: () => _pageController.animateToPage(
+                      entry.key,
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeInOut,
                     ),
-                  ),
-                );
-              }).toList(),
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 200),
+                      width: isActive ? 24 : 8,
+                      height: 8,
+                      margin: const EdgeInsets.symmetric(horizontal: 3),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(4),
+                        color: isActive
+                            ? AppTheme.accent
+                            : Colors.white.withValues(alpha: 0.3),
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
             ),
-          ),
-          
-        // Navigation arrows
-        if (widget.images.length > 1)
-          Positioned.fill(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.chevron_left, color: Colors.white),
-                  onPressed: () => _pageController.previousPage(
+
+          // Left arrow — positioned at left edge only
+          if (widget.images.length > 1)
+            Positioned(
+              left: 4,
+              top: 0,
+              bottom: 0,
+              child: Center(
+                child: _ArrowButton(
+                  icon: Icons.chevron_left,
+                  onTap: () => _pageController.previousPage(
                     duration: const Duration(milliseconds: 300),
                     curve: Curves.easeInOut,
                   ),
                 ),
-                IconButton(
-                  icon: const Icon(Icons.chevron_right, color: Colors.white),
-                  onPressed: () => _pageController.nextPage(
+              ),
+            ),
+
+          // Right arrow — positioned at right edge only
+          if (widget.images.length > 1)
+            Positioned(
+              right: 4,
+              top: 0,
+              bottom: 0,
+              child: Center(
+                child: _ArrowButton(
+                  icon: Icons.chevron_right,
+                  onTap: () => _pageController.nextPage(
                     duration: const Duration(milliseconds: 300),
                     curve: Curves.easeInOut,
                   ),
                 ),
-              ],
+              ),
             ),
-          ),
-      ],
+        ],
+      ),
+    );
+  }
+}
+
+/// Compact, translucent arrow button that doesn't block swipe area.
+class _ArrowButton extends StatelessWidget {
+  final IconData icon;
+  final VoidCallback onTap;
+
+  const _ArrowButton({required this.icon, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 32,
+        height: 32,
+        decoration: BoxDecoration(
+          color: Colors.black.withValues(alpha: 0.4),
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Icon(icon, color: Colors.white, size: 20),
+      ),
     );
   }
 }
