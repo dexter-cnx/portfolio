@@ -14,7 +14,9 @@ class AppTheme {
   static const Color textPrimary = Color(0xFFDCE1FB);
   static const Color textMuted = Color(0xFFBACAC3);
 
-  static ThemeData dark() {
+  static ThemeData dark([String locale = 'en']) {
+    final bool isThai = locale == 'th';
+
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.dark,
@@ -29,43 +31,43 @@ class AppTheme {
         onSurfaceVariant: textMuted,
       ),
       textTheme: TextTheme(
-        displayLarge: GoogleFonts.spaceGrotesk(
+        displayLarge: (isThai ? GoogleFonts.sarabun : GoogleFonts.spaceGrotesk)(
           fontSize: 64,
           height: 1.1,
           fontWeight: FontWeight.w700,
           color: textPrimary,
           letterSpacing: -1.0,
         ),
-        displayMedium: GoogleFonts.spaceGrotesk(
+        displayMedium: (isThai ? GoogleFonts.sarabun : GoogleFonts.spaceGrotesk)(
           fontSize: 48,
           height: 1.2,
           fontWeight: FontWeight.w700,
           color: textPrimary,
         ),
-        headlineLarge: GoogleFonts.spaceGrotesk(
+        headlineLarge: (isThai ? GoogleFonts.sarabun : GoogleFonts.spaceGrotesk)(
           fontSize: 32,
           height: 1.3,
           fontWeight: FontWeight.w600,
           color: textPrimary,
           letterSpacing: -0.5,
         ),
-        headlineMedium: GoogleFonts.spaceGrotesk(
+        headlineMedium: (isThai ? GoogleFonts.sarabun : GoogleFonts.spaceGrotesk)(
           fontSize: 24,
           height: 1.3,
           fontWeight: FontWeight.w600,
           color: textPrimary,
         ),
-        titleLarge: GoogleFonts.spaceGrotesk(
+        titleLarge: (isThai ? GoogleFonts.sarabun : GoogleFonts.spaceGrotesk)(
           fontSize: 20,
           fontWeight: FontWeight.w600,
           color: textPrimary,
         ),
-        bodyLarge: GoogleFonts.inter(
+        bodyLarge: (isThai ? GoogleFonts.sarabun : GoogleFonts.inter)(
           fontSize: 16,
           height: 1.7,
           color: textMuted,
         ),
-        bodyMedium: GoogleFonts.inter(
+        bodyMedium: (isThai ? GoogleFonts.sarabun : GoogleFonts.inter)(
           fontSize: 14,
           height: 1.6,
           color: textMuted,
@@ -82,6 +84,7 @@ class AppTheme {
           color: textMuted,
         ),
       ),
+
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           foregroundColor: accent,

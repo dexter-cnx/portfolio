@@ -120,8 +120,7 @@ class _ImageWithFrameState extends State<_ImageWithFrame> {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
-        transform: Matrix4.identity()
-          ..translate(_isHovered ? -4.0 : 0.0, _isHovered ? -4.0 : 0.0),
+        transform: Matrix4.translationValues(_isHovered ? -4.0 : 0.0, _isHovered ? -4.0 : 0.0, 0.0),
         child: Stack(
           clipBehavior: Clip.none,
           children: [
@@ -137,8 +136,11 @@ class _ImageWithFrameState extends State<_ImageWithFrame> {
                   border: Border.all(color: AppTheme.accent, width: 2),
                   borderRadius: BorderRadius.circular(4),
                 ),
-                transform: Matrix4.identity()
-                  ..translate(_isHovered ? 8.0 : 0.0, _isHovered ? 8.0 : 0.0),
+                transform: Matrix4.translationValues(
+                  _isHovered ? 8.0 : 0.0,
+                  _isHovered ? 8.0 : 0.0,
+                  0.0,
+                ),
               ),
             ),
             // Image

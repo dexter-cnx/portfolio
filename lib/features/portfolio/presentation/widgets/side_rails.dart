@@ -4,8 +4,13 @@ import '../../models/portfolio_models.dart';
 
 class SocialRail extends StatelessWidget {
   final List<SocialLink> socials;
+  final Function(String url) onLinkTap;
 
-  const SocialRail({super.key, required this.socials});
+  const SocialRail({
+    super.key,
+    required this.socials,
+    required this.onLinkTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -13,26 +18,24 @@ class SocialRail extends StatelessWidget {
       children: [
         ...socials.map((link) => Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: RotatedBox(
-                quarterTurns: 0,
-                child: IconButton(
-                  onPressed: () {}, // Link functionality later
-                  icon: Text(
-                    link.label,
-                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                          color: AppTheme.textMuted,
-                          fontSize: 12,
-                        ),
-                  ),
-                  tooltip: link.url,
+              child: IconButton(
+                onPressed: () => onLinkTap(link.url),
+                icon: Text(
+                  link.label.substring(0, 2).toUpperCase(),
+                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                        color: AppTheme.textMuted,
+                        fontSize: 12,
+                        fontFamily: 'JetBrains Mono',
+                      ),
                 ),
+                tooltip: link.label,
               ),
             )),
         const SizedBox(height: 20),
         Container(
           width: 1,
           height: 100,
-          color: AppTheme.textMuted.withOpacity(0.3),
+          color: AppTheme.textMuted.withValues(alpha: 0.3),
         ),
       ],
     );
@@ -41,8 +44,13 @@ class SocialRail extends StatelessWidget {
 
 class EmailRail extends StatelessWidget {
   final String email;
+  final Function(String url) onEmailTap;
 
-  const EmailRail({super.key, required this.email});
+  const EmailRail({
+    super.key,
+    required this.email,
+    required this.onEmailTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -52,12 +60,16 @@ class EmailRail extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 8.0),
           child: RotatedBox(
             quarterTurns: 1,
-            child: Text(
-              email,
-              style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                    color: AppTheme.textMuted,
-                    letterSpacing: 2,
-                  ),
+            child: InkWell(
+              onTap: () => onEmailTap('mailto:$email'),
+              child: Text(
+                email,
+                style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                      color: AppTheme.textMuted,
+                      letterSpacing: 2,
+                      fontFamily: 'JetBrains Mono',
+                    ),
+              ),
             ),
           ),
         ),
@@ -65,7 +77,7 @@ class EmailRail extends StatelessWidget {
         Container(
           width: 1,
           height: 100,
-          color: AppTheme.textMuted.withOpacity(0.3),
+          color: AppTheme.textMuted.withValues(alpha: 0.3),
         ),
       ],
     );

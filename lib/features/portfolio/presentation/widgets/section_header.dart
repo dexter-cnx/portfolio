@@ -33,7 +33,7 @@ class SectionHeader extends StatelessWidget {
         Expanded(
           child: Container(
             height: 1,
-            color: AppTheme.textMuted.withOpacity(0.2),
+            color: AppTheme.textMuted.withValues(alpha: 0.2),
           ),
         ),
       ],

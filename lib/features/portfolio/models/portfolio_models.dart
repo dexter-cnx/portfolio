@@ -21,6 +21,20 @@ class PortfolioData {
     required this.nav,
   });
 
+  factory PortfolioData.empty() {
+    return PortfolioData(
+      site: Site.empty(),
+      hero: HeroSection.empty(),
+      about: About.empty(),
+      experience: [],
+      featuredProjects: [],
+      otherProjects: [],
+      contact: Contact.empty(),
+      socialLinks: [],
+      nav: [],
+    );
+  }
+
   factory PortfolioData.fromJson(Map<String, dynamic> json) {
     return PortfolioData(
       site: Site.fromJson(json['site']),
@@ -56,6 +70,18 @@ class Site {
     required this.seo,
   });
 
+  factory Site.empty() {
+    return Site(
+      name: '',
+      ownerName: '',
+      role: '',
+      location: '',
+      email: '',
+      resumeUrl: '',
+      seo: SiteSeo.empty(),
+    );
+  }
+
   factory Site.fromJson(Map<String, dynamic> json) {
     return Site(
       name: json['name'],
@@ -79,6 +105,14 @@ class SiteSeo {
     required this.description,
     required this.keywords,
   });
+
+  factory SiteSeo.empty() {
+    return SiteSeo(
+      title: '',
+      description: '',
+      keywords: [],
+    );
+  }
 
   factory SiteSeo.fromJson(Map<String, dynamic> json) {
     return SiteSeo(
@@ -106,6 +140,17 @@ class HeroSection {
     required this.secondaryCta,
   });
 
+  factory HeroSection.empty() {
+    return HeroSection(
+      eyebrow: '',
+      headline: '',
+      subheadline: '',
+      description: '',
+      primaryCta: Cta.empty(),
+      secondaryCta: Cta.empty(),
+    );
+  }
+
   factory HeroSection.fromJson(Map<String, dynamic> json) {
     return HeroSection(
       eyebrow: json['eyebrow'],
@@ -124,6 +169,10 @@ class Cta {
 
   Cta({required this.label, required this.url});
 
+  factory Cta.empty() {
+    return Cta(label: '', url: '');
+  }
+
   factory Cta.fromJson(Map<String, dynamic> json) {
     return Cta(label: json['label'], url: json['url']);
   }
@@ -141,6 +190,15 @@ class About {
     required this.skills,
     required this.profileImage,
   });
+
+  factory About.empty() {
+    return About(
+      title: '',
+      paragraphs: [],
+      skills: [],
+      profileImage: '',
+    );
+  }
 
   factory About.fromJson(Map<String, dynamic> json) {
     return About(
@@ -254,6 +312,15 @@ class Contact {
     required this.ctaLabel,
     required this.ctaUrl,
   });
+
+  factory Contact.empty() {
+    return Contact(
+      title: '',
+      body: '',
+      ctaLabel: '',
+      ctaUrl: '',
+    );
+  }
 
   factory Contact.fromJson(Map<String, dynamic> json) {
     return Contact(

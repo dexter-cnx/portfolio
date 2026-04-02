@@ -5,8 +5,13 @@ import 'section_wrapper.dart';
 
 class HeroSectionWidget extends StatelessWidget {
   final HeroSection hero;
+  final Function(String url) onCtaTap;
 
-  const HeroSectionWidget({super.key, required this.hero});
+  const HeroSectionWidget({
+    super.key,
+    required this.hero,
+    required this.onCtaTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +27,7 @@ class HeroSectionWidget extends StatelessWidget {
                   color: AppTheme.accent,
                   fontSize: 16,
                   letterSpacing: 1.5,
+                  fontFamily: 'JetBrains Mono',
                 ),
           ),
           const SizedBox(height: 16),
@@ -29,7 +35,8 @@ class HeroSectionWidget extends StatelessWidget {
             hero.headline,
             style: Theme.of(context).textTheme.displayLarge?.copyWith(
                   height: 1.0,
-                  fontSize: MediaQuery.sizeOf(context).width < 768 ? 48 : 72,
+                  fontSize: MediaQuery.sizeOf(context).width < 768 ? 48 : 80,
+                  fontWeight: FontWeight.bold,
                 ),
           ),
           const SizedBox(height: 8),
@@ -38,35 +45,44 @@ class HeroSectionWidget extends StatelessWidget {
             style: Theme.of(context).textTheme.displayMedium?.copyWith(
                   color: AppTheme.textMuted,
                   height: 1.0,
-                  fontSize: MediaQuery.sizeOf(context).width < 768 ? 32 : 56,
+                  fontSize: MediaQuery.sizeOf(context).width < 768 ? 32 : 64,
                 ),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 32),
           ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 640),
             child: Text(
               hero.description,
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     color: AppTheme.textMuted,
-                    fontSize: 18,
+                    fontSize: 20,
+                    height: 1.5,
                   ),
             ),
           ),
-          const SizedBox(height: 48),
+          const SizedBox(height: 60),
           Row(
             children: [
               OutlinedButton(
-                onPressed: () {},
-                child: Text(hero.primaryCta.label),
+                onPressed: () => onCtaTap(hero.primaryCta.url),
+                style: OutlinedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 24),
+                ),
+                child: Text(
+                  hero.primaryCta.label,
+                  style: const TextStyle(fontSize: 16),
+                ),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: 24),
               TextButton(
-                onPressed: () {},
+                onPressed: () => onCtaTap(hero.secondaryCta.url),
                 child: Text(
                   hero.secondaryCta.label,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: AppTheme.accent,
                         decoration: TextDecoration.underline,
+                        fontSize: 16,
+                        fontFamily: 'JetBrains Mono',
                       ),
                 ),
               ),

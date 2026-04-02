@@ -11,10 +11,24 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.8
   google_fonts: ^8.0.2
+  easy_localization: ^3.0.7
+  easy_localization_loader: ^2.0.2
+  url_launcher: ^6.3.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+
 
 flutter:
   uses-material-design: true
   assets:
-    - assets/content/portfolio_content.json
+    - assets/content/portfolio_content_en.json
+    - assets/content/portfolio_content_th.json
+    - assets/translations/
     - assets/images/
+
+
 

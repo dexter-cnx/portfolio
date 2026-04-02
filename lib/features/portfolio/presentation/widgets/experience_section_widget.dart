@@ -79,18 +79,18 @@ class _ExperienceSectionWidgetState extends State<ExperienceSectionWidget> {
               border: Border(
                 left: isDesktop
                     ? BorderSide(
-                        color: isSelected ? AppTheme.accent : AppTheme.textMuted.withOpacity(0.1),
+                        color: isSelected ? AppTheme.accent : AppTheme.textMuted.withValues(alpha: 0.1),
                         width: 2,
                       )
                     : BorderSide.none,
                 bottom: !isDesktop
                     ? BorderSide(
-                        color: isSelected ? AppTheme.accent : AppTheme.textMuted.withOpacity(0.1),
+                        color: isSelected ? AppTheme.accent : AppTheme.textMuted.withValues(alpha: 0.1),
                         width: 2,
                       )
                     : BorderSide.none,
               ),
-              color: isSelected ? AppTheme.accent.withOpacity(0.05) : Colors.transparent,
+              color: isSelected ? AppTheme.accent.withValues(alpha: 0.05) : Colors.transparent,
             ),
             child: Text(
               item.company,

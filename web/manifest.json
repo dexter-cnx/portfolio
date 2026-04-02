@@ -1,11 +1,11 @@
 {
-    "name": "flutter_web_portfolio_starter",
-    "short_name": "flutter_web_portfolio_starter",
+    "name": "Dev Portfolio",
+    "short_name": "Portfolio",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#0C1324",
+    "theme_color": "#64FFDA",
+    "description": "A premium engineering portfolio.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

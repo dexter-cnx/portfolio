@@ -145,7 +145,7 @@ class _FeaturedProjectCard extends StatelessWidget {
               child: Stack(
                 children: [
                   Image.asset(project.image, fit: BoxFit.cover, width: double.infinity, height: double.infinity),
-                  Container(color: AppTheme.accent.withOpacity(0.2)),
+                  Container(color: AppTheme.accent.withValues(alpha: 0.2)),
                 ],
               ),
             ),
@@ -184,7 +184,7 @@ class _FeaturedProjectCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(4),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.3),
+                        color: Colors.black.withValues(alpha: 0.3),
                         blurRadius: 20,
                         offset: const Offset(0, 10),
                       ),
@@ -258,14 +258,14 @@ class _OtherProjectCardState extends State<_OtherProjectCard> {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.all(24),
-        transform: Matrix4.identity()..translate(0.0, _isHovered ? -8.0 : 0.0),
+        transform: Matrix4.translationValues(0.0, _isHovered ? -8.0 : 0.0, 0.0),
         decoration: BoxDecoration(
           color: AppTheme.surfaceContainer,
           borderRadius: BorderRadius.circular(4),
           boxShadow: [
             if (_isHovered)
               BoxShadow(
-                color: Colors.black.withOpacity(0.2),
+                color: Colors.black.withValues(alpha: 0.2),
                 blurRadius: 10,
                 offset: const Offset(0, 5),
               ),

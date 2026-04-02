@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import '../../../../app/theme/app_theme.dart';
 import '../../models/portfolio_models.dart';
 import 'section_wrapper.dart';
 
 class ContactSectionWidget extends StatelessWidget {
   final Contact contact;
+  final Function(String url) onCtaTap;
 
-  const ContactSectionWidget({super.key, required this.contact});
+  const ContactSectionWidget({
+    super.key,
+    required this.contact,
+    required this.onCtaTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +22,7 @@ class ContactSectionWidget extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            '04. What\'s Next?',
+            'contact_eyebrow'.tr(),
             style: Theme.of(context).textTheme.labelLarge?.copyWith(
                   color: AppTheme.accent,
                   fontFamily: 'JetBrains Mono',
@@ -37,21 +43,25 @@ class ContactSectionWidget extends StatelessWidget {
             child: Text(
               contact.body,
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodyLarge,
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: AppTheme.textMuted,
+                    fontSize: 18,
+                    height: 1.6,
+                  ),
             ),
           ),
           const SizedBox(height: 50),
           OutlinedButton(
-            onPressed: () {}, // Link to contact.ctaUrl
+            onPressed: () => onCtaTap(contact.ctaUrl),
             style: OutlinedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 20),
-              textStyle: const TextStyle(fontSize: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 24),
+              textStyle: const TextStyle(fontSize: 18),
             ),
             child: Text(contact.ctaLabel),
           ),
           const SizedBox(height: 150),
           Text(
-            'Built by [Your Name] with Flutter',
+            'footer_built_by'.tr(),
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
                   color: AppTheme.textMuted,
                   fontFamily: 'JetBrains Mono',
