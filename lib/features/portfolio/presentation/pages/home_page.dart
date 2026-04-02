@@ -238,50 +238,57 @@ class _PortfolioNavBar extends StatelessWidget implements PreferredSizeWidget {
           ),
           const Spacer(),
           if (!isMobile)
-            Row(
-              children: [
-                ...nav.map((item) => Padding(
-                      padding: const EdgeInsets.only(left: 32),
-                      child: TextButton(
-                        onPressed: () => onNavTap(item.id),
-                        child: Row(
-                          children: [
-                            Text(
-                              '0${nav.indexOf(item) + 1}. ',
-                              style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                                    color: AppTheme.accent,
-                                  ),
+            Expanded(
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                reverse: true,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ...nav.map((item) => Padding(
+                          padding: const EdgeInsets.only(left: 32),
+                          child: TextButton(
+                            onPressed: () => onNavTap(item.id),
+                            child: Row(
+                              children: [
+                                Text(
+                                  '0${nav.indexOf(item) + 1}. ',
+                                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                                        color: AppTheme.accent,
+                                      ),
+                                ),
+                                Text(
+                                  item.label,
+                                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                                        color: AppTheme.textPrimary,
+                                      ),
+                                ),
+                              ],
                             ),
-                            Text(
-                              item.label,
-                              style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                                    color: AppTheme.textPrimary,
-                                  ),
+                          ),
+                        )),
+                    const SizedBox(width: 32),
+                    TextButton(
+                      onPressed: onLanguageToggle,
+                      child: Text(
+                        context.locale.languageCode == 'en' ? 'TH' : 'EN',
+                        style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                              color: AppTheme.accent,
+                              fontFamily: 'JetBrains Mono',
                             ),
-                          ],
-                        ),
                       ),
-                    )),
-                const SizedBox(width: 32),
-                TextButton(
-                  onPressed: onLanguageToggle,
-                  child: Text(
-                    context.locale.languageCode == 'en' ? 'TH' : 'EN',
-                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                          color: AppTheme.accent,
-                          fontFamily: 'JetBrains Mono',
-                        ),
-                  ).tr(),
+                    ),
+                    const SizedBox(width: 16),
+                    OutlinedButton(
+                      onPressed: onResumeTap,
+                      style: OutlinedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      ),
+                      child: Text('btn_resume'.tr()),
+                    ),
+                  ],
                 ),
-                const SizedBox(width: 16),
-                OutlinedButton(
-                  onPressed: onResumeTap,
-                  style: OutlinedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                  ),
-                  child: Text('btn_resume'.tr()),
-                ),
-              ],
+              ),
             )
           else
             IconButton(

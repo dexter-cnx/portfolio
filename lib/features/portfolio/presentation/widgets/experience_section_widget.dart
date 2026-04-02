@@ -135,6 +135,15 @@ class _ExperienceSectionWidgetState extends State<ExperienceSectionWidget> {
                 color: AppTheme.textMuted,
               ),
         ),
+        if (item.summary.isNotEmpty) ...[
+          const SizedBox(height: 16),
+          Text(
+            item.summary,
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  color: AppTheme.textMuted,
+                ),
+          ),
+        ],
         const SizedBox(height: 24),
         ...item.highlights.map((h) => Padding(
               padding: const EdgeInsets.only(bottom: 12),
@@ -159,7 +168,58 @@ class _ExperienceSectionWidgetState extends State<ExperienceSectionWidget> {
                 ],
               ),
             )),
+        if (item.tech.isNotEmpty) ...[
+          const SizedBox(height: 24),
+          _buildTechWrap(context, item.tech),
+        ],
       ],
     );
+  }
+
+  Widget _buildTechWrap(BuildContext context, List<String> techs) {
+    return Wrap(
+      spacing: 8.0,
+      runSpacing: 8.0,
+      children: techs
+          .map((tech) => Chip(
+                avatar: Icon(
+                  _getIconForSkill(tech),
+                  size: 14,
+                  color: AppTheme.accent,
+                ),
+                label: Text(
+                  tech,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: AppTheme.textPrimary,
+                        fontFamily: 'JetBrains Mono',
+                      ),
+                ),
+                backgroundColor: Colors.transparent,
+                side: const BorderSide(color: AppTheme.accent, width: 1.0),
+                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              ))
+          .toList(),
+    );
+  }
+
+  IconData _getIconForSkill(String skill) {
+    final s = skill.toLowerCase();
+    if (s.contains('flutter')) return Icons.flutter_dash;
+    if (s.contains('dart')) return Icons.code;
+    if (s.contains('firebase')) return Icons.local_fire_department;
+    if (s.contains('api') || s.contains('rest')) return Icons.api;
+    if (s.contains('architecture')) return Icons.architecture;
+    if (s.contains('ui') || s.contains('ux') || s.contains('design')) return Icons.design_services;
+    if (s.contains('c++') || s.contains('c ') || s == 'c') return Icons.data_object;
+    if (s.contains('python')) return Icons.terminal;
+    if (s.contains('unity') || s.contains('game') || s.contains('cocos')) return Icons.videogame_asset;
+    if (s.contains('java') || s.contains('j2me')) return Icons.coffee;
+    if (s.contains('sql') || s.contains('db') || s.contains('database')) return Icons.storage;
+    if (s.contains('github') || s.contains('git')) return Icons.merge;
+    if (s.contains('javascript') || s.contains('js')) return Icons.javascript;
+    return Icons.developer_mode;
   }
 }

@@ -6,77 +6,173 @@
     "location": "Chiang Mai, Thailand",
     "email": "cnxdev@gmail.com",
     "resumeUrl": "",
-    "sourceNote": "Prepared from template and LearnFire content.",
+    "sourceNote": "Translated and prepared data from template and LearnFire",
     "seo": {
       "title": "Kitipong Sarahjan | Flutter Developer",
-      "description": "Portfolio website built with Flutter Web.",
+      "description": "Portfolio website built with Flutter Web",
       "keywords": [
         "Flutter",
         "Dart",
         "Web",
-        "Portfolio"
+        "Portfolio",
+        "Developer"
       ]
     }
   },
   "hero": {
     "eyebrow": "Hi, my name is",
     "headline": "Kitipong Sarahjan.",
-    "subheadline": "I build mobile applications.",
-    "description": "I'm a software engineer specializing in building exceptional digital experiences using Flutter.",
+    "subheadline": "Software Engineer",
+    "description": "",
     "primaryCta": {
       "label": "Get In Touch",
       "url": "mailto:cnxdev@gmail.com"
     },
     "secondaryCta": {
-      "label": "View Projects",
+      "label": "Check out my work",
       "url": "#projects"
     }
   },
   "about": {
     "title": "About Me",
     "paragraphs": [
-      "Hello! My name is Kitipong and I enjoy creating things that live on the internet.",
-      "My focus these days is building accessible, inclusive products and digital experiences at scale."
+      "I have over 20 years of experience in the software industry, specifically focusing on mobile device software since the PDA era with platforms like Palm and Pocket PC.",
+      "Evolving into the smartphone era, I transitioned from Java Phone and Symbian to current modern platforms like Android and iOS.",
+      "I am highly proficient in programming with C, C++, Java, and Dart (Flutter), and possess practical working knowledge of Python, JavaScript, Objective-C, and SQL.",
+      "I have extensive experience spanning the entire Software Development Life Cycle (SDLC).",
+      "I am a strong team player, capable of problem-solving under pressure to ensure successful project delivery.",
+      "I have remote work experience collaborating with international teams across different time zones, particularly in Europe and the United States.",
+      "I am experienced in integrating applications with modern backends including Firebase, GraphQL, and REST APIs.",
+      "I have full capability in deploying and publishing applications to both Google Play Store and Apple App Store.",
+      "I am a fast learner when it comes to new technologies and can effectively apply them to practical workloads."
     ],
     "skills": [
       "Flutter",
       "Dart",
+      "Unity",
+      "C++",
+      "Python",
+      "Java",
+      "JavaScript",
+      "GraphQL",
+      "SQL",
+      "GitHub",
       "Firebase",
       "REST API",
-      "Clean Architecture",
-      "UI Engineering"
+      "Clean Architecture"
     ],
     "profileImage": "assets/images/profile.png"
   },
   "experience": [
     {
-      "company": "Company Name",
-      "title": "Role Title",
-      "period": "2024 — Present",
+      "company": "Kiragames Co., Ltd.  @ Chiang Mai",
+      "title": "Senior Software Engineer",
+      "period": "2011 — Present",
       "url": "",
-      "summary": "Describe the scope and impact of the role.",
+      "summary": "Overseeing the full-cycle application development process.",
       "highlights": [
-        "Shipped feature A",
-        "Improved system B",
-        "Led initiative C"
+        "Managing mobile game application development",
+        "Modernizing legacy systems",
+        "Leading teams to develop new game applications"
       ],
       "tech": [
-        "Flutter",
-        "Dart",
+        "C++",
+        "Python",
+        "Unity",
+        "Cocos2d-x",
         "Firebase"
+      ]
+    },
+    {
+      "company": "Round Box Inc. @ NJ, USA (Remote)",
+      "title": "Software Engineer",
+      "period": "2008-2011",
+      "url": "",
+      "summary": "Developed software for digital TV broadcast equipment systems.",
+      "highlights": [
+        "Developed content management software components",
+        "Built a Build bot system for software testing and deployment",
+        "Managed and led the team in Thailand"
+      ],
+      "tech": [
+        "C",
+        "Python",
+        "DVB"
+      ]
+    },
+    {
+      "company": "AppWorks co., Ltd. @ Bangkok",
+      "title": "Mobile Game Developer",
+      "period": "2007",
+      "url": "",
+      "summary": "Developed mobile games.",
+      "highlights": [],
+      "tech": [
+        "Java",
+        "J2ME",
+        "Symbian",
+        "BREW"
+      ]
+    },
+    {
+      "company": "Jimmy Software co., Ltd. @ Chiang Mai",
+      "title": "Mobile Developer",
+      "period": "2000-2007",
+      "url": "",
+      "summary": "Developed games and applications for mobile devices.",
+      "highlights": [
+        "Developed mobile applications",
+        "Developed mobile games",
+        "Implemented Thai language support systems",
+        "Hand Writing Input"
+      ],
+      "tech": [
+        "Java",
+        "J2ME",
+        "Symbian",
+        "C",
+        "C++",
+        "Arm Assembly"
+      ]
+    },
+    {
+      "company": "Mesonic co., Ltd. @ Chiang Mai",
+      "title": "Software Developer",
+      "period": "1995-1998",
+      "url": "",
+      "summary": "Developed business and accounting software.",
+      "highlights": [],
+      "tech": [
+        "Unix",
+        "ISAM database",
+        "Perl",
+        "C",
+        "C++"
       ]
     }
   ],
   "featuredProjects": [
     {
-      "name": "Featured Project",
-      "summary": "A short project description focused on outcome and value.",
-      "longDescription": "Optional expanded description for a featured card or detail modal.",
+      "name": "WeLink Application set",
+      "summary": "WeLink is an application platform connecting people together.",
+      "longDescription": "WeLink is a multi-purpose application that features ride-hailing, food delivery, services, merchants, restaurants, and event ticketing. Additionally, it consists of dedicated applications for merchants/restaurants and riders.",
       "repoUrl": "",
-      "liveUrl": "",
+      "liveUrl": "https://www.welinkcorp.com/",
       "images": [
         "assets/images/project_01.png",
         "assets/images/project_01.png"
+      ],
+      "urls": [
+        {
+          "image": "assets/images/project_01.png",
+          "title": "App Store",
+          "url": "https://apps.apple.com/"
+        },
+        {
+          "image": "assets/images/project_01.png",
+          "title": "Play Store",
+          "url": "https://play.google.com/"
+        }
       ],
       "tags": [
         "Flutter",
@@ -88,7 +184,7 @@
   "otherProjects": [
     {
       "name": "Other Project",
-      "summary": "Smaller project card summary.",
+      "summary": "A brief description of another interesting project.",
       "repoUrl": "",
       "liveUrl": "",
       "images": [
@@ -102,7 +198,7 @@
   ],
   "contact": {
     "title": "Get In Touch",
-    "body": "I’m open to interesting product work, collaborations, and Flutter engineering opportunities.",
+    "body": "I'm currently open to interesting product work, collaborations, and new opportunities in Flutter engineering.",
     "ctaLabel": "Say Hello",
     "ctaUrl": "mailto:cnxdev@gmail.com",
     "phone": "08x-xxx-xxxx",
@@ -111,7 +207,7 @@
   "socialLinks": [
     {
       "label": "GitHub",
-      "url": "https://github.com/"
+      "url": "https://github.com/dexter-cnx"
     },
     {
       "label": "LinkedIn",
@@ -129,7 +225,7 @@
     },
     {
       "id": "projects",
-      "label": "Projects"
+      "label": "Work"
     },
     {
       "id": "contact",

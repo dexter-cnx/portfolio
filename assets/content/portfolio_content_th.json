@@ -22,8 +22,8 @@
   "hero": {
     "eyebrow": "สวัสดีครับ ชื่อ",
     "headline": "กิติพงษ์ สาระจันทร์.",
-    "subheadline": "ผมสร้างแอปพลิเคชันสำหรับอุปกรณ์เคลื่อนที่",
-    "description": "แทนที่ข้อความนี้ด้วยการแนะนำตัวที่สั้นและกระชับ แนะนำทักษะและเป้าหมายของคุณ",
+    "subheadline": "นักพัฒนาซอฟต์แวร์",
+    "description": "",
     "primaryCta": {
       "label": "ติดต่อ",
       "url": "mailto:cnxdev@gmail.com"
@@ -36,45 +36,128 @@
   "about": {
     "title": "เกี่ยวกับฉัน",
     "paragraphs": [
-      "แทนที่ย่อหน้านี้ด้วยการแนะนำตัวของคุณเอง สั้นๆ ง่ายๆ",
-      "เพิ่มย่อหน้าที่สองที่อธิบายถึงโฟกัสปัจจุบัน จุดแข็งของคุณ และงานที่คุณชอบ"
+      "สั่งสมประสบการณ์มากกว่า 20 ปี ในอุตสาหกรรมซอฟต์แวร์โดยเฉพาะอย่างยิ่งด้านซอฟต์แวร์สำหรับอุปกรณ์เคลื่อนที่ นับตั้งแต่ยุค PDA อย่าง Palm,Pocket PC",
+      "มาจนยุค Smart Phone โดยเริ่มต้นจาก Java Phone,Symbian จนกระทั่งยุคปัจจุบันอย่าง Android, iOS",
+      "มีความชำนาณเรื่องโปรแกรมมิ่งโดยใช้ภาษา C,C++,Java,Dart(Flutter) และอีกทั้งยังสามารถใข้งานภาษาอย่าง Python,Java Script,Objective C,SQL ได้",
+      "มีประสบการณ์เกี่ยวกับกระบวนการพัฒนาซอฟต์แวร์(Software Development Life Cycle (SDLC))",
+      "สามารถทำงานเป็นทีม, ช่วยแก้ปัญหาภายใต้ความกดดันให้โครงการสำเร็จลุล่วงไปได้",
+      "เคยผ่านประสบการณ์การทำงานแบบระยะไกลกับทีมงานต่างชาติ ต่างโซนเวลา อย่างทีมงานฝั่งยุโรปและสหรัฐอเมริกา",
+      "มีประสบการณ์การเชื่อมต่อแอปพลิเคชั่นเข้ากับ Firebase,GraphQL,Rest APIs.",
+      "สามารถส่งแอปพลิเคชั่นขึ้น Store ได้ทั้ง Google Play Store และ Apple App Store",
+      "เรียนรู้เทคโนโลยีใหม่ๆได้อย่างรวดเร็วและนำมาประยุกต์ให้ใช้กับงานได้เป็นอย่างดี"
     ],
     "skills": [
       "Flutter",
       "Dart",
+      "Unity",
+      "C++",
+      "Python",
+      "Java",
+      "JavaScript",
+      "GraphQL",
+      "SQL",
+      "GitHub",
       "Firebase",
       "REST API",
-      "Clean Architecture",
-      "UI Engineering"
+      "Clean Architecture"
     ],
     "profileImage": "assets/images/profile.png"
   },
   "experience": [
     {
-      "company": "ชื่อบริษัท",
-      "title": "ตำแหน่งงาน",
-      "period": "2024 — ปัจจุบัน",
+      "company": "Kiragames Co., Ltd.  @ เชียงใหม่",
+      "title": "Senior Software Engineer",
+      "period": "2011 — ปัจจุบัน",
       "url": "",
-      "summary": "อธิบายขอบเขตและผลกระทบของบทบาทงานนี้",
+      "summary": "ดูแลการพัฒนาแอปพลิชั่นแบบทั้งกระบวนการ",
       "highlights": [
-        "เปิดตัวฟีเจอร์ A",
-        "ปรับปรุงระบบ B",
-        "นำทีมในโปรเจกต์ C"
+        "ดูแลการพัฒนาแอปพลิเคชั่นเกมบนมือถือ",
+        "ปรับปรุงระบบเดิมให้ทันสมัย",
+        "นำทีมในการพัฒนาแอปพลิเคชั่นเกมใหม่"
       ],
       "tech": [
-        "Flutter",
-        "Dart",
+        "C++",
+        "Python",
+        "Unity",
+        "Cocos2d-x",
         "Firebase"
+      ]
+    },
+    {
+      "company": "Round Box Inc. @ NJ, USA (Remote)",
+      "title": "Software Engineer",
+      "period": "2008-2011",
+      "url": "",
+      "summary": "พัฒนาซอฟต์แวร์สำหรับระบบอุปกรณ์เผยแพร่สัญญาณทีวีแบบดิจิตอล",
+      "highlights": [
+        "พัฒนาซอฟต์แวร์ส่วนจัดการเรื่องเนื้อหา",
+        "ทำระบบ Build bot สำหรับการทดสอบและ Deploy ซอฟต์แวร์",
+        "ดูแลบริหารทีมในประเทศไทย"
+      ],
+      "tech": [
+        "C",
+        "Python",
+        "DVB"
+      ]
+    },
+    {
+      "company": "AppWorks co., Ltd. @ กรุงเทพมหานคร",
+      "title": "Mobile Game Developer",
+      "period": "2007",
+      "url": "",
+      "summary": "พัฒนาเกมบนมือถือ",
+      "highlights": [],
+      "tech": [
+        "Java",
+        "J2ME",
+        "Symbian",
+        "BREW"
+      ]
+    },
+    {
+      "company": "Jimmy Software co., Ltd. @ เชียงใหม่",
+      "title": "Mobile Developer",
+      "period": "2000-2007",
+      "url": "",
+      "summary": "พัฒนาเกมส์/แอปพลิเคชั่นบนอุปกรณ์เคลื่อนที่",
+      "highlights": [
+        "พัฒนาแอปพลิเคชั่นบนอุปกรณ์เคลื่อนที่",
+        "พัฒนาเกมส์บนอุปกรณ์เคลื่อนที่",
+        "ระบบภาษาไทย",
+        "Hand Writing Input"
+      ],
+      "tech": [
+        "Java",
+        "J2ME",
+        "Symbian",
+        "C",
+        "C++",
+        "Arm Assembly"
+      ]
+    },
+    {
+      "company": "Mesonic co., Ltd. @ เชียงใหม่",
+      "title": "Software Developer",
+      "period": "1995-1998",
+      "url": "",
+      "summary": "พัฒนาซอฟต์แวร์ด้านบัญชี ธุรกิจ",
+      "highlights": [],
+      "tech": [
+        "Unix",
+        "ISAM database",
+        "Perl",
+        "C",
+        "C++"
       ]
     }
   ],
   "featuredProjects": [
     {
-      "name": "โปรเจกต์ที่เป็นไฮไลท์",
-      "summary": "คำอธิบายโปรเจกต์สั้นๆ ที่เน้นผลลัพธ์และมูลค่าที่ได้รับ",
-      "longDescription": "คำอธิบายเพิ่มเติมสำหรับสรุปโครงการที่โดดเด่น",
-      "repoUrl": "https://github.com/",
-      "liveUrl": "https://example.com/",
+      "name": "WeLink Application set",
+      "summary": "WeLink เป็นแอปพลิเคชั่นสำหรับเชื่อมต่อผู้คนเข้าด้วยกัน",
+      "longDescription": "WeLink เป็น แอปพลิเคชั่นที่มีทั้งระบบเรียกรถ เรียกบริการส่งอาหาร บริการงานต่างๆ ตลอดจนระบบร้านค้า ร้านอาหาร จองตั๋วงานรื่นเริง นอกจากนี้ยังมีส่วนแอปพลิเคชั่นสำหรับร้านค้า ร้านอาหาร และแอปพลิเคชั่นสำหรับไรเดอร์",
+      "repoUrl": "",
+      "liveUrl": "https://www.welinkcorp.com/",
       "images": [
         "assets/images/project_01.png",
         "assets/images/project_01.png"
