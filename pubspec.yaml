@@ -16,3 +16,5 @@ flutter:
   uses-material-design: true
   assets:
     - assets/content/portfolio_content.json
+    - assets/images/
+

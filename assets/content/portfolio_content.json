@@ -41,7 +41,7 @@
       "Clean Architecture",
       "UI Engineering"
     ],
-    "profileImage": "assets/images/profile_placeholder.png"
+    "profileImage": "assets/images/profile.png"
   },
   "experience": [
     {
@@ -65,7 +65,7 @@
       "longDescription": "Optional expanded description for a featured card or detail modal.",
       "repoUrl": "",
       "liveUrl": "",
-      "image": "assets/images/project_01_placeholder.png",
+      "image": "assets/images/project_01.png",
       "tags": ["Flutter", "Web", "Firebase"]
     }
   ],

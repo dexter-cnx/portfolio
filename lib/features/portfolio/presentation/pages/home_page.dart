@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import '../../../../app/theme/app_theme.dart';
 import '../../data/datasources/local_content_loader.dart';
 import '../../models/portfolio_models.dart';
+import '../widgets/about_section_widget.dart';
+import '../widgets/contact_section_widget.dart';
+import '../widgets/experience_section_widget.dart';
+import '../widgets/projects_section_widget.dart';
 import '../widgets/hero_section_widget.dart';
 import '../widgets/responsive_layout.dart';
 import '../widgets/side_rails.dart';
@@ -44,7 +48,13 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
                 child: Column(
                   children: [
                     HeroSectionWidget(hero: data.hero),
-                    // ... other sections to follow
+                    AboutSectionWidget(about: data.about),
+                    ExperienceSectionWidget(experience: data.experience),
+                    ProjectsSectionWidget(
+                      featured: data.featuredProjects,
+                      other: data.otherProjects,
+                    ),
+                    ContactSectionWidget(contact: data.contact),
                   ],
                 ),
               ),
