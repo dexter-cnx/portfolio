@@ -242,13 +242,30 @@ class Experience {
   }
 }
 
+class ProjectUrl {
+  final String image;
+  final String title;
+  final String url;
+
+  ProjectUrl({required this.image, required this.title, required this.url});
+
+  factory ProjectUrl.fromJson(Map<String, dynamic> json) {
+    return ProjectUrl(
+      image: json['image'] ?? '',
+      title: json['title'] ?? '',
+      url: json['url'] ?? '',
+    );
+  }
+}
+
 class FeaturedProject {
   final String name;
   final String summary;
   final String longDescription;
   final String repoUrl;
   final String liveUrl;
-  final String image;
+  final List<String> images;
+  final List<ProjectUrl> urls;
   final List<String> tags;
 
   FeaturedProject({
@@ -257,7 +274,8 @@ class FeaturedProject {
     required this.longDescription,
     required this.repoUrl,
     required this.liveUrl,
-    required this.image,
+    required this.images,
+    required this.urls,
     required this.tags,
   });
 
@@ -265,10 +283,15 @@ class FeaturedProject {
     return FeaturedProject(
       name: json['name'],
       summary: json['summary'],
-      longDescription: json['longDescription'],
-      repoUrl: json['repoUrl'],
-      liveUrl: json['liveUrl'],
-      image: json['image'],
+      longDescription: json['longDescription'] ?? '',
+      repoUrl: json['repoUrl'] ?? '',
+      liveUrl: json['liveUrl'] ?? '',
+      images: json['images'] != null 
+          ? List<String>.from(json['images']) 
+          : (json['image'] != null ? [json['image']] : []),
+      urls: json['urls'] != null 
+          ? (json['urls'] as List).map((e) => ProjectUrl.fromJson(e)).toList()
+          : [],
       tags: List<String>.from(json['tags']),
     );
   }
@@ -279,6 +302,7 @@ class OtherProject {
   final String summary;
   final String repoUrl;
   final String liveUrl;
+  final List<String> images;
   final List<String> tags;
 
   OtherProject({
@@ -286,6 +310,7 @@ class OtherProject {
     required this.summary,
     required this.repoUrl,
     required this.liveUrl,
+    required this.images,
     required this.tags,
   });
 
@@ -293,8 +318,11 @@ class OtherProject {
     return OtherProject(
       name: json['name'],
       summary: json['summary'],
-      repoUrl: json['repoUrl'],
-      liveUrl: json['liveUrl'],
+      repoUrl: json['repoUrl'] ?? '',
+      liveUrl: json['liveUrl'] ?? '',
+      images: json['images'] != null 
+          ? List<String>.from(json['images']) 
+          : (json['image'] != null ? [json['image']] : []),
       tags: List<String>.from(json['tags']),
     );
   }
@@ -305,12 +333,16 @@ class Contact {
   final String body;
   final String ctaLabel;
   final String ctaUrl;
+  final String? phone;
+  final String? lineId;
 
   Contact({
     required this.title,
     required this.body,
     required this.ctaLabel,
     required this.ctaUrl,
+    this.phone,
+    this.lineId,
   });
 
   factory Contact.empty() {
@@ -328,6 +360,8 @@ class Contact {
       body: json['body'],
       ctaLabel: json['ctaLabel'],
       ctaUrl: json['ctaUrl'],
+      phone: json['phone'],
+      lineId: json['lineId'],
     );
   }
 }

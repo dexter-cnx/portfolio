@@ -1,26 +1,31 @@
 {
   "site": {
-    "name": "dev_portfolio",
-    "ownerName": "Your Name",
-    "role": "Flutter Developer",
+    "name": "Dexter CNX Portfolio",
+    "ownerName": "Kitipong Sarahjan",
+    "role": "Software Engineer",
     "location": "Chiang Mai, Thailand",
-    "email": "hello@example.com",
+    "email": "cnxdev@gmail.com",
     "resumeUrl": "",
-    "sourceNote": "Prepared from learnfire-56264.web.app with values inferred where possible. Replace placeholders with final content.",
+    "sourceNote": "Prepared from template and LearnFire content.",
     "seo": {
-      "title": "Your Name | Flutter Developer",
+      "title": "Kitipong Sarahjan | Flutter Developer",
       "description": "Portfolio website built with Flutter Web.",
-      "keywords": ["Flutter", "Dart", "Web", "Portfolio"]
+      "keywords": [
+        "Flutter",
+        "Dart",
+        "Web",
+        "Portfolio"
+      ]
     }
   },
   "hero": {
     "eyebrow": "Hi, my name is",
-    "headline": "Your Name.",
-    "subheadline": "I build clean, useful digital products.",
-    "description": "Replace this with your strongest one-paragraph introduction based on the LearnFire content.",
+    "headline": "Kitipong Sarahjan.",
+    "subheadline": "I build mobile applications.",
+    "description": "I'm a software engineer specializing in building exceptional digital experiences using Flutter.",
     "primaryCta": {
       "label": "Get In Touch",
-      "url": "mailto:hello@example.com"
+      "url": "mailto:cnxdev@gmail.com"
     },
     "secondaryCta": {
       "label": "View Projects",
@@ -30,8 +35,8 @@
   "about": {
     "title": "About Me",
     "paragraphs": [
-      "Replace this paragraph with a concise personal introduction.",
-      "Add a second paragraph describing current focus, strengths, and what kind of work you enjoy."
+      "Hello! My name is Kitipong and I enjoy creating things that live on the internet.",
+      "My focus these days is building accessible, inclusive products and digital experiences at scale."
     ],
     "skills": [
       "Flutter",
@@ -55,34 +60,53 @@
         "Improved system B",
         "Led initiative C"
       ],
-      "tech": ["Flutter", "Dart", "Firebase"]
+      "tech": [
+        "Flutter",
+        "Dart",
+        "Firebase"
+      ]
     }
   ],
   "featuredProjects": [
     {
-      "name": "Project One",
+      "name": "Featured Project",
       "summary": "A short project description focused on outcome and value.",
       "longDescription": "Optional expanded description for a featured card or detail modal.",
       "repoUrl": "",
       "liveUrl": "",
-      "image": "assets/images/project_01.png",
-      "tags": ["Flutter", "Web", "Firebase"]
+      "images": [
+        "assets/images/project_01.png",
+        "assets/images/project_01.png"
+      ],
+      "tags": [
+        "Flutter",
+        "Web",
+        "Firebase"
+      ]
     }
   ],
   "otherProjects": [
     {
-      "name": "Project Two",
+      "name": "Other Project",
       "summary": "Smaller project card summary.",
       "repoUrl": "",
       "liveUrl": "",
-      "tags": ["Dart", "Tooling"]
+      "images": [
+        "assets/images/project_01.png"
+      ],
+      "tags": [
+        "Dart",
+        "Tooling"
+      ]
     }
   ],
   "contact": {
     "title": "Get In Touch",
     "body": "I’m open to interesting product work, collaborations, and Flutter engineering opportunities.",
     "ctaLabel": "Say Hello",
-    "ctaUrl": "mailto:hello@example.com"
+    "ctaUrl": "mailto:cnxdev@gmail.com",
+    "phone": "08x-xxx-xxxx",
+    "lineId": "your.line.id"
   },
   "socialLinks": [
     {
@@ -95,9 +119,21 @@
     }
   ],
   "nav": [
-    { "id": "about", "label": "About" },
-    { "id": "experience", "label": "Experience" },
-    { "id": "projects", "label": "Projects" },
-    { "id": "contact", "label": "Contact" }
+    {
+      "id": "about",
+      "label": "About"
+    },
+    {
+      "id": "experience",
+      "label": "Experience"
+    },
+    {
+      "id": "projects",
+      "label": "Projects"
+    },
+    {
+      "id": "contact",
+      "label": "Contact"
+    }
   ]
 }

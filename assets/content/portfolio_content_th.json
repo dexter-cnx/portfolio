@@ -1,26 +1,32 @@
 {
   "site": {
-    "name": "dev_portfolio",
-    "ownerName": "ชื่อของคุณ",
-    "role": "นักพัฒนา Flutter",
+    "name": "Dexter CNX Portfolio",
+    "ownerName": "กิติพงษ์ สาระจันทร์",
+    "role": "Software Engineer",
     "location": "เชียงใหม่, ประเทศไทย",
-    "email": "hello@example.com",
+    "email": "cnxdev@gmail.com",
     "resumeUrl": "",
     "sourceNote": "แปลและเตรียมข้อมูลจากเทมเพลตและ LearnFire",
     "seo": {
-      "title": "ชื่อของคุณ | นักพัฒนา Flutter",
+      "title": "กิติพงษ์ สาระจันทร์ | นักพัฒนา Flutter",
       "description": "เว็บไซต์พอร์ตโฟลิโอสร้างด้วย Flutter Web",
-      "keywords": ["Flutter", "Dart", "Web", "Portfolio", "นักพัฒนา"]
+      "keywords": [
+        "Flutter",
+        "Dart",
+        "Web",
+        "Portfolio",
+        "นักพัฒนา"
+      ]
     }
   },
   "hero": {
-    "eyebrow": "สวัสดี ฉันชื่อ",
-    "headline": "ชื่อของคุณ.",
-    "subheadline": "ฉันสร้างผลิตภัณฑ์ดิจิทัลที่สะอาดและมีประโยชน์",
+    "eyebrow": "สวัสดีครับ ชื่อ",
+    "headline": "กิติพงษ์ สาระจันทร์.",
+    "subheadline": "ผมสร้างแอปพลิเคชันสำหรับอุปกรณ์เคลื่อนที่",
     "description": "แทนที่ข้อความนี้ด้วยการแนะนำตัวที่สั้นและกระชับ แนะนำทักษะและเป้าหมายของคุณ",
     "primaryCta": {
-      "label": "ติดต่อฉัน",
-      "url": "mailto:hello@example.com"
+      "label": "ติดต่อ",
+      "url": "mailto:cnxdev@gmail.com"
     },
     "secondaryCta": {
       "label": "ดูผลงาน",
@@ -55,34 +61,65 @@
         "ปรับปรุงระบบ B",
         "นำทีมในโปรเจกต์ C"
       ],
-      "tech": ["Flutter", "Dart", "Firebase"]
+      "tech": [
+        "Flutter",
+        "Dart",
+        "Firebase"
+      ]
     }
   ],
   "featuredProjects": [
     {
-      "name": "โปรเจกต์ที่หนึ่ง",
+      "name": "โปรเจกต์ที่เป็นไฮไลท์",
       "summary": "คำอธิบายโปรเจกต์สั้นๆ ที่เน้นผลลัพธ์และมูลค่าที่ได้รับ",
       "longDescription": "คำอธิบายเพิ่มเติมสำหรับสรุปโครงการที่โดดเด่น",
-      "repoUrl": "",
-      "liveUrl": "",
-      "image": "assets/images/project_01.png",
-      "tags": ["Flutter", "Web", "Firebase"]
+      "repoUrl": "https://github.com/",
+      "liveUrl": "https://example.com/",
+      "images": [
+        "assets/images/project_01.png",
+        "assets/images/project_01.png"
+      ],
+      "urls": [
+        {
+          "image": "assets/images/project_01.png",
+          "title": "App Store",
+          "url": "https://apps.apple.com/"
+        },
+        {
+          "image": "assets/images/project_01.png",
+          "title": "Play Store",
+          "url": "https://play.google.com/"
+        }
+      ],
+      "tags": [
+        "Flutter",
+        "Web",
+        "Firebase"
+      ]
     }
   ],
   "otherProjects": [
     {
-      "name": "โปรเจกต์ที่สอง",
-      "summary": "คำอธิบายโปรเจกต์ย่อยๆ",
+      "name": "โปรเจกต์อื่นๆ",
+      "summary": "คำอธิบายโปรเจกต์ย่อยๆ ที่มีความน่าสนใจ",
       "repoUrl": "",
       "liveUrl": "",
-      "tags": ["Dart", "Tooling"]
+      "images": [
+        "assets/images/project_01.png"
+      ],
+      "tags": [
+        "Dart",
+        "Tooling"
+      ]
     }
   ],
   "contact": {
     "title": "ร่วมงานกันไหม?",
     "body": "ฉันเปิดรับงานผลิตภัณฑ์ที่น่าสนใจ การทำงานร่วมกัน และโอกาสใหม่ๆ ในด้านวิศวกรรม Flutter",
     "ctaLabel": "ทักทายฉัน",
-    "ctaUrl": "mailto:hello@example.com"
+    "ctaUrl": "mailto:cnxdev@gmail.com",
+    "phone": "08x-xxx-xxxx",
+    "lineId": "your.line.id"
   },
   "socialLinks": [
     {
@@ -95,9 +132,21 @@
     }
   ],
   "nav": [
-    { "id": "about", "label": "เกี่ยวกับ" },
-    { "id": "experience", "label": "ประสบการณ์" },
-    { "id": "projects", "label": "ผลงาน" },
-    { "id": "contact", "label": "ติดต่อ" }
+    {
+      "id": "about",
+      "label": "เกี่ยวกับ"
+    },
+    {
+      "id": "experience",
+      "label": "ประสบการณ์"
+    },
+    {
+      "id": "projects",
+      "label": "ผลงาน"
+    },
+    {
+      "id": "contact",
+      "label": "ติดต่อ"
+    }
   ]
 }

@@ -8,11 +8,13 @@ import 'responsive_layout.dart';
 class ProjectsSectionWidget extends StatelessWidget {
   final List<FeaturedProject> featured;
   final List<OtherProject> other;
+  final Function(String url) onLinkTap;
 
   const ProjectsSectionWidget({
     super.key,
     required this.featured,
     required this.other,
+    required this.onLinkTap,
   });
 
   @override
@@ -27,6 +29,7 @@ class ProjectsSectionWidget extends StatelessWidget {
           ...featured.asMap().entries.map((entry) => _FeaturedProjectCard(
                 project: entry.value,
                 isReversed: entry.key % 2 != 0,
+                onLinkTap: onLinkTap,
               )),
           if (other.isNotEmpty) ...[
             const SizedBox(height: 100),
@@ -65,7 +68,10 @@ class ProjectsSectionWidget extends StatelessWidget {
           childAspectRatio: 1.2,
         ),
         itemCount: other.length,
-        itemBuilder: (context, index) => _OtherProjectCard(project: other[index]),
+        itemBuilder: (context, index) => _OtherProjectCard(
+          project: other[index],
+          onLinkTap: onLinkTap,
+        ),
       );
     });
   }
@@ -74,8 +80,13 @@ class ProjectsSectionWidget extends StatelessWidget {
 class _FeaturedProjectCard extends StatelessWidget {
   final FeaturedProject project;
   final bool isReversed;
+  final Function(String url) onLinkTap;
 
-  const _FeaturedProjectCard({required this.project, this.isReversed = false});
+  const _FeaturedProjectCard({
+    required this.project, 
+    required this.onLinkTap,
+    this.isReversed = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +105,7 @@ class _FeaturedProjectCard extends StatelessWidget {
           children: [
             AspectRatio(
               aspectRatio: 16 / 9,
-              child: Image.asset(project.image, fit: BoxFit.cover),
+              child: _ProjectImageGallery(images: project.images),
             ),
             Padding(
               padding: const EdgeInsets.all(24),
@@ -113,6 +124,8 @@ class _FeaturedProjectCard extends StatelessWidget {
                   const SizedBox(height: 16),
                   Text(project.summary, style: Theme.of(context).textTheme.bodyLarge),
                   const SizedBox(height: 16),
+                  _buildProjectUrls(context),
+                  const SizedBox(height: 16),
                   Wrap(
                     spacing: 12,
                     runSpacing: 8,
@@ -129,25 +142,20 @@ class _FeaturedProjectCard extends StatelessWidget {
     }
 
     return Container(
-      height: 400,
+      height: 500, // Increased height to accommodate urls
       margin: const EdgeInsets.only(bottom: 100),
       child: Stack(
         children: [
-          // Project Image
+          // Project Image Gallery
           Positioned(
             left: isReversed ? null : 0,
             right: isReversed ? 0 : null,
             top: 0,
             bottom: 0,
-            width: 600,
+            width: 700,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(4),
-              child: Stack(
-                children: [
-                  Image.asset(project.image, fit: BoxFit.cover, width: double.infinity, height: double.infinity),
-                  Container(color: AppTheme.accent.withValues(alpha: 0.2)),
-                ],
-              ),
+              child: _ProjectImageGallery(images: project.images),
             ),
           ),
           // Project Content
@@ -199,6 +207,8 @@ class _FeaturedProjectCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 20),
+                _buildProjectUrls(context),
+                const SizedBox(height: 20),
                 Wrap(
                   spacing: 12,
                   runSpacing: 8,
@@ -219,12 +229,12 @@ class _FeaturedProjectCard extends StatelessWidget {
                   children: [
                     if (project.repoUrl.isNotEmpty)
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () => onLinkTap(project.repoUrl),
                         icon: const Icon(Icons.code, color: AppTheme.textPrimary),
                       ),
                     if (project.liveUrl.isNotEmpty)
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () => onLinkTap(project.liveUrl),
                         icon: const Icon(Icons.open_in_new, color: AppTheme.textPrimary),
                       ),
                   ],
@@ -236,12 +246,66 @@ class _FeaturedProjectCard extends StatelessWidget {
       ),
     );
   }
+
+  Widget _buildProjectUrls(BuildContext context) {
+    if (project.urls.isEmpty) return const SizedBox.shrink();
+
+    return Wrap(
+      spacing: 12,
+      runSpacing: 12,
+      alignment: isReversed ? WrapAlignment.start : WrapAlignment.end,
+      children: project.urls.map((u) => _ProjectUrlItem(url: u, onLaunch: onLinkTap)).toList(),
+    );
+  }
+}
+
+class _ProjectUrlItem extends StatelessWidget {
+  final ProjectUrl url;
+  final Function(String url) onLaunch;
+
+  const _ProjectUrlItem({required this.url, required this.onLaunch});
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () => onLaunch(url.url),
+      borderRadius: BorderRadius.circular(4),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        decoration: BoxDecoration(
+          border: Border.all(color: AppTheme.accent.withValues(alpha: 0.3)),
+          borderRadius: BorderRadius.circular(4),
+          color: AppTheme.accent.withValues(alpha: 0.05),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (url.image.isNotEmpty) ...[
+              ClipRRect(
+                borderRadius: BorderRadius.circular(2),
+                child: Image.asset(url.image, width: 20, height: 20, fit: BoxFit.cover),
+              ),
+              const SizedBox(width: 8),
+            ],
+            Text(
+              url.title,
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    color: AppTheme.accent,
+                    fontFamily: 'JetBrains Mono',
+                  ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
 
 class _OtherProjectCard extends StatefulWidget {
   final OtherProject project;
+  final Function(String url) onLinkTap;
 
-  const _OtherProjectCard({required this.project});
+  const _OtherProjectCard({required this.project, required this.onLinkTap});
 
   @override
   State<_OtherProjectCard> createState() => _OtherProjectCardState();
@@ -281,10 +345,20 @@ class _OtherProjectCardState extends State<_OtherProjectCard> {
                 Row(
                   children: [
                     if (widget.project.repoUrl.isNotEmpty)
-                      const Icon(Icons.code, color: AppTheme.textMuted, size: 20),
+                      IconButton(
+                        padding: EdgeInsets.zero,
+                        constraints: const BoxConstraints(),
+                        onPressed: () => widget.onLinkTap(widget.project.repoUrl),
+                        icon: const Icon(Icons.code, color: AppTheme.textMuted, size: 20),
+                      ),
                     if (widget.project.liveUrl.isNotEmpty) ...[
                       const SizedBox(width: 10),
-                      const Icon(Icons.open_in_new, color: AppTheme.textMuted, size: 20),
+                      IconButton(
+                        padding: EdgeInsets.zero,
+                        constraints: const BoxConstraints(),
+                        onPressed: () => widget.onLinkTap(widget.project.liveUrl),
+                        icon: const Icon(Icons.open_in_new, color: AppTheme.textMuted, size: 20),
+                      ),
                     ],
                   ],
                 ),
@@ -321,6 +395,102 @@ class _OtherProjectCardState extends State<_OtherProjectCard> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _ProjectImageGallery extends StatefulWidget {
+  final List<String> images;
+
+  const _ProjectImageGallery({required this.images});
+
+  @override
+  State<_ProjectImageGallery> createState() => _ProjectImageGalleryState();
+}
+
+class _ProjectImageGalleryState extends State<_ProjectImageGallery> {
+  final PageController _pageController = PageController();
+  int _currentPage = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    if (widget.images.isEmpty) {
+      return Container(color: AppTheme.surfaceContainer);
+    }
+
+    return Stack(
+      children: [
+        PageView.builder(
+          controller: _pageController,
+          itemCount: widget.images.length,
+          onPageChanged: (index) => setState(() => _currentPage = index),
+          itemBuilder: (context, index) {
+            return Image.asset(
+              widget.images[index],
+              fit: BoxFit.cover,
+              width: double.infinity,
+              height: double.infinity,
+            );
+          },
+        ),
+        // Overlay to match the previous design
+        Container(color: AppTheme.accent.withValues(alpha: 0.15)),
+        
+        // Indicators
+        if (widget.images.length > 1)
+          Positioned(
+            bottom: 20,
+            left: 0,
+            right: 0,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: widget.images.asMap().entries.map((entry) {
+                return GestureDetector(
+                  onTap: () => _pageController.animateToPage(
+                    entry.key,
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                  ),
+                  child: Container(
+                    width: 8,
+                    height: 8,
+                    margin: const EdgeInsets.symmetric(horizontal: 4),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: _currentPage == entry.key
+                          ? AppTheme.accent
+                          : Colors.white.withValues(alpha: 0.4),
+                    ),
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
+          
+        // Navigation arrows
+        if (widget.images.length > 1)
+          Positioned.fill(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.chevron_left, color: Colors.white),
+                  onPressed: () => _pageController.previousPage(
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.chevron_right, color: Colors.white),
+                  onPressed: () => _pageController.nextPage(
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                  ),
+                ),
+              ],
+            ),
+          ),
+      ],
     );
   }
 }

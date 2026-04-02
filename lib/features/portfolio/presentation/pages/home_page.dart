@@ -12,6 +12,7 @@ import '../widgets/hero_section_widget.dart';
 import '../widgets/responsive_layout.dart';
 import '../widgets/side_rails.dart';
 import '../widgets/fade_in_slide.dart';
+import '../widgets/resume_pdf_generator.dart';
 
 class PortfolioHomePage extends StatefulWidget {
   final Function(String) onLocaleChanged;
@@ -124,7 +125,13 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
               if (key != null) _scrollToSection(key);
             },
             onLanguageToggle: _toggleLanguage,
-            onResumeTap: () => _launchURL(data.site.resumeUrl),
+            onResumeTap: () {
+              if (data.site.resumeUrl.isEmpty) {
+                ResumePdfGenerator.generateAndDownload(data, context.locale.languageCode);
+              } else {
+                _launchURL(data.site.resumeUrl);
+              }
+            },
           ),
           body: Stack(
             children: [
@@ -154,6 +161,7 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
                         key: _projectsKey,
                         featured: data.featuredProjects,
                         other: data.otherProjects,
+                        onLinkTap: _launchURL,
                       ),
                     ),
                     FadeInSlide(

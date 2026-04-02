@@ -51,6 +51,8 @@ class ContactSectionWidget extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 50),
+
+          // Action Button
           OutlinedButton(
             onPressed: () => onCtaTap(contact.ctaUrl),
             style: OutlinedButton.styleFrom(
@@ -59,6 +61,28 @@ class ContactSectionWidget extends StatelessWidget {
             ),
             child: Text(contact.ctaLabel),
           ),
+          
+          const SizedBox(height: 60),
+
+          // Additional Contact Info
+          if (contact.phone != null || contact.lineId != null)
+            Column(
+              children: [
+                if (contact.phone != null)
+                  _ContactInfoItem(
+                    icon: Icons.phone,
+                    label: contact.phone!,
+                    onTap: () => onCtaTap('tel:${contact.phone}'),
+                  ),
+                if (contact.lineId != null)
+                  _ContactInfoItem(
+                    icon: Icons.chat_bubble_outline,
+                    label: 'Line ID: ${contact.lineId}',
+                    onTap: () => onCtaTap('https://line.me/ti/p/~${contact.lineId}'),
+                  ),
+              ],
+            ),
+
           const SizedBox(height: 150),
           Text(
             'footer_built_by'.tr(),
@@ -69,6 +93,46 @@ class ContactSectionWidget extends StatelessWidget {
           ),
           const SizedBox(height: 20),
         ],
+      ),
+    );
+  }
+}
+
+class _ContactInfoItem extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final VoidCallback onTap;
+
+  const _ContactInfoItem({
+    required this.icon,
+    required this.label,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(4),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(icon, color: AppTheme.accent, size: 20),
+              const SizedBox(width: 12),
+              Text(
+                label,
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      color: AppTheme.textPrimary,
+                      fontFamily: 'JetBrains Mono',
+                    ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
