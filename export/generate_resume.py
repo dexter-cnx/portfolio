@@ -16,7 +16,9 @@ def generate_html(lang, data):
     about = data.get('about', {})
     experience = data.get('experience', [])
     skills = about.get('skills', [])
-    projects = data.get('featuredProjects', [])
+    featured_projects = data.get('featuredProjects', [])
+    other_projects = data.get('otherProjects', [])
+    all_projects = featured_projects + other_projects
     contact = data.get('contact', {})
     
     profile_img_path = about.get('profileImage', 'assets/images/profile.png')
@@ -30,7 +32,7 @@ def generate_html(lang, data):
             'skills': 'Skills',
             'about': 'About Me',
             'experience': 'Experience',
-            'projects': 'Featured Projects',
+            'projects': 'Projects',
             'tech': 'Technologies'
         },
         'th': {
@@ -38,7 +40,7 @@ def generate_html(lang, data):
             'skills': 'ทักษะความสามารถ',
             'about': 'ประวัติส่วนตัว',
             'experience': 'ประสบการณ์การทำงาน',
-            'projects': 'ผลงานที่โดดเด่น',
+            'projects': 'ผลงาน',
             'tech': 'เทคโนโลยี'
         }
     }
@@ -71,10 +73,7 @@ def generate_html(lang, data):
         
     def render_projects(proj_list):
         html = ""
-        for idx, proj in enumerate(proj_list):
-            if idx > 3: # Limit projects for space in PDF
-                break
-            
+        for proj in proj_list:
             # Get first image if available
             proj_img_uri = ""
             if proj.get('images') and len(proj.get('images')) > 0:
@@ -306,7 +305,7 @@ def generate_html(lang, data):
                 
                 <div class="section-title">{lbl['projects']}</div>
                 <div>
-                    {render_projects(projects)}
+                    {render_projects(all_projects)}
                 </div>
             </div>
         </div>
