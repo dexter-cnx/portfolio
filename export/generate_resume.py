@@ -106,7 +106,7 @@ def generate_html(lang, data):
             @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap');
             
             * {{ box-sizing: border-box; }}
-            @page {{ size: A4; margin: 0; }}
+            @page {{ size: A4; margin: 15mm 0 15mm 0; }}
             body {{
                 font-family: 'Sarabun', sans-serif;
                 margin: 0;
@@ -121,8 +121,6 @@ def generate_html(lang, data):
             .resume-wrapper {{
                 display: flex;
                 min-height: 100vh;
-                padding-top: 15mm;
-                padding-bottom: 15mm;
             }}
             .sidebar {{
                 width: 32%;
@@ -340,7 +338,7 @@ def generate_pdf(lang, filename):
             CHROME_PATH,
             "--headless",
             "--disable-gpu",
-            "--no-margins",
+            "--no-pdf-header-footer",
             f"--print-to-pdf={pdf_file}",
             f"file://{html_file}"
         ], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
