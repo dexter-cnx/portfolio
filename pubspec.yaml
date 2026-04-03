@@ -33,6 +33,7 @@ flutter:
     - assets/content/portfolio_content_th.json
     - assets/translations/
     - assets/images/
+    - assets/pdf/
 
 
 

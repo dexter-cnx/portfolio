@@ -72,6 +72,24 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
       return;
     }
 
+    // Special handling for the local PDFs
+    if (url.startsWith('assets/pdf/')) {
+        // For Flutter Web, assets are served at /assets/...
+        // But for url_launcher, navigating to 'assets/pdf/...' should work
+        // Alternatively, use a link to the file directly
+        final uri = Uri.parse(url);
+        if (await canLaunchUrl(uri)) {
+          await launchUrl(uri, mode: LaunchMode.externalApplication);
+          return;
+        } else {
+             // Try common web server path for assets
+             final webUri = Uri.parse('/$url');
+             // On web we can try window.open if needed, but let's try direct launch first
+             await launchUrl(webUri, mode: LaunchMode.externalApplication);
+             return;
+        }
+    }
+
     final uri = Uri.parse(url);
 
     // For non-http(s) schemes like tel:, mailto:, use external application mode
@@ -81,6 +99,8 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
 
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri, mode: mode);
+    } else {
+      debugPrint('Could not launch $url');
     }
   }
 

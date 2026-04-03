@@ -121,6 +121,8 @@ def generate_html(lang, data):
             .resume-wrapper {{
                 display: flex;
                 min-height: 100vh;
+                padding-top: 15mm;
+                padding-bottom: 15mm;
             }}
             .sidebar {{
                 width: 32%;
@@ -314,6 +316,8 @@ def generate_html(lang, data):
     """
     return html_content
 
+import shutil
+
 def generate_pdf(lang, filename):
     json_path = CONTENT_DIR / f"portfolio_content_{lang}.json"
     if not json_path.exists():
@@ -340,6 +344,13 @@ def generate_pdf(lang, filename):
             f"--print-to-pdf={pdf_file}",
             f"file://{html_file}"
         ], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        
+        # Copy to web assets for Flutter to link
+        WEB_PDF_DIR = BASE_DIR / "web" / "assets" / "pdf"
+        WEB_PDF_DIR.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(pdf_file, WEB_PDF_DIR / filename)
+        print(f"Copied to web assets: {WEB_PDF_DIR / filename}")
+        
     except FileNotFoundError:
         print("Google Chrome not found. Ensure the path is correct for macOS.")
     except subprocess.CalledProcessError as e:
