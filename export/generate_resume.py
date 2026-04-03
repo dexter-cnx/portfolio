@@ -74,11 +74,25 @@ def generate_html(lang, data):
         for idx, proj in enumerate(proj_list):
             if idx > 3: # Limit projects for space in PDF
                 break
+            
+            # Get first image if available
+            proj_img_uri = ""
+            if proj.get('images') and len(proj.get('images')) > 0:
+                img_path = proj['images'][0]
+                abs_img_path = BASE_DIR / img_path
+                if abs_img_path.exists():
+                    proj_img_uri = f"file://{abs_img_path}"
+
             html += f"""
             <div class="proj-item">
-                <h4>{proj.get('name', '')}</h4>
-                <div class="proj-summary">{proj.get('summary', '')}</div>
-                <div class="proj-tags">{', '.join(proj.get('tags', []))}</div>
+                <div class="proj-content-wrapper">
+                    {f'<img src="{proj_img_uri}" class="proj-thumb" alt="{proj.get("name", "")}">' if proj_img_uri else ''}
+                    <div class="proj-text">
+                        <h4>{proj.get('name', '')}</h4>
+                        <div class="proj-summary">{proj.get('summary', '')}</div>
+                        <div class="proj-tags">{', '.join(proj.get('tags', []))}</div>
+                    </div>
+                </div>
             </div>
             """
         return html
@@ -104,7 +118,6 @@ def generate_html(lang, data):
                 line-height: 1.5;
                 -webkit-print-color-adjust: exact;
                 width: 210mm;
-                /* Note: Chrome headless printing manages pagination, avoid fixed height */
             }}
             .resume-wrapper {{
                 display: flex;
@@ -235,6 +248,24 @@ def generate_html(lang, data):
             .proj-tags {{ font-style: italic; }}
             .proj-item {{ break-inside: avoid; }}
             .exp-item {{ break-inside: avoid; }}
+            
+            /* Project Image Support */
+            .proj-content-wrapper {{
+                display: flex;
+                gap: 15px;
+                align-items: flex-start;
+            }}
+            .proj-thumb {{
+                width: 80px;
+                height: 80px;
+                object-fit: cover;
+                border-radius: 8px;
+                border: 1px solid #e2e8f0;
+                flex-shrink: 0;
+            }}
+            .proj-text {{
+                flex: 1;
+            }}
             
         </style>
     </head>
