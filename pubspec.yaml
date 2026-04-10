@@ -18,11 +18,10 @@ dependencies:
   printing: ^5.14.3
   path_provider: ^2.1.5
   flutter_svg: ^2.2.4
-  # Animation engine — replaces "cue" (not on pub.dev).
-  # Provides: .animate().fadeIn().slideY().scale() + stagger delays
+  # Physics-first motion system for scroll reveal and future page transitions.
+  cue: ^0.1.2+1
+  # Animation engine for local micro-interactions and existing effects.
   flutter_animate: ^4.5.0
-  # Scroll-visibility detection — powers Cue.onScrollVisible behaviour
-  visibility_detector: ^0.4.0+2
 
 dev_dependencies:
   flutter_test:
@@ -39,6 +38,4 @@ flutter:
     - assets/translations/
     - assets/images/
     - assets/pdf/
-
-
 

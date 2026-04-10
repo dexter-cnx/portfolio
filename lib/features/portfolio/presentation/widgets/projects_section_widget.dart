@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:cue/cue.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../../../app/theme/app_theme.dart';
 import '../../../../core/helpers/responsive_helper.dart';
@@ -36,16 +36,30 @@ class ProjectsSectionWidget extends StatelessWidget {
           const SizedBox(height: 48),
 
           // ── Featured projects ──────────────────────────────────
-          ...featured.asMap().entries.map(
-            (entry) => ScrollReveal(
-              delay: (entry.key * 120).ms,
-              child: _FeaturedProjectCard(
+          ...featured.asMap().entries.expand((entry) {
+            final items = <Widget>[
+              _FeaturedProjectCard(
                 project: entry.value,
                 isReversed: entry.key % 2 != 0,
+                revealDelay: Duration(milliseconds: entry.key * 120),
                 onLinkTap: onLinkTap,
               ),
-            ),
-          ),
+            ];
+
+            if (entry.key != featured.length - 1) {
+              items.add(
+                SizedBox(
+                  height: context.responsive(
+                    mobile: 72.0,
+                    tablet: 88.0,
+                    desktop: 100.0,
+                  ),
+                ),
+              );
+            }
+
+            return items;
+          }),
 
           // ── Other projects grid ────────────────────────────────
           if (other.isNotEmpty) ...[
@@ -103,11 +117,13 @@ class ProjectsSectionWidget extends StatelessWidget {
 class _FeaturedProjectCard extends StatefulWidget {
   final FeaturedProject project;
   final bool isReversed;
+  final Duration revealDelay;
   final Function(String url) onLinkTap;
 
   const _FeaturedProjectCard({
     required this.project,
     required this.onLinkTap,
+    required this.revealDelay,
     this.isReversed = false,
   });
 
@@ -120,9 +136,11 @@ class _FeaturedProjectCardState extends State<_FeaturedProjectCard> {
 
   @override
   Widget build(BuildContext context) {
-    return ResponsiveLayout.isDesktop(context)
-        ? _buildDesktop(context)
-        : _buildMobile(context);
+    return Cue.onScrollVisible(
+      child: ResponsiveLayout.isDesktop(context)
+          ? _buildDesktop(context)
+          : _buildMobile(context),
+    );
   }
 
   // ── Mobile layout: full-width card with image on top ──────────────────────
@@ -135,40 +153,58 @@ class _FeaturedProjectCardState extends State<_FeaturedProjectCard> {
         scale: _hovered ? 1.01 : 1.0,
         duration: const Duration(milliseconds: 250),
         curve: Curves.easeOut,
-        child: GlassContainer(
-          blur: _hovered ? 16 : 10,
-          backgroundOpacity: _hovered ? 0.09 : 0.05,
-          borderOpacity: _hovered ? 0.25 : 0.12,
-          borderRadius: 16,
-          margin: const EdgeInsets.only(bottom: 48),
-          boxShadow: _hovered
-              ? [
-                  BoxShadow(
-                    color: AppTheme.accent.withValues(alpha: 0.12),
-                    blurRadius: 40,
-                    spreadRadius: 0,
-                    offset: const Offset(0, 8),
-                  ),
-                ]
-              : null,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ClipRRect(
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
-                child: AspectRatio(
-                  aspectRatio: 16 / 9,
-                  child: _ProjectImageGallery(
-                    images: widget.project.images,
-                    isHovered: _hovered,
+        child: Actor(
+          delay: widget.revealDelay,
+          acts: const [
+            Act.fadeIn(),
+            Act.slideY(from: 0.08),
+          ],
+          child: GlassContainer(
+            blur: _hovered ? 16 : 10,
+            backgroundOpacity: _hovered ? 0.09 : 0.05,
+            borderOpacity: _hovered ? 0.25 : 0.12,
+            borderRadius: 16,
+            margin: const EdgeInsets.only(bottom: 48),
+            boxShadow: _hovered
+                ? [
+                    BoxShadow(
+                      color: AppTheme.accent.withValues(alpha: 0.12),
+                      blurRadius: 40,
+                      spreadRadius: 0,
+                      offset: const Offset(0, 8),
+                    ),
+                  ]
+                : null,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Actor(
+                  delay: const Duration(milliseconds: 120),
+                  acts: const [
+                    Act.fadeIn(),
+                    Act.scale(from: 0.92),
+                  ],
+                  child: ClipRRect(
+                    borderRadius:
+                        const BorderRadius.vertical(top: Radius.circular(15)),
+                    child: AspectRatio(
+                      aspectRatio: 16 / 9,
+                      child: _ProjectImageGallery(
+                        images: widget.project.images,
+                        isHovered: _hovered,
+                      ),
+                    ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(24),
-                child: _buildContent(context, crossAxisAlignment: CrossAxisAlignment.start),
-              ),
-            ],
+                Padding(
+                  padding: const EdgeInsets.all(24),
+                  child: _buildContent(
+                    context,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -194,21 +230,28 @@ class _FeaturedProjectCardState extends State<_FeaturedProjectCard> {
               width: 620,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 300),
-                  decoration: BoxDecoration(
-                    boxShadow: _hovered
-                        ? [
-                            BoxShadow(
-                              color: AppTheme.accent.withValues(alpha: 0.08),
-                              blurRadius: 40,
-                            )
-                          ]
-                        : [],
-                  ),
-                  child: _ProjectImageGallery(
-                    images: widget.project.images,
-                    isHovered: _hovered,
+                child: Actor(
+                  delay: widget.revealDelay + const Duration(milliseconds: 120),
+                  acts: const [
+                    Act.fadeIn(),
+                    Act.scale(from: 0.92),
+                  ],
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 300),
+                    decoration: BoxDecoration(
+                      boxShadow: _hovered
+                          ? [
+                              BoxShadow(
+                                color: AppTheme.accent.withValues(alpha: 0.08),
+                                blurRadius: 40,
+                              )
+                            ]
+                          : [],
+                    ),
+                    child: _ProjectImageGallery(
+                      images: widget.project.images,
+                      isHovered: _hovered,
+                    ),
                   ),
                 ),
               ),
@@ -263,44 +306,57 @@ class _FeaturedProjectCardState extends State<_FeaturedProjectCard> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: crossAxisAlignment,
         children: [
-          // Label
-          Text(
-            'project_type'.tr(),
-            style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                  color: AppTheme.accent,
-                  fontFamily: 'JetBrains Mono',
-                ),
+          Actor(
+            delay: const Duration(milliseconds: 160),
+            acts: const [Act.fadeIn(), Act.slideY(from: 0.08)],
+            child: Text(
+              'project_type'.tr(),
+              style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                    color: AppTheme.accent,
+                    fontFamily: 'JetBrains Mono',
+                  ),
+            ),
           ),
           const SizedBox(height: 8),
 
-          // Project name
-          Text(
-            widget.project.name,
-            textAlign: isRight ? TextAlign.right : TextAlign.left,
-            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                  color: _hovered ? AppTheme.accent : AppTheme.textPrimary,
-                  fontWeight: FontWeight.bold,
-                ),
+          Actor(
+            delay: const Duration(milliseconds: 240),
+            acts: const [Act.fadeIn(), Act.slideY(from: 0.08)],
+            child: Text(
+              widget.project.name,
+              textAlign: isRight ? TextAlign.right : TextAlign.left,
+              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                    color: _hovered ? AppTheme.accent : AppTheme.textPrimary,
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
           ),
           const SizedBox(height: 16),
 
-          // Summary
-          Text(
-            widget.project.summary,
-            textAlign: isRight ? TextAlign.right : TextAlign.left,
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: AppTheme.textPrimary,
-                  height: 1.6,
-                ),
+          Actor(
+            delay: const Duration(milliseconds: 320),
+            acts: const [Act.fadeIn(), Act.slideY(from: 0.08)],
+            child: Text(
+              widget.project.summary,
+              textAlign: isRight ? TextAlign.right : TextAlign.left,
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: AppTheme.textPrimary,
+                    height: 1.6,
+                  ),
+            ),
           ),
 
           if (widget.project.longDescription.isNotEmpty) ...[
             const SizedBox(height: 10),
-            Text(
-              widget.project.longDescription,
-              textAlign: isRight ? TextAlign.right : TextAlign.left,
-              style: Theme.of(context).textTheme.bodyMedium
-                  ?.copyWith(color: AppTheme.textMuted),
+            Actor(
+              delay: const Duration(milliseconds: 400),
+              acts: const [Act.fadeIn(), Act.slideY(from: 0.08)],
+              child: Text(
+                widget.project.longDescription,
+                textAlign: isRight ? TextAlign.right : TextAlign.left,
+                style: Theme.of(context).textTheme.bodyMedium
+                    ?.copyWith(color: AppTheme.textMuted),
+              ),
             ),
           ],
 
@@ -308,55 +364,72 @@ class _FeaturedProjectCardState extends State<_FeaturedProjectCard> {
 
           // Store / live links
           if (widget.project.urls.isNotEmpty) ...[
-            Wrap(
-              spacing: 10,
-              runSpacing: 10,
-              alignment: isRight ? WrapAlignment.end : WrapAlignment.start,
-              children: widget.project.urls
-                  .map((u) => _ProjectUrlItem(url: u, onLaunch: widget.onLinkTap))
-                  .toList(),
+            Actor(
+              delay: const Duration(milliseconds: 500),
+              acts: const [Act.fadeIn(), Act.slideY(from: 0.06)],
+              child: Wrap(
+                spacing: 10,
+                runSpacing: 10,
+                alignment: isRight ? WrapAlignment.end : WrapAlignment.start,
+                children: widget.project.urls
+                    .map(
+                      (u) => _ProjectUrlItem(
+                        url: u,
+                        onLaunch: widget.onLinkTap,
+                      ),
+                    )
+                    .toList(),
+              ),
             ),
             const SizedBox(height: 16),
           ],
 
           // Tech tags
-          Wrap(
-            spacing: 12,
-            runSpacing: 8,
-            alignment: isRight ? WrapAlignment.end : WrapAlignment.start,
-            children: widget.project.tags
-                .map(
-                  (t) => Text(
-                    t,
-                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                          color: AppTheme.textMuted,
-                          fontFamily: 'JetBrains Mono',
-                        ),
-                  ),
-                )
-                .toList(),
+          Actor(
+            delay: const Duration(milliseconds: 580),
+            acts: const [Act.fadeIn(), Act.slideY(from: 0.06)],
+            child: Wrap(
+              spacing: 12,
+              runSpacing: 8,
+              alignment: isRight ? WrapAlignment.end : WrapAlignment.start,
+              children: widget.project.tags
+                  .map(
+                    (t) => Text(
+                      t,
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                            color: AppTheme.textMuted,
+                            fontFamily: 'JetBrains Mono',
+                          ),
+                    ),
+                  )
+                  .toList(),
+            ),
           ),
 
           const SizedBox(height: 16),
 
           // Icon links (GitHub / Live)
-          Row(
-            mainAxisAlignment:
-                isRight ? MainAxisAlignment.end : MainAxisAlignment.start,
-            children: [
-              if (widget.project.repoUrl.isNotEmpty)
-                _IconLink(
-                  icon: Icons.code,
-                  tooltip: 'Source',
-                  onTap: () => widget.onLinkTap(widget.project.repoUrl),
-                ),
-              if (widget.project.liveUrl.isNotEmpty)
-                _IconLink(
-                  icon: Icons.open_in_new,
-                  tooltip: 'Live',
-                  onTap: () => widget.onLinkTap(widget.project.liveUrl),
-                ),
-            ],
+          Actor(
+            delay: const Duration(milliseconds: 660),
+            acts: const [Act.fadeIn(), Act.slideY(from: 0.06)],
+            child: Row(
+              mainAxisAlignment:
+                  isRight ? MainAxisAlignment.end : MainAxisAlignment.start,
+              children: [
+                if (widget.project.repoUrl.isNotEmpty)
+                  _IconLink(
+                    icon: Icons.code,
+                    tooltip: 'Source',
+                    onTap: () => widget.onLinkTap(widget.project.repoUrl),
+                  ),
+                if (widget.project.liveUrl.isNotEmpty)
+                  _IconLink(
+                    icon: Icons.open_in_new,
+                    tooltip: 'Live',
+                    onTap: () => widget.onLinkTap(widget.project.liveUrl),
+                  ),
+              ],
+            ),
           ),
         ],
       ),

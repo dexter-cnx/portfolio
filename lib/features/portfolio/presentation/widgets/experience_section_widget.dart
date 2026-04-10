@@ -1,11 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:cue/cue.dart';
 import 'package:flutter/material.dart';
 import '../../../../app/theme/app_theme.dart';
 import '../../../../core/widgets/glass_container.dart';
 import '../../models/portfolio_models.dart';
 import 'section_header.dart';
 import 'section_wrapper.dart';
-import 'scroll_reveal.dart';
 import 'responsive_layout.dart';
 
 class ExperienceSectionWidget extends StatefulWidget {
@@ -27,11 +27,15 @@ class _ExperienceSectionWidgetState extends State<ExperienceSectionWidget> {
 
     return SectionWrapper(
       id: 'experience',
-      child: ScrollReveal(
+      child: Cue.onScrollVisible(
+        acts: const [Act.fadeIn(), Act.slideY(from: 0.06)],
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SectionHeader(number: '02', title: 'exp_title'.tr()),
+            Actor(
+              acts: const [Act.fadeIn(), Act.slideY(from: 0.08)],
+              child: SectionHeader(number: '02', title: 'exp_title'.tr()),
+            ),
             const SizedBox(height: 40),
             // Responsive: side tabs on desktop, top tabs on mobile
             ResponsiveLayout.isDesktop(context)
@@ -153,21 +157,14 @@ class _ExperienceSectionWidgetState extends State<ExperienceSectionWidget> {
   Widget _buildDetailPanel(BuildContext context) {
     final item = widget.experience[_selectedIndex];
 
-    // Animate panel content when tab changes
-    return AnimatedSwitcher(
-      duration: const Duration(milliseconds: 280),
-      transitionBuilder: (child, anim) => FadeTransition(
-        opacity: anim,
-        child: SlideTransition(
-          position: Tween<Offset>(
-            begin: const Offset(0, 0.04),
-            end: Offset.zero,
-          ).animate(CurvedAnimation(parent: anim, curve: Curves.easeOut)),
-          child: child,
-        ),
-      ),
+    return Cue.onChange(
+      value: _selectedIndex,
+      fromCurrentValue: true,
+      acts: const [
+        Act.fadeIn(),
+        Act.slideY(from: 0.04),
+      ],
       child: GlassContainer(
-        key: ValueKey(_selectedIndex),
         blur: 12,
         backgroundOpacity: 0.05,
         borderOpacity: 0.14,

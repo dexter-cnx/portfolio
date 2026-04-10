@@ -1,13 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:cue/cue.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import '../../../../app/theme/app_theme.dart';
 import '../../../../core/helpers/responsive_helper.dart';
 import '../../../../core/widgets/glass_container.dart';
 import '../../models/portfolio_models.dart';
 import 'section_header.dart';
 import 'section_wrapper.dart';
-import 'scroll_reveal.dart';
 import 'responsive_layout.dart';
 
 class AboutSectionWidget extends StatelessWidget {
@@ -19,19 +18,33 @@ class AboutSectionWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return SectionWrapper(
       id: 'about',
-      child: ScrollReveal(
+      child: Cue.onScrollVisible(
+        acts: const [Act.fadeIn(), Act.slideY(from: 0.06)],
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SectionHeader(number: '01', title: 'nav_about'.tr()),
+            Actor(
+              acts: const [Act.fadeIn(), Act.slideY(from: 0.08)],
+              child: SectionHeader(number: '01', title: 'nav_about'.tr()),
+            ),
             const SizedBox(height: 48),
             if (ResponsiveLayout.isDesktop(context))
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(flex: 3, child: _buildTextContent(context)),
+                  Expanded(
+                    flex: 3,
+                    child: _buildTextContent(context),
+                  ),
                   const SizedBox(width: 56),
-                  Expanded(flex: 2, child: _buildProfileImage(context)),
+                  Expanded(
+                    flex: 2,
+                    child: Actor(
+                      delay: const Duration(milliseconds: 180),
+                      acts: const [Act.fadeIn(), Act.scale(from: 0.92)],
+                      child: _buildProfileImage(context),
+                    ),
+                  ),
                 ],
               )
             else
@@ -39,7 +52,11 @@ class AboutSectionWidget extends StatelessWidget {
                 children: [
                   _buildTextContent(context),
                   const SizedBox(height: 48),
-                  _buildProfileImage(context),
+                  Actor(
+                    delay: const Duration(milliseconds: 180),
+                    acts: const [Act.fadeIn(), Act.scale(from: 0.92)],
+                    child: _buildProfileImage(context),
+                  ),
                 ],
               ),
           ],
@@ -52,25 +69,33 @@ class AboutSectionWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        ...about.paragraphs.map(
-          (p) => Padding(
-            padding: const EdgeInsets.only(bottom: 20),
-            child: Text(
-              p,
-              style: Theme.of(context).textTheme.bodyLarge,
+        ...about.paragraphs.asMap().entries.map(
+          (entry) => Actor(
+            delay: Duration(milliseconds: entry.key * 80),
+            acts: const [Act.fadeIn(), Act.slideY(from: 0.06)],
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 20),
+              child: Text(
+                entry.value,
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
             ),
           ),
         ),
 
         const SizedBox(height: 24),
 
-        Text(
-          'about_skills_header'.tr(),
-          style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                color: AppTheme.accent,
-                fontFamily: 'JetBrains Mono',
-                letterSpacing: 1.5,
-              ),
+        Actor(
+          delay: Duration(milliseconds: about.paragraphs.length * 80 + 120),
+          acts: const [Act.fadeIn(), Act.slideY(from: 0.06)],
+          child: Text(
+            'about_skills_header'.tr(),
+            style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                  color: AppTheme.accent,
+                  fontFamily: 'JetBrains Mono',
+                  letterSpacing: 1.5,
+                ),
+          ),
         ),
 
         const SizedBox(height: 24),
@@ -95,19 +120,14 @@ class AboutSectionWidget extends StatelessWidget {
             final skill = entry.value;
             return SizedBox(
               width: (constraints.maxWidth - (10 * (cols - 1))) / cols,
-              child: _GlassSkillChip(
-                skill: skill,
-                icon: _iconForSkill(skill),
-              )
-                  // Stagger: each chip fades in 60 ms after the previous
-                  .animate(delay: (i * 60).ms)
-                  .fadeIn(duration: 400.ms, curve: Curves.easeOut)
-                  .slideX(
-                    begin: -0.08,
-                    end: 0,
-                    duration: 400.ms,
-                    curve: Curves.easeOutCubic,
-                  ),
+              child: Actor(
+                delay: Duration(milliseconds: i * 60),
+                acts: const [Act.fadeIn(), Act.slideX(from: -0.08)],
+                child: _GlassSkillChip(
+                  skill: skill,
+                  icon: _iconForSkill(skill),
+                ),
+              ),
             );
           }).toList(),
         );
