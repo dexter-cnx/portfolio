@@ -1,5 +1,6 @@
 import 'package:cue/cue.dart';
 import 'package:flutter/material.dart';
+import 'portfolio_motion.dart';
 
 /// Plays a fade + slide-up + optional scale animation the first time
 /// the widget becomes visible.
@@ -22,7 +23,7 @@ class ScrollReveal extends StatelessWidget {
     super.key,
     required this.child,
     this.delay = Duration.zero,
-    this.slideBeginY = 0.12,
+    this.slideBeginY = kContentRevealSlideFrom,
     this.scaleBegin = 1.0,
   });
 
@@ -57,8 +58,8 @@ class StaggerReveal extends StatelessWidget {
   const StaggerReveal({
     super.key,
     required this.children,
-    this.stagger = const Duration(milliseconds: 80),
-    this.slideBeginY = 0.12,
+    this.stagger = kProjectOtherCardStagger,
+    this.slideBeginY = kContentRevealSlideFrom,
   });
 
   @override

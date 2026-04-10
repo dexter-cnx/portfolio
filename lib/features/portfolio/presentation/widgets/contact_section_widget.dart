@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:cue/cue.dart';
 import '../../../../app/theme/app_theme.dart';
 import '../../../../core/helpers/responsive_helper.dart';
 import '../../../../core/widgets/glass_container.dart';
 import '../../models/portfolio_models.dart';
+import 'portfolio_motion.dart';
 import 'section_wrapper.dart';
-import 'scroll_reveal.dart';
 
 class ContactSectionWidget extends StatelessWidget {
   final Contact contact;
@@ -27,7 +28,11 @@ class ContactSectionWidget extends StatelessWidget {
         horizontal: context.sectionPaddingH,
         vertical: 140,
       ),
-      child: ScrollReveal(
+      child: Cue.onScrollVisible(
+        acts: const [
+          Act.fadeIn(),
+          Act.slideY(from: kSectionRevealSlideFrom),
+        ],
         child: Center(
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 680),
@@ -46,71 +51,108 @@ class ContactSectionWidget extends StatelessWidget {
               ],
               child: Column(
                 children: [
-                  // ── Eyebrow ─────────────────────────────────────────
-                  Text(
-                    'contact_eyebrow'.tr(),
-                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                          color: AppTheme.accent,
-                          fontFamily: 'JetBrains Mono',
-                          letterSpacing: 1.5,
-                        ),
+                  Actor(
+                    acts: const [
+                      Act.fadeIn(),
+                      Act.slideY(from: kSectionHeaderSlideFrom),
+                    ],
+                    child: Text(
+                      'contact_eyebrow'.tr(),
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                        color: AppTheme.accent,
+                        fontFamily: 'JetBrains Mono',
+                        letterSpacing: 1.5,
+                      ),
+                    ),
                   ),
 
                   const SizedBox(height: 20),
 
-                  // ── Title ────────────────────────────────────────────
-                  Text(
-                    contact.title,
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                          color: AppTheme.textPrimary,
-                          fontWeight: FontWeight.bold,
-                          fontSize:
-                              context.isMobile ? 36.0 : 52.0,
-                        ),
+                  Actor(
+                    delay: kContactIntroStagger,
+                    acts: const [
+                      Act.fadeIn(),
+                      Act.slideY(from: kSectionHeaderSlideFrom),
+                    ],
+                    child: Text(
+                      contact.title,
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.displayMedium
+                          ?.copyWith(
+                            color: AppTheme.textPrimary,
+                            fontWeight: FontWeight.bold,
+                            fontSize: context.isMobile ? 36.0 : 52.0,
+                          ),
+                    ),
                   ),
 
                   const SizedBox(height: 24),
 
-                  // ── Body copy ─────────────────────────────────────────
-                  Text(
-                    contact.body,
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: AppTheme.textMuted,
-                          fontSize: 17,
-                          height: 1.65,
-                        ),
+                  Actor(
+                    delay: kContactIntroStagger + kContactRowStagger,
+                    acts: const [
+                      Act.fadeIn(),
+                      Act.slideY(from: kContentRevealSlideFrom),
+                    ],
+                    child: Text(
+                      contact.body,
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        color: AppTheme.textMuted,
+                        fontSize: 17,
+                        height: 1.65,
+                      ),
+                    ),
                   ),
 
                   const SizedBox(height: 44),
 
-                  // ── Primary CTA ───────────────────────────────────────
-                  OutlinedButton(
-                    onPressed: () => onCtaTap(contact.ctaUrl),
-                    style: OutlinedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 36, vertical: 20),
-                      textStyle: const TextStyle(fontSize: 16),
+                  Actor(
+                    delay: kContactIntroStagger + (kContactRowStagger * 2),
+                    acts: const [Act.fadeIn(), Act.scale(from: 0.94)],
+                    child: OutlinedButton(
+                      onPressed: () => onCtaTap(contact.ctaUrl),
+                      style: OutlinedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 36,
+                          vertical: 20,
+                        ),
+                        textStyle: const TextStyle(fontSize: 16),
+                      ),
+                      child: Text(contact.ctaLabel),
                     ),
-                    child: Text(contact.ctaLabel),
                   ),
 
                   // ── Optional contact details ──────────────────────────
                   if (contact.phone != null || contact.lineId != null) ...[
                     const SizedBox(height: 36),
                     if (contact.phone != null)
-                      _ContactRow(
-                        icon: Icons.phone_outlined,
-                        label: contact.phone!,
-                        onTap: () => onCtaTap('tel:${contact.phone}'),
+                      Actor(
+                        delay: kContactIntroStagger + (kContactRowStagger * 3),
+                        acts: const [
+                          Act.fadeIn(),
+                          Act.slideY(from: kContactRowSlideFrom),
+                        ],
+                        child: _ContactRow(
+                          icon: Icons.phone_outlined,
+                          label: contact.phone!,
+                          onTap: () => onCtaTap('tel:${contact.phone}'),
+                        ),
                       ),
                     if (contact.lineId != null)
-                      _ContactRow(
-                        icon: Icons.chat_bubble_outline,
-                        label: 'Line: ${contact.lineId}',
-                        onTap: () => onCtaTap(
-                            'https://line.me/ti/p/~${contact.lineId}'),
+                      Actor(
+                        delay: kContactIntroStagger + (kContactRowStagger * 4),
+                        acts: const [
+                          Act.fadeIn(),
+                          Act.slideY(from: kContactRowSlideFrom),
+                        ],
+                        child: _ContactRow(
+                          icon: Icons.chat_bubble_outline,
+                          label: 'Line: ${contact.lineId}',
+                          onTap: () => onCtaTap(
+                            'https://line.me/ti/p/~${contact.lineId}',
+                          ),
+                        ),
                       ),
                   ],
 
@@ -123,12 +165,23 @@ class ContactSectionWidget extends StatelessWidget {
                       spacing: 12,
                       runSpacing: 12,
                       alignment: WrapAlignment.center,
-                      children: socialLinks
-                          .map((l) => _SocialChip(
-                                link: l,
-                                onTap: () => onCtaTap(l.url),
-                              ))
-                          .toList(),
+                      children: socialLinks.asMap().entries.map((entry) {
+                        return Actor(
+                          delay: staggeredDelay(
+                            entry.key,
+                            base: kContactSocialBaseDelay,
+                            step: kContactSocialStagger,
+                          ),
+                          acts: const [
+                            Act.fadeIn(),
+                            Act.slideY(from: kContactRowSlideFrom),
+                          ],
+                          child: _SocialChip(
+                            link: entry.value,
+                            onTap: () => onCtaTap(entry.value.url),
+                          ),
+                        );
+                      }).toList(),
                     ),
                   ],
                 ],
@@ -148,10 +201,7 @@ class _Divider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 1,
-      color: Colors.white.withValues(alpha: 0.08),
-    );
+    return Container(height: 1, color: Colors.white.withValues(alpha: 0.08));
   }
 }
 
@@ -185,9 +235,9 @@ class _ContactRow extends StatelessWidget {
               Text(
                 label,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: AppTheme.textPrimary,
-                      fontFamily: 'JetBrains Mono',
-                    ),
+                  color: AppTheme.textPrimary,
+                  fontFamily: 'JetBrains Mono',
+                ),
               ),
             ],
           ),
@@ -238,8 +288,7 @@ class _SocialChipState extends State<_SocialChip> {
         onTap: widget.onTap,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
-          padding:
-              const EdgeInsets.symmetric(horizontal: 20, vertical: 11),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 11),
           decoration: BoxDecoration(
             border: Border.all(
               color: _hovered
@@ -255,7 +304,7 @@ class _SocialChipState extends State<_SocialChip> {
                     BoxShadow(
                       color: AppTheme.accent.withValues(alpha: 0.12),
                       blurRadius: 16,
-                    )
+                    ),
                   ]
                 : [],
           ),
@@ -271,10 +320,9 @@ class _SocialChipState extends State<_SocialChip> {
               Text(
                 widget.link.label,
                 style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                      color:
-                          _hovered ? AppTheme.accent : AppTheme.textMuted,
-                      fontFamily: 'JetBrains Mono',
-                    ),
+                  color: _hovered ? AppTheme.accent : AppTheme.textMuted,
+                  fontFamily: 'JetBrains Mono',
+                ),
               ),
             ],
           ),

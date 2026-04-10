@@ -5,6 +5,7 @@ import '../../../../app/theme/app_theme.dart';
 import '../../../../core/helpers/responsive_helper.dart';
 import '../../../../core/widgets/glass_container.dart';
 import '../../models/portfolio_models.dart';
+import 'portfolio_motion.dart';
 import 'section_header.dart';
 import 'section_wrapper.dart';
 import 'responsive_layout.dart';
@@ -19,12 +20,18 @@ class AboutSectionWidget extends StatelessWidget {
     return SectionWrapper(
       id: 'about',
       child: Cue.onScrollVisible(
-        acts: const [Act.fadeIn(), Act.slideY(from: 0.06)],
+        acts: const [
+          Act.fadeIn(),
+          Act.slideY(from: kSectionRevealSlideFrom),
+        ],
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Actor(
-              acts: const [Act.fadeIn(), Act.slideY(from: 0.08)],
+              acts: const [
+                Act.fadeIn(),
+                Act.slideY(from: kSectionHeaderSlideFrom),
+              ],
               child: SectionHeader(number: '01', title: 'nav_about'.tr()),
             ),
             const SizedBox(height: 48),
@@ -32,15 +39,12 @@ class AboutSectionWidget extends StatelessWidget {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(
-                    flex: 3,
-                    child: _buildTextContent(context),
-                  ),
+                  Expanded(flex: 3, child: _buildTextContent(context)),
                   const SizedBox(width: 56),
                   Expanded(
                     flex: 2,
                     child: Actor(
-                      delay: const Duration(milliseconds: 180),
+                      delay: kAboutProfileDelay,
                       acts: const [Act.fadeIn(), Act.scale(from: 0.92)],
                       child: _buildProfileImage(context),
                     ),
@@ -53,7 +57,7 @@ class AboutSectionWidget extends StatelessWidget {
                   _buildTextContent(context),
                   const SizedBox(height: 48),
                   Actor(
-                    delay: const Duration(milliseconds: 180),
+                    delay: kAboutProfileDelay,
                     acts: const [Act.fadeIn(), Act.scale(from: 0.92)],
                     child: _buildProfileImage(context),
                   ),
@@ -71,8 +75,11 @@ class AboutSectionWidget extends StatelessWidget {
       children: [
         ...about.paragraphs.asMap().entries.map(
           (entry) => Actor(
-            delay: Duration(milliseconds: entry.key * 80),
-            acts: const [Act.fadeIn(), Act.slideY(from: 0.06)],
+            delay: staggeredDelay(entry.key, step: kAboutParagraphStagger),
+            acts: const [
+              Act.fadeIn(),
+              Act.slideY(from: kContentRevealSlideFrom),
+            ],
             child: Padding(
               padding: const EdgeInsets.only(bottom: 20),
               child: Text(
@@ -86,15 +93,22 @@ class AboutSectionWidget extends StatelessWidget {
         const SizedBox(height: 24),
 
         Actor(
-          delay: Duration(milliseconds: about.paragraphs.length * 80 + 120),
-          acts: const [Act.fadeIn(), Act.slideY(from: 0.06)],
+          delay: staggeredDelay(
+            about.paragraphs.length,
+            step: kAboutParagraphStagger,
+            base: kAboutSkillsHeaderDelay,
+          ),
+          acts: const [
+            Act.fadeIn(),
+            Act.slideY(from: kContentRevealSlideFrom),
+          ],
           child: Text(
             'about_skills_header'.tr(),
             style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                  color: AppTheme.accent,
-                  fontFamily: 'JetBrains Mono',
-                  letterSpacing: 1.5,
-                ),
+              color: AppTheme.accent,
+              fontFamily: 'JetBrains Mono',
+              letterSpacing: 1.5,
+            ),
           ),
         ),
 
@@ -121,8 +135,11 @@ class AboutSectionWidget extends StatelessWidget {
             return SizedBox(
               width: (constraints.maxWidth - (10 * (cols - 1))) / cols,
               child: Actor(
-                delay: Duration(milliseconds: i * 60),
-                acts: const [Act.fadeIn(), Act.slideX(from: -0.08)],
+                delay: staggeredDelay(i, step: kAboutSkillChipStagger),
+                acts: const [
+                  Act.fadeIn(),
+                  Act.slideX(from: -kSectionHeaderSlideFrom),
+                ],
                 child: _GlassSkillChip(
                   skill: skill,
                   icon: _iconForSkill(skill),
@@ -224,11 +241,10 @@ class _GlassSkillChipState extends State<_GlassSkillChip> {
                   widget.skill,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                        color:
-                            _hovered ? AppTheme.accent : AppTheme.textPrimary,
-                        fontFamily: 'JetBrains Mono',
-                        fontSize: 12,
-                      ),
+                    color: _hovered ? AppTheme.accent : AppTheme.textPrimary,
+                    fontFamily: 'JetBrains Mono',
+                    fontSize: 12,
+                  ),
                 ),
               ),
             ],
@@ -278,7 +294,9 @@ class _ImageWithFrameState extends State<_ImageWithFrame> {
                 curve: Curves.easeInOut,
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color: AppTheme.accent.withValues(alpha: _hovered ? 1.0 : 0.7),
+                    color: AppTheme.accent.withValues(
+                      alpha: _hovered ? 1.0 : 0.7,
+                    ),
                     width: 2,
                   ),
                   borderRadius: BorderRadius.circular(4),
@@ -287,7 +305,7 @@ class _ImageWithFrameState extends State<_ImageWithFrame> {
                           BoxShadow(
                             color: AppTheme.accent.withValues(alpha: 0.2),
                             blurRadius: 24,
-                          )
+                          ),
                         ]
                       : [],
                 ),

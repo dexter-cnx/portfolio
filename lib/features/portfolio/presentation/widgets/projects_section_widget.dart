@@ -6,6 +6,7 @@ import '../../../../app/theme/app_theme.dart';
 import '../../../../core/helpers/responsive_helper.dart';
 import '../../../../core/widgets/glass_container.dart';
 import '../../models/portfolio_models.dart';
+import 'portfolio_motion.dart';
 import 'section_header.dart';
 import 'section_wrapper.dart';
 import 'scroll_reveal.dart';
@@ -41,7 +42,10 @@ class ProjectsSectionWidget extends StatelessWidget {
               _FeaturedProjectCard(
                 project: entry.value,
                 isReversed: entry.key % 2 != 0,
-                revealDelay: Duration(milliseconds: entry.key * 120),
+                revealDelay: staggeredDelay(
+                  entry.key,
+                  step: kProjectFeaturedCardStagger,
+                ),
                 onLinkTap: onLinkTap,
               ),
             ];
@@ -69,9 +73,9 @@ class ProjectsSectionWidget extends StatelessWidget {
                 child: Text(
                   'projects_others_title'.tr(),
                   style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                        color: AppTheme.textPrimary,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    color: AppTheme.textPrimary,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ),
@@ -88,8 +92,7 @@ class ProjectsSectionWidget extends StatelessWidget {
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        final itemWidth =
-            (constraints.maxWidth - (16.0 * (cols - 1))) / cols;
+        final itemWidth = (constraints.maxWidth - (16.0 * (cols - 1))) / cols;
 
         return Wrap(
           spacing: 16,
@@ -98,7 +101,10 @@ class ProjectsSectionWidget extends StatelessWidget {
             return SizedBox(
               width: itemWidth,
               child: ScrollReveal(
-                delay: (entry.key * 80).ms,
+                delay: staggeredDelay(
+                  entry.key,
+                  step: kProjectOtherCardStagger,
+                ),
                 child: _OtherProjectCard(
                   project: entry.value,
                   onLinkTap: onLinkTap,
@@ -157,7 +163,7 @@ class _FeaturedProjectCardState extends State<_FeaturedProjectCard> {
           delay: widget.revealDelay,
           acts: const [
             Act.fadeIn(),
-            Act.slideY(from: 0.08),
+            Act.slideY(from: kCardRevealSlideFrom),
           ],
           child: GlassContainer(
             blur: _hovered ? 16 : 10,
@@ -179,14 +185,12 @@ class _FeaturedProjectCardState extends State<_FeaturedProjectCard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Actor(
-                  delay: const Duration(milliseconds: 120),
-                  acts: const [
-                    Act.fadeIn(),
-                    Act.scale(from: 0.92),
-                  ],
+                  delay: kProjectImageDelay,
+                  acts: const [Act.fadeIn(), Act.scale(from: 0.92)],
                   child: ClipRRect(
-                    borderRadius:
-                        const BorderRadius.vertical(top: Radius.circular(15)),
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(15),
+                    ),
                     child: AspectRatio(
                       aspectRatio: 16 / 9,
                       child: _ProjectImageGallery(
@@ -231,11 +235,8 @@ class _FeaturedProjectCardState extends State<_FeaturedProjectCard> {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
                 child: Actor(
-                  delay: widget.revealDelay + const Duration(milliseconds: 120),
-                  acts: const [
-                    Act.fadeIn(),
-                    Act.scale(from: 0.92),
-                  ],
+                  delay: widget.revealDelay + kProjectImageDelay,
+                  acts: const [Act.fadeIn(), Act.scale(from: 0.92)],
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 300),
                     decoration: BoxDecoration(
@@ -244,7 +245,7 @@ class _FeaturedProjectCardState extends State<_FeaturedProjectCard> {
                               BoxShadow(
                                 color: AppTheme.accent.withValues(alpha: 0.08),
                                 blurRadius: 40,
-                              )
+                              ),
                             ]
                           : [],
                     ),
@@ -307,55 +308,68 @@ class _FeaturedProjectCardState extends State<_FeaturedProjectCard> {
         crossAxisAlignment: crossAxisAlignment,
         children: [
           Actor(
-            delay: const Duration(milliseconds: 160),
-            acts: const [Act.fadeIn(), Act.slideY(from: 0.08)],
+            delay: kProjectContentLeadDelay,
+            acts: const [
+              Act.fadeIn(),
+              Act.slideY(from: kSectionHeaderSlideFrom),
+            ],
             child: Text(
               'project_type'.tr(),
               style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                    color: AppTheme.accent,
-                    fontFamily: 'JetBrains Mono',
-                  ),
+                color: AppTheme.accent,
+                fontFamily: 'JetBrains Mono',
+              ),
             ),
           ),
           const SizedBox(height: 8),
 
           Actor(
-            delay: const Duration(milliseconds: 240),
-            acts: const [Act.fadeIn(), Act.slideY(from: 0.08)],
+            delay: kProjectContentLeadDelay + kProjectContentStep,
+            acts: const [
+              Act.fadeIn(),
+              Act.slideY(from: kSectionHeaderSlideFrom),
+            ],
             child: Text(
               widget.project.name,
               textAlign: isRight ? TextAlign.right : TextAlign.left,
               style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                    color: _hovered ? AppTheme.accent : AppTheme.textPrimary,
-                    fontWeight: FontWeight.bold,
-                  ),
+                color: _hovered ? AppTheme.accent : AppTheme.textPrimary,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
           const SizedBox(height: 16),
 
           Actor(
-            delay: const Duration(milliseconds: 320),
-            acts: const [Act.fadeIn(), Act.slideY(from: 0.08)],
+            delay: kProjectContentLeadDelay + (kProjectContentStep * 2),
+            acts: const [
+              Act.fadeIn(),
+              Act.slideY(from: kSectionHeaderSlideFrom),
+            ],
             child: Text(
               widget.project.summary,
               textAlign: isRight ? TextAlign.right : TextAlign.left,
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: AppTheme.textPrimary,
-                    height: 1.6,
-                  ),
+                color: AppTheme.textPrimary,
+                height: 1.6,
+              ),
             ),
           ),
 
           if (widget.project.longDescription.isNotEmpty) ...[
             const SizedBox(height: 10),
             Actor(
-              delay: const Duration(milliseconds: 400),
-              acts: const [Act.fadeIn(), Act.slideY(from: 0.08)],
+              delay: kProjectContentLeadDelay + (kProjectContentStep * 3),
+              acts: const [
+                Act.fadeIn(),
+                Act.slideY(from: kSectionHeaderSlideFrom),
+              ],
               child: Text(
                 widget.project.longDescription,
                 textAlign: isRight ? TextAlign.right : TextAlign.left,
-                style: Theme.of(context).textTheme.bodyMedium
-                    ?.copyWith(color: AppTheme.textMuted),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.copyWith(color: AppTheme.textMuted),
               ),
             ),
           ],
@@ -365,18 +379,19 @@ class _FeaturedProjectCardState extends State<_FeaturedProjectCard> {
           // Store / live links
           if (widget.project.urls.isNotEmpty) ...[
             Actor(
-              delay: const Duration(milliseconds: 500),
-              acts: const [Act.fadeIn(), Act.slideY(from: 0.06)],
+              delay: kProjectContentLeadDelay + (kProjectContentStep * 4),
+              acts: const [
+                Act.fadeIn(),
+                Act.slideY(from: kContentRevealSlideFrom),
+              ],
               child: Wrap(
                 spacing: 10,
                 runSpacing: 10,
                 alignment: isRight ? WrapAlignment.end : WrapAlignment.start,
                 children: widget.project.urls
                     .map(
-                      (u) => _ProjectUrlItem(
-                        url: u,
-                        onLaunch: widget.onLinkTap,
-                      ),
+                      (u) =>
+                          _ProjectUrlItem(url: u, onLaunch: widget.onLinkTap),
                     )
                     .toList(),
               ),
@@ -386,8 +401,11 @@ class _FeaturedProjectCardState extends State<_FeaturedProjectCard> {
 
           // Tech tags
           Actor(
-            delay: const Duration(milliseconds: 580),
-            acts: const [Act.fadeIn(), Act.slideY(from: 0.06)],
+            delay: kProjectContentLeadDelay + (kProjectContentStep * 5),
+            acts: const [
+              Act.fadeIn(),
+              Act.slideY(from: kContentRevealSlideFrom),
+            ],
             child: Wrap(
               spacing: 12,
               runSpacing: 8,
@@ -397,9 +415,9 @@ class _FeaturedProjectCardState extends State<_FeaturedProjectCard> {
                     (t) => Text(
                       t,
                       style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                            color: AppTheme.textMuted,
-                            fontFamily: 'JetBrains Mono',
-                          ),
+                        color: AppTheme.textMuted,
+                        fontFamily: 'JetBrains Mono',
+                      ),
                     ),
                   )
                   .toList(),
@@ -410,11 +428,15 @@ class _FeaturedProjectCardState extends State<_FeaturedProjectCard> {
 
           // Icon links (GitHub / Live)
           Actor(
-            delay: const Duration(milliseconds: 660),
-            acts: const [Act.fadeIn(), Act.slideY(from: 0.06)],
+            delay: kProjectContentLeadDelay + (kProjectContentStep * 6),
+            acts: const [
+              Act.fadeIn(),
+              Act.slideY(from: kContentRevealSlideFrom),
+            ],
             child: Row(
-              mainAxisAlignment:
-                  isRight ? MainAxisAlignment.end : MainAxisAlignment.start,
+              mainAxisAlignment: isRight
+                  ? MainAxisAlignment.end
+                  : MainAxisAlignment.start,
               children: [
                 if (widget.project.repoUrl.isNotEmpty)
                   _IconLink(
@@ -462,10 +484,7 @@ class _OtherProjectCardState extends State<_OtherProjectCard> {
         duration: const Duration(milliseconds: 220),
         curve: Curves.easeOut,
         child: ResponsiveLayout.isDesktop(context)
-            ? SizedBox(
-                height: 340,
-                child: _buildCard(context, compact: true),
-              )
+            ? SizedBox(height: 340, child: _buildCard(context, compact: true))
             : _buildCard(context, compact: false),
       ),
     );
@@ -494,7 +513,9 @@ class _OtherProjectCardState extends State<_OtherProjectCard> {
           // Image
           if (widget.project.images.isNotEmpty)
             ClipRRect(
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(13)),
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(13),
+              ),
               child: AspectRatio(
                 aspectRatio: 16 / 9,
                 child: _ProjectImageGallery(
@@ -518,13 +539,13 @@ class _OtherProjectCardState extends State<_OtherProjectCard> {
                     Expanded(
                       child: Text(
                         widget.project.name,
-                        style:
-                            Theme.of(context).textTheme.titleMedium?.copyWith(
-                                  color: _hovered
-                                      ? AppTheme.accent
-                                      : AppTheme.textPrimary,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                        style: Theme.of(context).textTheme.titleMedium
+                            ?.copyWith(
+                              color: _hovered
+                                  ? AppTheme.accent
+                                  : AppTheme.textPrimary,
+                              fontWeight: FontWeight.w600,
+                            ),
                       ),
                     ),
                     Row(
@@ -554,12 +575,13 @@ class _OtherProjectCardState extends State<_OtherProjectCard> {
                 Text(
                   widget.project.summary,
                   maxLines: compact ? 2 : null,
-                  overflow:
-                      compact ? TextOverflow.ellipsis : TextOverflow.visible,
+                  overflow: compact
+                      ? TextOverflow.ellipsis
+                      : TextOverflow.visible,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppTheme.textMuted,
-                        height: 1.45,
-                      ),
+                    color: AppTheme.textMuted,
+                    height: 1.45,
+                  ),
                 ),
                 const SizedBox(height: 14),
                 Wrap(
@@ -569,12 +591,12 @@ class _OtherProjectCardState extends State<_OtherProjectCard> {
                       .map(
                         (t) => Text(
                           t,
-                          style:
-                              Theme.of(context).textTheme.labelSmall?.copyWith(
-                                    color: AppTheme.textMuted,
-                                    fontFamily: 'JetBrains Mono',
-                                    fontSize: 10,
-                                  ),
+                          style: Theme.of(context).textTheme.labelSmall
+                              ?.copyWith(
+                                color: AppTheme.textMuted,
+                                fontFamily: 'JetBrains Mono',
+                                fontSize: 10,
+                              ),
                         ),
                       )
                       .toList(),
@@ -664,17 +686,21 @@ class _ProjectUrlItem extends StatelessWidget {
                 borderRadius: BorderRadius.circular(2),
                 child: url.image.endsWith('.svg')
                     ? SvgPicture.asset(url.image, width: 18, height: 18)
-                    : Image.asset(url.image,
-                        width: 18, height: 18, fit: BoxFit.cover),
+                    : Image.asset(
+                        url.image,
+                        width: 18,
+                        height: 18,
+                        fit: BoxFit.cover,
+                      ),
               ),
               const SizedBox(width: 6),
             ],
             Text(
               url.title,
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color: AppTheme.accent,
-                    fontFamily: 'JetBrains Mono',
-                  ),
+                color: AppTheme.accent,
+                fontFamily: 'JetBrains Mono',
+              ),
             ),
           ],
         ),
@@ -701,7 +727,8 @@ class _ProjectImageGalleryState extends State<_ProjectImageGallery> {
 
   static const int _kLoopFactor = 1000;
 
-  int get _currentIndex => widget.images.isEmpty ? 0 : _page % widget.images.length;
+  int get _currentIndex =>
+      widget.images.isEmpty ? 0 : _page % widget.images.length;
 
   int get _initialPage =>
       widget.images.length <= 1 ? 0 : widget.images.length * _kLoopFactor;
@@ -787,10 +814,7 @@ class _ProjectImageGalleryState extends State<_ProjectImageGallery> {
             top: 0,
             bottom: 0,
             child: Center(
-              child: _Arrow(
-                icon: Icons.chevron_left,
-                onTap: _goToPreviousPage,
-              ),
+              child: _Arrow(icon: Icons.chevron_left, onTap: _goToPreviousPage),
             ),
           ),
           Positioned(
@@ -798,10 +822,7 @@ class _ProjectImageGalleryState extends State<_ProjectImageGallery> {
             top: 0,
             bottom: 0,
             child: Center(
-              child: _Arrow(
-                icon: Icons.chevron_right,
-                onTap: _goToNextPage,
-              ),
+              child: _Arrow(icon: Icons.chevron_right, onTap: _goToNextPage),
             ),
           ),
         ],

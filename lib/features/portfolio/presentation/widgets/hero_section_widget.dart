@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../app/theme/app_theme.dart';
 import '../../../../core/helpers/responsive_helper.dart';
 import '../../models/portfolio_models.dart';
+import 'portfolio_motion.dart';
 import 'section_wrapper.dart';
 import 'responsive_layout.dart';
 
@@ -44,11 +45,8 @@ class HeroSectionWidget extends StatelessWidget {
                   Expanded(
                     flex: 2,
                     child: Actor(
-                      delay: const Duration(milliseconds: 300),
-                      acts: [
-                        Act.fadeIn(),
-                        Act.scale(from: 0.88),
-                      ],
+                      delay: kHeroImageDelay,
+                      acts: [Act.fadeIn(), Act.scale(from: 0.88)],
                       child: _buildHeroImage(context),
                     ),
                   ),
@@ -59,11 +57,8 @@ class HeroSectionWidget extends StatelessWidget {
                 children: [
                   Center(
                     child: Actor(
-                      delay: const Duration(milliseconds: 300),
-                      acts: [
-                        Act.fadeIn(),
-                        Act.scale(from: 0.88),
-                      ],
+                      delay: kHeroImageDelay,
+                      acts: [Act.fadeIn(), Act.scale(from: 0.88)],
                       child: _buildHeroImage(context),
                     ),
                   ),
@@ -81,19 +76,19 @@ class HeroSectionWidget extends StatelessWidget {
       children: [
         // ── Eyebrow ─────────────────────────────────────────────
         Actor(
-          delay: const Duration(milliseconds: 100),
+          delay: kHeroEyebrowDelay,
           acts: [
             Act.fadeIn(),
-            Act.slideY(from: 0.15),
+            Act.slideY(from: kHeroEyebrowSlideFrom),
           ],
           child: Text(
             hero.eyebrow,
             style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                  color: AppTheme.accent,
-                  fontSize: 14,
-                  letterSpacing: 2.0,
-                  fontFamily: 'JetBrains Mono',
-                ),
+              color: AppTheme.accent,
+              fontSize: 14,
+              letterSpacing: 2.0,
+              fontFamily: 'JetBrains Mono',
+            ),
           ),
         ),
 
@@ -101,18 +96,18 @@ class HeroSectionWidget extends StatelessWidget {
 
         // ── Headline ─────────────────────────────────────────────
         Actor(
-          delay: const Duration(milliseconds: 200),
+          delay: kHeroHeadlineDelay,
           acts: [
             Act.fadeIn(),
-            Act.slideY(from: 0.12),
+            Act.slideY(from: kHeroTextSlideFrom),
           ],
           child: Text(
             hero.headline,
             style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                  height: 1.05,
-                  fontSize: context.heroFontSize,
-                  fontWeight: FontWeight.w800,
-                ),
+              height: 1.05,
+              fontSize: context.heroFontSize,
+              fontWeight: FontWeight.w800,
+            ),
           ),
         ),
 
@@ -120,18 +115,18 @@ class HeroSectionWidget extends StatelessWidget {
 
         // ── Subheadline ───────────────────────────────────────────
         Actor(
-          delay: const Duration(milliseconds: 350),
+          delay: kHeroSubheadlineDelay,
           acts: [
             Act.fadeIn(),
-            Act.slideY(from: 0.12),
+            Act.slideY(from: kHeroTextSlideFrom),
           ],
           child: Text(
             hero.subheadline,
             style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                  color: AppTheme.textMuted,
-                  height: 1.05,
-                  fontSize: context.heroFontSize * 0.7,
-                ),
+              color: AppTheme.textMuted,
+              height: 1.05,
+              fontSize: context.heroFontSize * 0.7,
+            ),
           ),
         ),
 
@@ -139,20 +134,20 @@ class HeroSectionWidget extends StatelessWidget {
 
         // ── Description ───────────────────────────────────────────
         Actor(
-          delay: const Duration(milliseconds: 500),
+          delay: kHeroDescriptionDelay,
           acts: [
             Act.fadeIn(),
-            Act.slideY(from: 0.08),
+            Act.slideY(from: kHeroDescriptionSlideFrom),
           ],
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 560),
             child: Text(
               hero.description,
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: AppTheme.textMuted,
-                    fontSize: 18,
-                    height: 1.6,
-                  ),
+                color: AppTheme.textMuted,
+                fontSize: 18,
+                height: 1.6,
+              ),
             ),
           ),
         ),
@@ -165,10 +160,10 @@ class HeroSectionWidget extends StatelessWidget {
           runSpacing: 16,
           children: [
             Actor(
-              delay: const Duration(milliseconds: 700),
+              delay: kHeroPrimaryCtaDelay,
               acts: [
                 Act.fadeIn(),
-                Act.slideX(from: -0.1),
+                Act.slideX(from: -kHeroCtaSlideFrom),
               ],
               child: OutlinedButton(
                 onPressed: () => onCtaTap(hero.primaryCta.url),
@@ -183,10 +178,10 @@ class HeroSectionWidget extends StatelessWidget {
               ),
             ),
             Actor(
-              delay: const Duration(milliseconds: 850),
+              delay: kHeroSecondaryCtaDelay,
               acts: [
                 Act.fadeIn(),
-                Act.slideX(from: -0.1),
+                Act.slideX(from: -kHeroCtaSlideFrom),
               ],
               child: TextButton.icon(
                 onPressed: () => onCtaTap(hero.secondaryCta.url),
@@ -198,12 +193,12 @@ class HeroSectionWidget extends StatelessWidget {
                 label: Text(
                   hero.secondaryCta.label,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: AppTheme.accent,
-                        fontSize: 15,
-                        decoration: TextDecoration.underline,
-                        fontFamily: 'JetBrains Mono',
-                      ),
-                    ),
+                    color: AppTheme.accent,
+                    fontSize: 15,
+                    decoration: TextDecoration.underline,
+                    fontFamily: 'JetBrains Mono',
+                  ),
+                ),
               ),
             ),
           ],
@@ -213,7 +208,7 @@ class HeroSectionWidget extends StatelessWidget {
 
         // ── Scroll prompt ─────────────────────────────────────────
         Actor(
-          delay: const Duration(milliseconds: 1100),
+          delay: kHeroPromptDelay,
           acts: const [Act.fadeIn()],
           child: _ScrollPrompt(),
         ),
@@ -275,9 +270,10 @@ class _ScrollPromptState extends State<_ScrollPrompt>
       vsync: this,
       duration: const Duration(milliseconds: 1200),
     )..repeat(reverse: true);
-    _bounce = Tween<double>(begin: 0, end: 8).animate(
-      CurvedAnimation(parent: _ctrl, curve: Curves.easeInOut),
-    );
+    _bounce = Tween<double>(
+      begin: 0,
+      end: 8,
+    ).animate(CurvedAnimation(parent: _ctrl, curve: Curves.easeInOut));
   }
 
   @override

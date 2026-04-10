@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../../app/theme/app_theme.dart';
 import '../../../../core/widgets/glass_container.dart';
 import '../../models/portfolio_models.dart';
+import 'portfolio_motion.dart';
 import 'section_header.dart';
 import 'section_wrapper.dart';
 import 'responsive_layout.dart';
@@ -28,12 +29,18 @@ class _ExperienceSectionWidgetState extends State<ExperienceSectionWidget> {
     return SectionWrapper(
       id: 'experience',
       child: Cue.onScrollVisible(
-        acts: const [Act.fadeIn(), Act.slideY(from: 0.06)],
+        acts: const [
+          Act.fadeIn(),
+          Act.slideY(from: kSectionRevealSlideFrom),
+        ],
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Actor(
-              acts: const [Act.fadeIn(), Act.slideY(from: 0.08)],
+              acts: const [
+                Act.fadeIn(),
+                Act.slideY(from: kSectionHeaderSlideFrom),
+              ],
               child: SectionHeader(number: '02', title: 'exp_title'.tr()),
             ),
             const SizedBox(height: 40),
@@ -79,7 +86,9 @@ class _ExperienceSectionWidgetState extends State<ExperienceSectionWidget> {
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 200),
                   padding: const EdgeInsets.symmetric(
-                      horizontal: 16, vertical: 8),
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
                   decoration: BoxDecoration(
                     color: isSelected
                         ? AppTheme.accent.withValues(alpha: 0.12)
@@ -94,9 +103,9 @@ class _ExperienceSectionWidgetState extends State<ExperienceSectionWidget> {
                   child: Text(
                     widget.experience[i].company,
                     style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                          color: isSelected ? AppTheme.accent : AppTheme.textMuted,
-                          fontFamily: 'JetBrains Mono',
-                        ),
+                      color: isSelected ? AppTheme.accent : AppTheme.textMuted,
+                      fontFamily: 'JetBrains Mono',
+                    ),
                   ),
                 ),
               );
@@ -124,8 +133,7 @@ class _ExperienceSectionWidgetState extends State<ExperienceSectionWidget> {
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 220),
             width: double.infinity,
-            padding:
-                const EdgeInsets.symmetric(horizontal: 18, vertical: 13),
+            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 13),
             decoration: BoxDecoration(
               border: Border(
                 left: BorderSide(
@@ -142,9 +150,9 @@ class _ExperienceSectionWidgetState extends State<ExperienceSectionWidget> {
             child: Text(
               item.company,
               style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                    color: isSelected ? AppTheme.accent : AppTheme.textMuted,
-                    fontFamily: 'JetBrains Mono',
-                  ),
+                color: isSelected ? AppTheme.accent : AppTheme.textMuted,
+                fontFamily: 'JetBrains Mono',
+              ),
             ),
           ),
         );
@@ -162,7 +170,7 @@ class _ExperienceSectionWidgetState extends State<ExperienceSectionWidget> {
       fromCurrentValue: true,
       acts: const [
         Act.fadeIn(),
-        Act.slideY(from: 0.04),
+        Act.slideY(from: kExperienceDetailSlideFrom),
       ],
       child: GlassContainer(
         blur: 12,
@@ -180,14 +188,14 @@ class _ExperienceSectionWidgetState extends State<ExperienceSectionWidget> {
                   TextSpan(
                     text: item.title,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          color: AppTheme.textPrimary,
-                        ),
+                      color: AppTheme.textPrimary,
+                    ),
                   ),
                   TextSpan(
                     text: ' @ ${item.company}',
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          color: AppTheme.accent,
-                        ),
+                    style: Theme.of(
+                      context,
+                    ).textTheme.titleLarge?.copyWith(color: AppTheme.accent),
                   ),
                 ],
               ),
@@ -199,18 +207,18 @@ class _ExperienceSectionWidgetState extends State<ExperienceSectionWidget> {
             Text(
               item.period,
               style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                    color: AppTheme.textMuted,
-                    fontFamily: 'JetBrains Mono',
-                  ),
+                color: AppTheme.textMuted,
+                fontFamily: 'JetBrains Mono',
+              ),
             ),
 
             if (item.summary.isNotEmpty) ...[
               const SizedBox(height: 16),
               Text(
                 item.summary,
-                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: AppTheme.textMuted,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyLarge?.copyWith(color: AppTheme.textMuted),
               ),
             ],
 
@@ -261,30 +269,26 @@ class _ExperienceSectionWidgetState extends State<ExperienceSectionWidget> {
       children: techs
           .map(
             (tech) => Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
               decoration: BoxDecoration(
                 color: AppTheme.accent.withValues(alpha: 0.08),
                 border: Border.all(
-                    color: AppTheme.accent.withValues(alpha: 0.30)),
+                  color: AppTheme.accent.withValues(alpha: 0.30),
+                ),
                 borderRadius: BorderRadius.circular(6),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(
-                    _iconForSkill(tech),
-                    size: 12,
-                    color: AppTheme.accent,
-                  ),
+                  Icon(_iconForSkill(tech), size: 12, color: AppTheme.accent),
                   const SizedBox(width: 6),
                   Text(
                     tech,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppTheme.textPrimary,
-                          fontFamily: 'JetBrains Mono',
-                          fontSize: 11,
-                        ),
+                      color: AppTheme.textPrimary,
+                      fontFamily: 'JetBrains Mono',
+                      fontSize: 11,
+                    ),
                   ),
                 ],
               ),
