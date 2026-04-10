@@ -18,6 +18,10 @@ dependencies:
   printing: ^5.14.3
   path_provider: ^2.1.5
   flutter_svg: ^2.2.4
+  # Physics-first motion system for scroll reveal and future page transitions.
+  cue: ^0.1.2+1
+  # Animation engine for local micro-interactions and existing effects.
+  flutter_animate: ^4.5.0
 
 dev_dependencies:
   flutter_test:
@@ -34,6 +38,4 @@ flutter:
     - assets/translations/
     - assets/images/
     - assets/pdf/
-
-
 

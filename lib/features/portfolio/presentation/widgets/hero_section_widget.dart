@@ -1,9 +1,16 @@
+import 'package:cue/cue.dart';
 import 'package:flutter/material.dart';
 import '../../../../app/theme/app_theme.dart';
+import '../../../../core/helpers/responsive_helper.dart';
 import '../../models/portfolio_models.dart';
+import 'portfolio_motion.dart';
 import 'section_wrapper.dart';
 import 'responsive_layout.dart';
 
+/// Hero section with Cue.onMount-style staggered entry animations.
+///
+/// Each element fades + slides up sequentially, giving the impression
+/// the page assembles itself on first load.
 class HeroSectionWidget extends StatelessWidget {
   final HeroSection hero;
   final Function(String url) onCtaTap;
@@ -16,26 +23,50 @@ class HeroSectionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SectionWrapper(
-      id: 'hero',
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 120),
-      child: ResponsiveLayout.isDesktop(context)
-          ? Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(flex: 3, child: _buildTextContent(context)),
-                const SizedBox(width: 50),
-                Expanded(flex: 2, child: _buildHeroImage(context)),
-              ],
-            )
-          : Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Center(child: _buildHeroImage(context)),
-                const SizedBox(height: 50),
-                _buildTextContent(context),
-              ],
-            ),
+    // Extra top padding to clear the transparent glass navbar
+    final topPad = context.responsive(mobile: 110.0, desktop: 140.0);
+
+    return Cue.onMount(
+      motion: const Spring.smooth(),
+      child: SectionWrapper(
+        id: 'hero',
+        padding: EdgeInsets.only(
+          top: topPad,
+          bottom: 120,
+          left: context.sectionPaddingH,
+          right: context.sectionPaddingH,
+        ),
+        child: ResponsiveLayout.isDesktop(context)
+            ? Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(flex: 3, child: _buildTextContent(context)),
+                  const SizedBox(width: 60),
+                  Expanded(
+                    flex: 2,
+                    child: Actor(
+                      delay: kHeroImageDelay,
+                      acts: [Act.fadeIn(), Act.scale(from: 0.88)],
+                      child: _buildHeroImage(context),
+                    ),
+                  ),
+                ],
+              )
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: Actor(
+                      delay: kHeroImageDelay,
+                      acts: [Act.fadeIn(), Act.scale(from: 0.88)],
+                      child: _buildHeroImage(context),
+                    ),
+                  ),
+                  const SizedBox(height: 48),
+                  _buildTextContent(context),
+                ],
+              ),
+      ),
     );
   }
 
@@ -43,95 +74,228 @@ class HeroSectionWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          hero.eyebrow,
-          style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                color: AppTheme.accent,
-                fontSize: 16,
-                letterSpacing: 1.5,
-                fontFamily: 'JetBrains Mono',
-              ),
-        ),
-        const SizedBox(height: 16),
-        Text(
-          hero.headline,
-          style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                height: 1.0,
-                fontSize: MediaQuery.sizeOf(context).width < 768 ? 48 : 80,
-                fontWeight: FontWeight.bold,
-              ),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          hero.subheadline,
-          style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                color: AppTheme.textMuted,
-                height: 1.0,
-                fontSize: MediaQuery.sizeOf(context).width < 768 ? 32 : 56,
-              ),
-        ),
-        const SizedBox(height: 32),
-        ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 640),
+        // ── Eyebrow ─────────────────────────────────────────────
+        Actor(
+          delay: kHeroEyebrowDelay,
+          acts: [
+            Act.fadeIn(),
+            Act.slideY(from: kHeroEyebrowSlideFrom),
+          ],
           child: Text(
-            hero.description,
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: AppTheme.textMuted,
-                  fontSize: 20,
-                  height: 1.5,
-                ),
+            hero.eyebrow,
+            style: Theme.of(context).textTheme.labelLarge?.copyWith(
+              color: AppTheme.accent,
+              fontSize: 14,
+              letterSpacing: 2.0,
+              fontFamily: 'JetBrains Mono',
+            ),
           ),
         ),
-        const SizedBox(height: 60),
-        Row(
-          children: [
-            OutlinedButton(
-              onPressed: () => onCtaTap(hero.primaryCta.url),
-              style: OutlinedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 24),
-              ),
-              child: Text(
-                hero.primaryCta.label,
-                style: const TextStyle(fontSize: 16),
+
+        const SizedBox(height: 16),
+
+        // ── Headline ─────────────────────────────────────────────
+        Actor(
+          delay: kHeroHeadlineDelay,
+          acts: [
+            Act.fadeIn(),
+            Act.slideY(from: kHeroTextSlideFrom),
+          ],
+          child: Text(
+            hero.headline,
+            style: Theme.of(context).textTheme.displayLarge?.copyWith(
+              height: 1.05,
+              fontSize: context.heroFontSize,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+        ),
+
+        const SizedBox(height: 8),
+
+        // ── Subheadline ───────────────────────────────────────────
+        Actor(
+          delay: kHeroSubheadlineDelay,
+          acts: [
+            Act.fadeIn(),
+            Act.slideY(from: kHeroTextSlideFrom),
+          ],
+          child: Text(
+            hero.subheadline,
+            style: Theme.of(context).textTheme.displayMedium?.copyWith(
+              color: AppTheme.textMuted,
+              height: 1.05,
+              fontSize: context.heroFontSize * 0.7,
+            ),
+          ),
+        ),
+
+        const SizedBox(height: 32),
+
+        // ── Description ───────────────────────────────────────────
+        Actor(
+          delay: kHeroDescriptionDelay,
+          acts: [
+            Act.fadeIn(),
+            Act.slideY(from: kHeroDescriptionSlideFrom),
+          ],
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 560),
+            child: Text(
+              hero.description,
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                color: AppTheme.textMuted,
+                fontSize: 18,
+                height: 1.6,
               ),
             ),
-            const SizedBox(width: 24),
-            TextButton(
-              onPressed: () => onCtaTap(hero.secondaryCta.url),
-              child: Text(
-                hero.secondaryCta.label,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: AppTheme.accent,
-                      decoration: TextDecoration.underline,
-                      fontSize: 16,
-                      fontFamily: 'JetBrains Mono',
-                    ),
+          ),
+        ),
+
+        const SizedBox(height: 56),
+
+        // ── CTAs ──────────────────────────────────────────────────
+        Wrap(
+          spacing: 20,
+          runSpacing: 16,
+          children: [
+            Actor(
+              delay: kHeroPrimaryCtaDelay,
+              acts: [
+                Act.fadeIn(),
+                Act.slideX(from: -kHeroCtaSlideFrom),
+              ],
+              child: OutlinedButton(
+                onPressed: () => onCtaTap(hero.primaryCta.url),
+                style: OutlinedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 32,
+                    vertical: 20,
+                  ),
+                  textStyle: const TextStyle(fontSize: 15),
+                ),
+                child: Text(hero.primaryCta.label),
+              ),
+            ),
+            Actor(
+              delay: kHeroSecondaryCtaDelay,
+              acts: [
+                Act.fadeIn(),
+                Act.slideX(from: -kHeroCtaSlideFrom),
+              ],
+              child: TextButton.icon(
+                onPressed: () => onCtaTap(hero.secondaryCta.url),
+                icon: const Icon(
+                  Icons.arrow_forward,
+                  size: 16,
+                  color: AppTheme.accent,
+                ),
+                label: Text(
+                  hero.secondaryCta.label,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: AppTheme.accent,
+                    fontSize: 15,
+                    decoration: TextDecoration.underline,
+                    fontFamily: 'JetBrains Mono',
+                  ),
+                ),
               ),
             ),
           ],
+        ),
+
+        const SizedBox(height: 80),
+
+        // ── Scroll prompt ─────────────────────────────────────────
+        Actor(
+          delay: kHeroPromptDelay,
+          acts: const [Act.fadeIn()],
+          child: _ScrollPrompt(),
         ),
       ],
     );
   }
 
   Widget _buildHeroImage(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        boxShadow: [
-          BoxShadow(
-            color: AppTheme.accent.withValues(alpha: 0.2),
-            blurRadius: 60,
-            spreadRadius: 10,
+    final size = context.isDesktop ? 380.0 : 220.0;
+
+    return Center(
+      child: Container(
+        width: size,
+        height: size,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          boxShadow: [
+            BoxShadow(
+              color: AppTheme.accent.withValues(alpha: 0.25),
+              blurRadius: 80,
+              spreadRadius: 8,
+            ),
+            BoxShadow(
+              color: AppTheme.accent.withValues(alpha: 0.08),
+              blurRadius: 160,
+              spreadRadius: 20,
+            ),
+          ],
+        ),
+        child: ClipOval(
+          child: Image.asset(
+            'assets/images/hero.png',
+            width: size,
+            height: size,
+            fit: BoxFit.cover,
           ),
-        ],
+        ),
       ),
-      child: ClipOval(
-        child: Image.asset(
-          'assets/images/hero.png',
-          width: ResponsiveLayout.isDesktop(context) ? 400 : 250,
-          height: ResponsiveLayout.isDesktop(context) ? 400 : 250,
-          fit: BoxFit.cover,
+    );
+  }
+}
+
+// ── Scroll prompt ───────────────────────────────────────────────────────────
+
+class _ScrollPrompt extends StatefulWidget {
+  @override
+  State<_ScrollPrompt> createState() => _ScrollPromptState();
+}
+
+class _ScrollPromptState extends State<_ScrollPrompt>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _ctrl;
+  late final Animation<double> _bounce;
+
+  @override
+  void initState() {
+    super.initState();
+    _ctrl = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1200),
+    )..repeat(reverse: true);
+    _bounce = Tween<double>(
+      begin: 0,
+      end: 8,
+    ).animate(CurvedAnimation(parent: _ctrl, curve: Curves.easeInOut));
+  }
+
+  @override
+  void dispose() {
+    _ctrl.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _bounce,
+      builder: (_, __) => Transform.translate(
+        offset: Offset(0, _bounce.value),
+        child: Column(
+          children: [
+            Icon(
+              Icons.keyboard_arrow_down_rounded,
+              color: AppTheme.textMuted.withValues(alpha: 0.6),
+              size: 28,
+            ),
+          ],
         ),
       ),
     );

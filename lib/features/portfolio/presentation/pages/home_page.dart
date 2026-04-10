@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -11,7 +13,6 @@ import '../widgets/projects_section_widget.dart';
 import '../widgets/hero_section_widget.dart';
 import '../widgets/responsive_layout.dart';
 import '../widgets/side_rails.dart';
-import '../widgets/fade_in_slide.dart';
 import '../widgets/resume_pdf_generator.dart';
 import '../widgets/mouse_glow_background.dart';
 
@@ -30,7 +31,7 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
   final _scrollController = ScrollController();
   String? _lastLocale;
 
-  // Keys for scroll navigation
+  // Section keys for anchor navigation
   final _heroKey = GlobalKey();
   final _aboutKey = GlobalKey();
   final _experienceKey = GlobalKey();
@@ -40,7 +41,6 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
   @override
   void initState() {
     super.initState();
-    // Pre-initialize to avoid errors during build initialization
     _contentFuture = Future.value(PortfolioData.empty());
   }
 
@@ -65,35 +65,27 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
     widget.onLocaleChanged(newLocale);
   }
 
-  void _launchURL(String url) async {
+  Future<void> _launchURL(String url) async {
     if (url.startsWith('#')) {
       final key = _getKeyForId(url.substring(1));
       if (key != null) _scrollToSection(key);
       return;
     }
 
-    // Special handling for the local PDFs
-    if (url.startsWith('assets/pdf/')) {
-        // For Flutter Web, assets are served at /assets/... relative to the index.html
-        // We use window.open for better compatibility on web deployments (like GH Pages)
-        if (Uri.base.scheme == 'http' || Uri.base.scheme == 'https') {
-           // On web, we want to open the relative asset path
-           launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
-           return;
-        }
+    // Local PDF assets served relative to index.html on web
+    if (url.startsWith('assets/pdf/') &&
+        (Uri.base.scheme == 'http' || Uri.base.scheme == 'https')) {
+      await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
+      return;
     }
 
     final uri = Uri.parse(url);
-
-    // For non-http(s) schemes like tel:, mailto:, use external application mode
     final mode = (uri.scheme == 'http' || uri.scheme == 'https')
         ? LaunchMode.platformDefault
         : LaunchMode.externalApplication;
 
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri, mode: mode);
-    } else {
-      debugPrint('Could not launch $url');
     }
   }
 
@@ -105,20 +97,13 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
     );
   }
 
-  GlobalKey? _getKeyForId(String id) {
-    switch (id) {
-      case 'about':
-        return _aboutKey;
-      case 'experience':
-        return _experienceKey;
-      case 'projects':
-        return _projectsKey;
-      case 'contact':
-        return _contactKey;
-      default:
-        return null;
-    }
-  }
+  GlobalKey? _getKeyForId(String id) => switch (id) {
+        'about' => _aboutKey,
+        'experience' => _experienceKey,
+        'projects' => _projectsKey,
+        'contact' => _contactKey,
+        _ => null,
+      };
 
   @override
   Widget build(BuildContext context) {
@@ -136,7 +121,11 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
         final data = snapshot.data!;
 
         return Scaffold(
-          appBar: _PortfolioNavBar(
+          // Transparent so the gradient background shows through the glass nav
+          backgroundColor: Colors.transparent,
+          extendBodyBehindAppBar: true,
+          appBar: _GlassNavBar(
+            ownerName: data.site.ownerName,
             nav: data.nav,
             resumeUrl: data.site.resumeUrl,
             onNavTap: (id) {
@@ -158,71 +147,59 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
           body: MouseGlowBackground(
             child: Stack(
               children: [
-              SingleChildScrollView(
-                controller: _scrollController,
-                child: Column(
-                  children: [
-                    FadeInSlide(
-                      delay: const Duration(milliseconds: 100),
-                      child: HeroSectionWidget(
+                SingleChildScrollView(
+                  controller: _scrollController,
+                  child: Column(
+                    children: [
+                      // Hero has its own top-padding to clear the transparent navbar
+                      HeroSectionWidget(
                         key: _heroKey,
                         hero: data.hero,
                         onCtaTap: _launchURL,
                       ),
-                    ),
-                    FadeInSlide(
-                      delay: const Duration(milliseconds: 300),
-                      child: AboutSectionWidget(
+                      AboutSectionWidget(
                         key: _aboutKey,
                         about: data.about,
                       ),
-                    ),
-                    FadeInSlide(
-                      delay: const Duration(milliseconds: 500),
-                      child: ExperienceSectionWidget(
+                      ExperienceSectionWidget(
                         key: _experienceKey,
                         experience: data.experience,
                       ),
-                    ),
-                    FadeInSlide(
-                      delay: const Duration(milliseconds: 700),
-                      child: ProjectsSectionWidget(
+                      ProjectsSectionWidget(
                         key: _projectsKey,
                         featured: data.featuredProjects,
                         other: data.otherProjects,
                         onLinkTap: _launchURL,
                       ),
-                    ),
-                    FadeInSlide(
-                      delay: const Duration(milliseconds: 900),
-                      child: ContactSectionWidget(
+                      ContactSectionWidget(
                         key: _contactKey,
                         contact: data.contact,
                         socialLinks: data.socialLinks,
                         onCtaTap: _launchURL,
                       ),
+                    ],
+                  ),
+                ),
+
+                // Desktop side rails
+                if (ResponsiveLayout.isDesktop(context))
+                  Positioned(
+                    left: 40,
+                    bottom: 0,
+                    child: SocialRail(
+                      socials: data.socialLinks,
+                      onLinkTap: _launchURL,
                     ),
-                  ],
-                ),
-              ),
-              if (ResponsiveLayout.isDesktop(context))
-                Positioned(
-                  left: 40,
-                  bottom: 0,
-                  child: SocialRail(
-                    socials: data.socialLinks,
-                    onLinkTap: _launchURL,
                   ),
-                ),
-              if (ResponsiveLayout.isDesktop(context))
-                Positioned(
-                  right: 40,
-                  bottom: 0,
-                  child: EmailRail(
-                    email: data.site.email,
-                    onEmailTap: _launchURL,
+                if (ResponsiveLayout.isDesktop(context))
+                  Positioned(
+                    right: 40,
+                    bottom: 0,
+                    child: EmailRail(
+                      email: data.site.email,
+                      onEmailTap: _launchURL,
+                    ),
                   ),
-                ),
               ],
             ),
           ),
@@ -232,14 +209,18 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
   }
 }
 
-class _PortfolioNavBar extends StatelessWidget implements PreferredSizeWidget {
+// ── Glassmorphism Navigation Bar ───────────────────────────────────────────────
+
+class _GlassNavBar extends StatefulWidget implements PreferredSizeWidget {
+  final String ownerName;
   final List<NavItem> nav;
   final String resumeUrl;
   final Function(String id) onNavTap;
   final VoidCallback onLanguageToggle;
   final VoidCallback onResumeTap;
 
-  const _PortfolioNavBar({
+  const _GlassNavBar({
+    required this.ownerName,
     required this.nav,
     required this.resumeUrl,
     required this.onNavTap,
@@ -248,95 +229,252 @@ class _PortfolioNavBar extends StatelessWidget implements PreferredSizeWidget {
   });
 
   @override
+  State<_GlassNavBar> createState() => _GlassNavBarState();
+
+  @override
+  Size get preferredSize => const Size.fromHeight(72);
+}
+
+class _GlassNavBarState extends State<_GlassNavBar> {
+  bool _menuOpen = false;
+
+  @override
   Widget build(BuildContext context) {
     final isMobile = ResponsiveLayout.isMobile(context);
 
-    return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: isMobile ? 12 : 48,
-        vertical: 8,
-      ),
-      color: AppTheme.background.withValues(alpha: 0.9),
-      child: Row(
-        children: [
-          InkWell(
-            onTap: () => onNavTap('hero'),
-            child: Text(
-              'Kitipong Sarajan',
-              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                color: AppTheme.accent,
-                fontFamily: 'JetBrains Mono',
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        // ── Main bar ──────────────────────────────────────────────────────────
+        ClipRect(
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+            child: Container(
+              height: 72,
+              padding: EdgeInsets.symmetric(
+                horizontal: isMobile ? 16 : 48,
+              ),
+              decoration: BoxDecoration(
+                color: Colors.white.withValues(alpha: AppTheme.glassNavOpacity),
+                border: Border(
+                  bottom: BorderSide(
+                    color: Colors.white.withValues(alpha: 0.08),
+                    width: 1,
+                  ),
+                ),
+              ),
+              child: Row(
+                children: [
+                  // Logo / name
+                  InkWell(
+                    onTap: () => widget.onNavTap('hero'),
+                    borderRadius: BorderRadius.circular(4),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 4, vertical: 8),
+                      child: Text(
+                        widget.ownerName.isNotEmpty
+                            ? widget.ownerName
+                            : 'Dexter CNX',
+                        style:
+                            Theme.of(context).textTheme.headlineMedium?.copyWith(
+                                  color: AppTheme.accent,
+                                  fontFamily: 'JetBrains Mono',
+                                  fontSize: 18,
+                                ),
+                      ),
+                    ),
+                  ),
+
+                  const Spacer(),
+
+                  // Desktop nav links
+                  if (!isMobile)
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        ...widget.nav.asMap().entries.map(
+                          (entry) => Padding(
+                            padding: const EdgeInsets.only(left: 28),
+                            child: _NavLink(
+                              number: '0${entry.key + 1}',
+                              label: entry.value.label,
+                              onTap: () => widget.onNavTap(entry.value.id),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 28),
+                        _LangToggle(onTap: widget.onLanguageToggle),
+                        const SizedBox(width: 16),
+                        _ResumeButton(onTap: widget.onResumeTap),
+                      ],
+                    )
+                  else ...[
+                    _LangToggle(onTap: widget.onLanguageToggle),
+                    const SizedBox(width: 8),
+                    IconButton(
+                      icon: AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 200),
+                        child: Icon(
+                          _menuOpen ? Icons.close : Icons.menu,
+                          key: ValueKey(_menuOpen),
+                          color: AppTheme.accent,
+                        ),
+                      ),
+                      onPressed: () => setState(() => _menuOpen = !_menuOpen),
+                    ),
+                  ],
+                ],
               ),
             ),
           ),
-          const Spacer(),
-          if (!isMobile)
-            Expanded(
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                reverse: true,
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
+        ),
+
+        // ── Mobile dropdown ───────────────────────────────────────────────────
+        if (isMobile && _menuOpen)
+          ClipRect(
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+              child: Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.white
+                      .withValues(alpha: AppTheme.glassNavOpacity + 0.04),
+                  border: Border(
+                    bottom: BorderSide(
+                      color: Colors.white.withValues(alpha: 0.08),
+                    ),
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ...nav.map(
-                      (item) => Padding(
-                        padding: const EdgeInsets.only(left: 32),
-                        child: TextButton(
-                          onPressed: () => onNavTap(item.id),
-                          child: Row(
-                            children: [
-                              Text(
-                                '0${nav.indexOf(item) + 1}. ',
-                                style: Theme.of(context).textTheme.labelMedium
-                                    ?.copyWith(color: AppTheme.accent),
-                              ),
-                              Text(
-                                item.label,
-                                style: Theme.of(context).textTheme.labelMedium
-                                    ?.copyWith(color: AppTheme.textPrimary),
-                              ),
-                            ],
-                          ),
+                    ...widget.nav.asMap().entries.map(
+                      (entry) => ListTile(
+                        onTap: () {
+                          setState(() => _menuOpen = false);
+                          widget.onNavTap(entry.value.id);
+                        },
+                        leading: Text(
+                          '0${entry.key + 1}.',
+                          style:
+                              Theme.of(context).textTheme.labelLarge?.copyWith(
+                                    color: AppTheme.accent,
+                                  ),
+                        ),
+                        title: Text(
+                          entry.value.label,
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(color: AppTheme.textPrimary),
                         ),
                       ),
                     ),
-                    const SizedBox(width: 32),
-                    TextButton(
-                      onPressed: onLanguageToggle,
-                      child: Text(
-                        context.locale.languageCode == 'en' ? 'TH' : 'EN',
-                        style: Theme.of(context).textTheme.labelMedium
-                            ?.copyWith(
-                              color: AppTheme.accent,
-                              fontFamily: 'JetBrains Mono',
-                            ),
-                      ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 12),
+                      child: _ResumeButton(onTap: widget.onResumeTap),
                     ),
-                    const SizedBox(width: 16),
-                    OutlinedButton(
-                      onPressed: onResumeTap,
-                      style: OutlinedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 12,
-                        ),
-                      ),
-                      child: Text('btn_resume'.tr()),
-                    ),
+                    const SizedBox(height: 8),
                   ],
                 ),
               ),
-            )
-          else
-            IconButton(
-              icon: const Icon(Icons.menu, color: AppTheme.accent),
-              onPressed: () {},
             ),
-        ],
+          ),
+      ],
+    );
+  }
+}
+
+// ── Nav sub-widgets ────────────────────────────────────────────────────────────
+
+class _NavLink extends StatefulWidget {
+  final String number;
+  final String label;
+  final VoidCallback onTap;
+
+  const _NavLink({
+    required this.number,
+    required this.label,
+    required this.onTap,
+  });
+
+  @override
+  State<_NavLink> createState() => _NavLinkState();
+}
+
+class _NavLinkState extends State<_NavLink> {
+  bool _hovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      onEnter: (_) => setState(() => _hovered = true),
+      onExit: (_) => setState(() => _hovered = false),
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: widget.onTap,
+        child: AnimatedDefaultTextStyle(
+          duration: const Duration(milliseconds: 180),
+          style: TextStyle(
+            fontFamily: 'JetBrains Mono',
+            fontSize: 13,
+            color: _hovered ? AppTheme.accent : AppTheme.textMuted,
+          ),
+          child: RichText(
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text: '${widget.number}. ',
+                  style: TextStyle(color: AppTheme.accent.withValues(alpha: 0.8)),
+                ),
+                TextSpan(
+                  text: widget.label,
+                  style: TextStyle(
+                    color: _hovered ? AppTheme.accent : AppTheme.textPrimary,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
+}
+
+class _LangToggle extends StatelessWidget {
+  final VoidCallback onTap;
+
+  const _LangToggle({required this.onTap});
 
   @override
-  Size get preferredSize => const Size.fromHeight(80);
+  Widget build(BuildContext context) {
+    return TextButton(
+      onPressed: onTap,
+      child: Text(
+        context.locale.languageCode == 'en' ? 'TH' : 'EN',
+        style: Theme.of(context).textTheme.labelLarge?.copyWith(
+              color: AppTheme.accent,
+              fontFamily: 'JetBrains Mono',
+            ),
+      ),
+    );
+  }
+}
+
+class _ResumeButton extends StatelessWidget {
+  final VoidCallback onTap;
+
+  const _ResumeButton({required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return OutlinedButton(
+      onPressed: onTap,
+      style: OutlinedButton.styleFrom(
+        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+      ),
+      child: Text('btn_resume'.tr()),
+    );
+  }
 }
