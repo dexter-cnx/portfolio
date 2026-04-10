@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
-  // Colors from DESIGN.md (The Kinetic Blueprint)
+  // ── Core palette ────────────────────────────────────────────────────────────
   static const Color background = Color(0xFF0C1324);
   static const Color surfaceLow = Color(0xFF151B2D);
   static const Color surfaceContainer = Color(0xFF191F31);
@@ -13,6 +13,32 @@ class AppTheme {
   static const Color error = Color(0xFFFBB4AB);
   static const Color textPrimary = Color(0xFFDCE1FB);
   static const Color textMuted = Color(0xFFBACAC3);
+
+  // ── Glassmorphism tokens ────────────────────────────────────────────────────
+  /// White overlay opacity for glass surfaces (cards, modals).
+  static const double glassOpacity = 0.06;
+
+  /// White overlay opacity for navbar glass.
+  static const double glassNavOpacity = 0.03;
+
+  /// Border opacity for glass elements.
+  static const double glassBorderOpacity = 0.14;
+
+  /// Accent glow colour used in BoxShadow on hover.
+  static Color accentGlow(double opacity) => accent.withValues(alpha: opacity);
+
+  // ── Background gradient ─────────────────────────────────────────────────────
+  /// Full-page gradient that gives depth to the dark background.
+  static const LinearGradient backgroundGradient = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [
+      Color(0xFF0C1324), // base dark navy
+      Color(0xFF0D1520), // slightly cooler mid
+      Color(0xFF0C1824), // subtle teal-shifted bottom
+    ],
+    stops: [0.0, 0.5, 1.0],
+  );
 
   static ThemeData dark([String locale = 'en']) {
     final bool isThai = locale == 'th';

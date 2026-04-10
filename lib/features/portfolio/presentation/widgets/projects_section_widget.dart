@@ -1,10 +1,14 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../../../app/theme/app_theme.dart';
+import '../../../../core/helpers/responsive_helper.dart';
+import '../../../../core/widgets/glass_container.dart';
 import '../../models/portfolio_models.dart';
 import 'section_header.dart';
 import 'section_wrapper.dart';
+import 'scroll_reveal.dart';
 import 'responsive_layout.dart';
 
 class ProjectsSectionWidget extends StatelessWidget {
@@ -26,23 +30,34 @@ class ProjectsSectionWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SectionHeader(number: '03', title: "projects_title".tr()),
-          const SizedBox(height: 40),
+          ScrollReveal(
+            child: SectionHeader(number: '03', title: 'projects_title'.tr()),
+          ),
+          const SizedBox(height: 48),
+
+          // ── Featured projects ──────────────────────────────────
           ...featured.asMap().entries.map(
-            (entry) => _FeaturedProjectCard(
-              project: entry.value,
-              isReversed: entry.key % 2 != 0,
-              onLinkTap: onLinkTap,
+            (entry) => ScrollReveal(
+              delay: (entry.key * 120).ms,
+              child: _FeaturedProjectCard(
+                project: entry.value,
+                isReversed: entry.key % 2 != 0,
+                onLinkTap: onLinkTap,
+              ),
             ),
           ),
+
+          // ── Other projects grid ────────────────────────────────
           if (other.isNotEmpty) ...[
             const SizedBox(height: 100),
-            Center(
-              child: Text(
-                'projects_others_title'.tr(),
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  color: AppTheme.textPrimary,
-                  fontWeight: FontWeight.bold,
+            ScrollReveal(
+              child: Center(
+                child: Text(
+                  'projects_others_title'.tr(),
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                        color: AppTheme.textPrimary,
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
               ),
             ),
@@ -55,31 +70,35 @@ class ProjectsSectionWidget extends StatelessWidget {
   }
 
   Widget _buildOthersGrid(BuildContext context) {
+    final cols = context.projectGridColumns;
+
     return LayoutBuilder(
       builder: (context, constraints) {
-        final crossAxisCount = constraints.maxWidth > 1000
-            ? 3
-            : constraints.maxWidth > 600
-            ? 2
-            : 1;
+        final itemWidth =
+            (constraints.maxWidth - (16.0 * (cols - 1))) / cols;
 
-        return GridView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: crossAxisCount,
-            crossAxisSpacing: 20,
-            mainAxisSpacing: 20,
-            childAspectRatio: 0.75,
-          ),
-          itemCount: other.length,
-          itemBuilder: (context, index) =>
-              _OtherProjectCard(project: other[index], onLinkTap: onLinkTap),
+        return Wrap(
+          spacing: 16,
+          runSpacing: 20,
+          children: other.asMap().entries.map((entry) {
+            return SizedBox(
+              width: itemWidth,
+              child: ScrollReveal(
+                delay: (entry.key * 80).ms,
+                child: _OtherProjectCard(
+                  project: entry.value,
+                  onLinkTap: onLinkTap,
+                ),
+              ),
+            );
+          }).toList(),
         );
       },
     );
   }
 }
+
+// ── Featured Project Card ─────────────────────────────────────────────────────
 
 class _FeaturedProjectCard extends StatefulWidget {
   final FeaturedProject project;
@@ -97,238 +116,451 @@ class _FeaturedProjectCard extends StatefulWidget {
 }
 
 class _FeaturedProjectCardState extends State<_FeaturedProjectCard> {
-  bool _isHovered = false;
+  bool _hovered = false;
 
   @override
   Widget build(BuildContext context) {
-    final isDesktop = ResponsiveLayout.isDesktop(context);
+    return ResponsiveLayout.isDesktop(context)
+        ? _buildDesktop(context)
+        : _buildMobile(context);
+  }
 
-    if (!isDesktop) {
-      return MouseRegion(
-        onEnter: (_) => setState(() => _isHovered = true),
-        onExit: (_) => setState(() => _isHovered = false),
-        child: Container(
-        margin: const EdgeInsets.only(bottom: 60),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(4),
-          color: AppTheme.surfaceContainer,
+  // ── Mobile layout: full-width card with image on top ──────────────────────
+
+  Widget _buildMobile(BuildContext context) {
+    return MouseRegion(
+      onEnter: (_) => setState(() => _hovered = true),
+      onExit: (_) => setState(() => _hovered = false),
+      child: AnimatedScale(
+        scale: _hovered ? 1.01 : 1.0,
+        duration: const Duration(milliseconds: 250),
+        curve: Curves.easeOut,
+        child: GlassContainer(
+          blur: _hovered ? 16 : 10,
+          backgroundOpacity: _hovered ? 0.09 : 0.05,
+          borderOpacity: _hovered ? 0.25 : 0.12,
+          borderRadius: 16,
+          margin: const EdgeInsets.only(bottom: 48),
+          boxShadow: _hovered
+              ? [
+                  BoxShadow(
+                    color: AppTheme.accent.withValues(alpha: 0.12),
+                    blurRadius: 40,
+                    spreadRadius: 0,
+                    offset: const Offset(0, 8),
+                  ),
+                ]
+              : null,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ClipRRect(
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
+                child: AspectRatio(
+                  aspectRatio: 16 / 9,
+                  child: _ProjectImageGallery(
+                    images: widget.project.images,
+                    isHovered: _hovered,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(24),
+                child: _buildContent(context, crossAxisAlignment: CrossAxisAlignment.start),
+              ),
+            ],
+          ),
         ),
-        clipBehavior: Clip.antiAlias,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+      ),
+    );
+  }
+
+  // ── Desktop layout: overlapping image + glass content card ────────────────
+
+  Widget _buildDesktop(BuildContext context) {
+    return MouseRegion(
+      onEnter: (_) => setState(() => _hovered = true),
+      onExit: (_) => setState(() => _hovered = false),
+      child: SizedBox(
+        height: 520,
+        child: Stack(
           children: [
-            AspectRatio(
-              aspectRatio: 16 / 9,
-              child: _ProjectImageGallery(images: widget.project.images, isHovered: _isHovered),
+            // Project image (60 % width, left or right)
+            Positioned(
+              left: widget.isReversed ? null : 0,
+              right: widget.isReversed ? 0 : null,
+              top: 0,
+              bottom: 0,
+              width: 620,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 300),
+                  decoration: BoxDecoration(
+                    boxShadow: _hovered
+                        ? [
+                            BoxShadow(
+                              color: AppTheme.accent.withValues(alpha: 0.08),
+                              blurRadius: 40,
+                            )
+                          ]
+                        : [],
+                  ),
+                  child: _ProjectImageGallery(
+                    images: widget.project.images,
+                    isHovered: _hovered,
+                  ),
+                ),
+              ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'project_type'.tr(),
-                    style: Theme.of(
-                      context,
-                    ).textTheme.labelMedium?.copyWith(color: AppTheme.accent),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    widget.project.name,
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      color: _isHovered ? AppTheme.accent : AppTheme.textPrimary,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    widget.project.summary,
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
-                  if (widget.project.longDescription.isNotEmpty) ...[
-                    const SizedBox(height: 12),
-                    Text(
-                      widget.project.longDescription,
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                  ],
-                  const SizedBox(height: 16),
-                  _buildProjectUrls(context),
-                  const SizedBox(height: 16),
-                  Wrap(
-                    spacing: 12,
-                    runSpacing: 8,
-                    children: widget.project.tags
-                        .map(
-                          (t) => Text(
-                            t,
-                            style: Theme.of(context).textTheme.labelSmall,
-                          ),
-                        )
-                        .toList(),
-                  ),
-                ],
+
+            // Glass content overlay card (opposite side)
+            Positioned(
+              left: widget.isReversed ? 0 : null,
+              right: widget.isReversed ? null : 0,
+              top: 40,
+              bottom: 40,
+              width: 480,
+              child: GlassContainer.heavy(
+                blur: _hovered ? 24 : 16,
+                backgroundOpacity: _hovered ? 0.11 : 0.07,
+                borderOpacity: _hovered ? 0.28 : 0.16,
+                borderRadius: 16,
+                padding: const EdgeInsets.all(28),
+                boxShadow: _hovered
+                    ? [
+                        BoxShadow(
+                          color: AppTheme.accent.withValues(alpha: 0.14),
+                          blurRadius: 50,
+                          spreadRadius: -4,
+                          offset: const Offset(0, 16),
+                        ),
+                      ]
+                    : null,
+                child: _buildContent(
+                  context,
+                  crossAxisAlignment: widget.isReversed
+                      ? CrossAxisAlignment.start
+                      : CrossAxisAlignment.end,
+                ),
               ),
             ),
           ],
         ),
       ),
     );
-    }
+  }
 
-    return MouseRegion(
-      onEnter: (_) => setState(() => _isHovered = true),
-      onExit: (_) => setState(() => _isHovered = false),
-      child: Container(
-        height: 600, // Increased height to accommodate urls and long descriptions
-      margin: const EdgeInsets.only(bottom: 100),
-      child: Stack(
+  Widget _buildContent(
+    BuildContext context, {
+    required CrossAxisAlignment crossAxisAlignment,
+  }) {
+    final isRight = crossAxisAlignment == CrossAxisAlignment.end;
+
+    return SingleChildScrollView(
+      padding: EdgeInsets.zero,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: crossAxisAlignment,
         children: [
-          // Project Image Gallery
-          Positioned(
-            left: widget.isReversed ? null : 0,
-            right: widget.isReversed ? 0 : null,
-            top: 0,
-            bottom: 0,
-            width: 700,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(4),
-              child: _ProjectImageGallery(images: widget.project.images, isHovered: _isHovered),
-            ),
+          // Label
+          Text(
+            'project_type'.tr(),
+            style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                  color: AppTheme.accent,
+                  fontFamily: 'JetBrains Mono',
+                ),
           ),
-          // Project Content
-          Positioned(
-            left: widget.isReversed ? 0 : null,
-            right: widget.isReversed ? null : 0,
-            top: 20,
-            bottom: 20,
-            width: 500,
+          const SizedBox(height: 8),
+
+          // Project name
+          Text(
+            widget.project.name,
+            textAlign: isRight ? TextAlign.right : TextAlign.left,
+            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                  color: _hovered ? AppTheme.accent : AppTheme.textPrimary,
+                  fontWeight: FontWeight.bold,
+                ),
+          ),
+          const SizedBox(height: 16),
+
+          // Summary
+          Text(
+            widget.project.summary,
+            textAlign: isRight ? TextAlign.right : TextAlign.left,
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  color: AppTheme.textPrimary,
+                  height: 1.6,
+                ),
+          ),
+
+          if (widget.project.longDescription.isNotEmpty) ...[
+            const SizedBox(height: 10),
+            Text(
+              widget.project.longDescription,
+              textAlign: isRight ? TextAlign.right : TextAlign.left,
+              style: Theme.of(context).textTheme.bodyMedium
+                  ?.copyWith(color: AppTheme.textMuted),
+            ),
+          ],
+
+          const SizedBox(height: 20),
+
+          // Store / live links
+          if (widget.project.urls.isNotEmpty) ...[
+            Wrap(
+              spacing: 10,
+              runSpacing: 10,
+              alignment: isRight ? WrapAlignment.end : WrapAlignment.start,
+              children: widget.project.urls
+                  .map((u) => _ProjectUrlItem(url: u, onLaunch: widget.onLinkTap))
+                  .toList(),
+            ),
+            const SizedBox(height: 16),
+          ],
+
+          // Tech tags
+          Wrap(
+            spacing: 12,
+            runSpacing: 8,
+            alignment: isRight ? WrapAlignment.end : WrapAlignment.start,
+            children: widget.project.tags
+                .map(
+                  (t) => Text(
+                    t,
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                          color: AppTheme.textMuted,
+                          fontFamily: 'JetBrains Mono',
+                        ),
+                  ),
+                )
+                .toList(),
+          ),
+
+          const SizedBox(height: 16),
+
+          // Icon links (GitHub / Live)
+          Row(
+            mainAxisAlignment:
+                isRight ? MainAxisAlignment.end : MainAxisAlignment.start,
+            children: [
+              if (widget.project.repoUrl.isNotEmpty)
+                _IconLink(
+                  icon: Icons.code,
+                  tooltip: 'Source',
+                  onTap: () => widget.onLinkTap(widget.project.repoUrl),
+                ),
+              if (widget.project.liveUrl.isNotEmpty)
+                _IconLink(
+                  icon: Icons.open_in_new,
+                  tooltip: 'Live',
+                  onTap: () => widget.onLinkTap(widget.project.liveUrl),
+                ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ── Other Project Card ────────────────────────────────────────────────────────
+
+class _OtherProjectCard extends StatefulWidget {
+  final OtherProject project;
+  final Function(String url) onLinkTap;
+
+  const _OtherProjectCard({required this.project, required this.onLinkTap});
+
+  @override
+  State<_OtherProjectCard> createState() => _OtherProjectCardState();
+}
+
+class _OtherProjectCardState extends State<_OtherProjectCard> {
+  bool _hovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      onEnter: (_) => setState(() => _hovered = true),
+      onExit: (_) => setState(() => _hovered = false),
+      child: AnimatedScale(
+        scale: _hovered ? 1.03 : 1.0,
+        duration: const Duration(milliseconds: 220),
+        curve: Curves.easeOut,
+        child: ResponsiveLayout.isDesktop(context)
+            ? SizedBox(
+                height: 340,
+                child: _buildCard(context, compact: true),
+              )
+            : _buildCard(context, compact: false),
+      ),
+    );
+  }
+
+  Widget _buildCard(BuildContext context, {required bool compact}) {
+    return GlassContainer(
+      blur: _hovered ? 18 : 10,
+      backgroundOpacity: _hovered ? 0.10 : 0.05,
+      borderOpacity: _hovered ? 0.28 : 0.13,
+      borderRadius: 14,
+      boxShadow: _hovered
+          ? [
+              BoxShadow(
+                color: AppTheme.accent.withValues(alpha: 0.16),
+                blurRadius: 32,
+                spreadRadius: -2,
+                offset: const Offset(0, 8),
+              ),
+            ]
+          : null,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Image
+          if (widget.project.images.isNotEmpty)
+            ClipRRect(
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(13)),
+              child: AspectRatio(
+                aspectRatio: 16 / 9,
+                child: _ProjectImageGallery(
+                  images: widget.project.images,
+                  isHovered: _hovered,
+                ),
+              ),
+            ),
+
+          // Content
+          Padding(
+            padding: EdgeInsets.all(compact ? 18 : 20),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: widget.isReversed
-                  ? CrossAxisAlignment.start
-                  : CrossAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  'project_type'.tr(),
-                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                    color: AppTheme.accent,
-                    fontFamily: 'JetBrains Mono',
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  widget.project.name,
-                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                    color: _isHovered ? AppTheme.accent : AppTheme.textPrimary,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 20),
-                Container(
-                  padding: const EdgeInsets.all(24),
-                  decoration: BoxDecoration(
-                    color: AppTheme.surfaceContainer,
-                    borderRadius: BorderRadius.circular(4),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.3),
-                        blurRadius: 20,
-                        offset: const Offset(0, 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        widget.project.name,
+                        style:
+                            Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  color: _hovered
+                                      ? AppTheme.accent
+                                      : AppTheme.textPrimary,
+                                  fontWeight: FontWeight.w600,
+                                ),
                       ),
-                    ],
-                  ),
-                  child: Column(
-                    crossAxisAlignment: widget.isReversed
-                        ? CrossAxisAlignment.start
-                        : CrossAxisAlignment.end,
-                    children: [
-                      Text(
-                        widget.project.summary,
-                        textAlign: widget.isReversed
-                            ? TextAlign.left
-                            : TextAlign.right,
-                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: AppTheme.textPrimary,
-                        ),
-                      ),
-                      if (widget.project.longDescription.isNotEmpty) ...[
-                        const SizedBox(height: 12),
-                        Text(
-                          widget.project.longDescription,
-                          textAlign: widget.isReversed
-                              ? TextAlign.left
-                              : TextAlign.right,
-                          style: Theme.of(context).textTheme.bodyMedium
-                              ?.copyWith(color: AppTheme.textMuted),
-                        ),
+                    ),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        if (widget.project.repoUrl.isNotEmpty)
+                          _IconLink(
+                            icon: Icons.code,
+                            tooltip: 'Source',
+                            size: 18,
+                            onTap: () =>
+                                widget.onLinkTap(widget.project.repoUrl),
+                          ),
+                        if (widget.project.liveUrl.isNotEmpty)
+                          _IconLink(
+                            icon: Icons.open_in_new,
+                            tooltip: 'Live',
+                            size: 18,
+                            onTap: () =>
+                                widget.onLinkTap(widget.project.liveUrl),
+                          ),
                       ],
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 20),
-                _buildProjectUrls(context),
-                const SizedBox(height: 20),
+                const SizedBox(height: 8),
+                Text(
+                  widget.project.summary,
+                  maxLines: compact ? 2 : null,
+                  overflow:
+                      compact ? TextOverflow.ellipsis : TextOverflow.visible,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: AppTheme.textMuted,
+                        height: 1.45,
+                      ),
+                ),
+                const SizedBox(height: 14),
                 Wrap(
-                  spacing: 12,
-                  runSpacing: 8,
-                  alignment: widget.isReversed
-                      ? WrapAlignment.start
-                      : WrapAlignment.end,
+                  spacing: 8,
+                  runSpacing: 4,
                   children: widget.project.tags
                       .map(
                         (t) => Text(
                           t,
-                          style: Theme.of(context).textTheme.labelSmall
-                              ?.copyWith(
-                                color: AppTheme.textMuted,
-                                fontFamily: 'JetBrains Mono',
-                              ),
+                          style:
+                              Theme.of(context).textTheme.labelSmall?.copyWith(
+                                    color: AppTheme.textMuted,
+                                    fontFamily: 'JetBrains Mono',
+                                    fontSize: 10,
+                                  ),
                         ),
                       )
                       .toList(),
-                ),
-                const SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: widget.isReversed
-                      ? MainAxisAlignment.start
-                      : MainAxisAlignment.end,
-                  children: [
-                    if (widget.project.repoUrl.isNotEmpty)
-                      IconButton(
-                        onPressed: () => widget.onLinkTap(widget.project.repoUrl),
-                        icon: const Icon(
-                          Icons.code,
-                          color: AppTheme.textPrimary,
-                        ),
-                      ),
-                    if (widget.project.liveUrl.isNotEmpty)
-                      IconButton(
-                        onPressed: () => widget.onLinkTap(widget.project.liveUrl),
-                        icon: const Icon(
-                          Icons.open_in_new,
-                          color: AppTheme.textPrimary,
-                        ),
-                      ),
-                  ],
                 ),
               ],
             ),
           ),
         ],
       ),
-    ));
+    );
   }
+}
 
-  Widget _buildProjectUrls(BuildContext context) {
-    if (widget.project.urls.isEmpty) return const SizedBox.shrink();
+// ── Shared sub-widgets ────────────────────────────────────────────────────────
 
-    return Wrap(
-      spacing: 12,
-      runSpacing: 12,
-      alignment: widget.isReversed ? WrapAlignment.start : WrapAlignment.end,
-      children: widget.project.urls
-          .map((u) => _ProjectUrlItem(url: u, onLaunch: widget.onLinkTap))
-          .toList(),
+class _IconLink extends StatefulWidget {
+  final IconData icon;
+  final String tooltip;
+  final VoidCallback onTap;
+  final double size;
+
+  const _IconLink({
+    required this.icon,
+    required this.tooltip,
+    required this.onTap,
+    this.size = 20,
+  });
+
+  @override
+  State<_IconLink> createState() => _IconLinkState();
+}
+
+class _IconLinkState extends State<_IconLink> {
+  bool _hovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Tooltip(
+      message: widget.tooltip,
+      child: MouseRegion(
+        onEnter: (_) => setState(() => _hovered = true),
+        onExit: (_) => setState(() => _hovered = false),
+        cursor: SystemMouseCursors.click,
+        child: GestureDetector(
+          onTap: widget.onTap,
+          child: Padding(
+            padding: const EdgeInsets.all(6),
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 150),
+              child: Icon(
+                widget.icon,
+                key: ValueKey(_hovered),
+                size: widget.size,
+                color: _hovered ? AppTheme.accent : AppTheme.textMuted,
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
@@ -343,13 +575,13 @@ class _ProjectUrlItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => onLaunch(url.url),
-      borderRadius: BorderRadius.circular(4),
+      borderRadius: BorderRadius.circular(6),
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
         decoration: BoxDecoration(
-          border: Border.all(color: AppTheme.accent.withValues(alpha: 0.3)),
-          borderRadius: BorderRadius.circular(4),
-          color: AppTheme.accent.withValues(alpha: 0.05),
+          border: Border.all(color: AppTheme.accent.withValues(alpha: 0.35)),
+          borderRadius: BorderRadius.circular(6),
+          color: AppTheme.accent.withValues(alpha: 0.06),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -358,22 +590,18 @@ class _ProjectUrlItem extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(2),
                 child: url.image.endsWith('.svg')
-                    ? SvgPicture.asset(url.image, width: 20, height: 20)
-                    : Image.asset(
-                        url.image,
-                        width: 20,
-                        height: 20,
-                        fit: BoxFit.cover,
-                      ),
+                    ? SvgPicture.asset(url.image, width: 18, height: 18)
+                    : Image.asset(url.image,
+                        width: 18, height: 18, fit: BoxFit.cover),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: 6),
             ],
             Text(
               url.title,
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                color: AppTheme.accent,
-                fontFamily: 'JetBrains Mono',
-              ),
+                    color: AppTheme.accent,
+                    fontFamily: 'JetBrains Mono',
+                  ),
             ),
           ],
         ),
@@ -382,142 +610,7 @@ class _ProjectUrlItem extends StatelessWidget {
   }
 }
 
-class _OtherProjectCard extends StatefulWidget {
-  final OtherProject project;
-  final Function(String url) onLinkTap;
-
-  const _OtherProjectCard({required this.project, required this.onLinkTap});
-
-  @override
-  State<_OtherProjectCard> createState() => _OtherProjectCardState();
-}
-
-class _OtherProjectCardState extends State<_OtherProjectCard> {
-  bool _isHovered = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return MouseRegion(
-      onEnter: (_) => setState(() => _isHovered = true),
-      onExit: (_) => setState(() => _isHovered = false),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        transform: Matrix4.translationValues(0.0, _isHovered ? -8.0 : 0.0, 0.0),
-        decoration: BoxDecoration(
-          color: AppTheme.surfaceContainer,
-          borderRadius: BorderRadius.circular(4),
-          boxShadow: [
-            if (_isHovered)
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.2),
-                blurRadius: 10,
-                offset: const Offset(0, 5),
-              ),
-          ],
-        ),
-        clipBehavior: Clip.antiAlias,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Image gallery at top
-            if (widget.project.images.isNotEmpty)
-              AspectRatio(
-                aspectRatio: 16 / 10,
-                child: _ProjectImageGallery(images: widget.project.images),
-              ),
-
-            // Content below
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Text(
-                            widget.project.name,
-                            style: Theme.of(context).textTheme.titleMedium
-                                ?.copyWith(
-                                  color: _isHovered
-                                      ? AppTheme.accent
-                                      : AppTheme.textPrimary,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                          ),
-                        ),
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            if (widget.project.repoUrl.isNotEmpty)
-                              IconButton(
-                                padding: EdgeInsets.zero,
-                                constraints: const BoxConstraints(),
-                                onPressed: () =>
-                                    widget.onLinkTap(widget.project.repoUrl),
-                                icon: const Icon(
-                                  Icons.code,
-                                  color: AppTheme.textMuted,
-                                  size: 18,
-                                ),
-                              ),
-                            if (widget.project.liveUrl.isNotEmpty) ...[
-                              const SizedBox(width: 8),
-                              IconButton(
-                                padding: EdgeInsets.zero,
-                                constraints: const BoxConstraints(),
-                                onPressed: () =>
-                                    widget.onLinkTap(widget.project.liveUrl),
-                                icon: const Icon(
-                                  Icons.open_in_new,
-                                  color: AppTheme.textMuted,
-                                  size: 18,
-                                ),
-                              ),
-                            ],
-                          ],
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      widget.project.summary,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppTheme.textMuted,
-                      ),
-                    ),
-                    const Spacer(),
-                    Wrap(
-                      spacing: 10,
-                      runSpacing: 6,
-                      children: widget.project.tags
-                          .map(
-                            (t) => Text(
-                              t,
-                              style: Theme.of(context).textTheme.labelSmall
-                                  ?.copyWith(
-                                    color: AppTheme.textMuted,
-                                    fontFamily: 'JetBrains Mono',
-                                    fontSize: 10,
-                                  ),
-                            ),
-                          )
-                          .toList(),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
+// ── Image gallery with page indicators ───────────────────────────────────────
 
 class _ProjectImageGallery extends StatefulWidget {
   final List<String> images;
@@ -530,12 +623,26 @@ class _ProjectImageGallery extends StatefulWidget {
 }
 
 class _ProjectImageGalleryState extends State<_ProjectImageGallery> {
-  final PageController _pageController = PageController();
-  int _currentPage = 0;
+  late final PageController _pageCtrl;
+  int _page = 0;
+
+  static const int _kLoopFactor = 1000;
+
+  int get _currentIndex => widget.images.isEmpty ? 0 : _page % widget.images.length;
+
+  int get _initialPage =>
+      widget.images.length <= 1 ? 0 : widget.images.length * _kLoopFactor;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageCtrl = PageController(initialPage: _initialPage);
+    _page = _initialPage;
+  }
 
   @override
   void dispose() {
-    _pageController.dispose();
+    _pageCtrl.dispose();
     super.dispose();
   }
 
@@ -545,128 +652,140 @@ class _ProjectImageGalleryState extends State<_ProjectImageGallery> {
       return Container(color: AppTheme.surfaceContainer);
     }
 
-    return Container(
-      color: AppTheme.surfaceLow,
-      child: Stack(
-        children: [
-          // Swipeable PageView
-          PageView.builder(
-            controller: _pageController,
-            itemCount: widget.images.length,
-            onPageChanged: (index) => setState(() => _currentPage = index),
-            itemBuilder: (context, index) {
-              return Container(
-                color: AppTheme.surfaceLow,
-                padding: const EdgeInsets.all(8),
-                child: Image.asset(
-                  widget.images[index],
-                  fit: BoxFit.contain,
-                  width: double.infinity,
-                  height: double.infinity,
-                ),
-              );
-            },
-          ),
-
-          // Subtle tint overlay — IgnorePointer so swipe still works
-          IgnorePointer(
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 300),
-              color: widget.isHovered ? Colors.transparent : AppTheme.accent.withValues(alpha: 0.25),
+    return Stack(
+      children: [
+        // Swipeable page view
+        PageView.builder(
+          controller: _pageCtrl,
+          onPageChanged: (i) => setState(() => _page = i),
+          itemBuilder: (_, i) => Container(
+            color: AppTheme.surfaceLow,
+            padding: const EdgeInsets.all(6),
+            child: Image.asset(
+              widget.images[i % widget.images.length],
+              fit: BoxFit.contain,
+              width: double.infinity,
             ),
           ),
+        ),
 
-          // Page indicators
-          if (widget.images.length > 1)
-            Positioned(
-              bottom: 12,
-              left: 0,
-              right: 0,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: widget.images.asMap().entries.map((entry) {
-                  final isActive = _currentPage == entry.key;
-                  return GestureDetector(
-                    onTap: () => _pageController.animateToPage(
-                      entry.key,
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeInOut,
+        // Subtle tint overlay (clears on hover)
+        IgnorePointer(
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 300),
+            color: widget.isHovered
+                ? Colors.transparent
+                : AppTheme.accent.withValues(alpha: 0.20),
+          ),
+        ),
+
+        // Page indicators
+        if (widget.images.length > 1) ...[
+          Positioned(
+            bottom: 10,
+            left: 0,
+            right: 0,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: widget.images.asMap().entries.map((e) {
+                final active = _currentIndex == e.key;
+                return GestureDetector(
+                  onTap: () => _animateToImageIndex(e.key),
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    width: active ? 20 : 6,
+                    height: 6,
+                    margin: const EdgeInsets.symmetric(horizontal: 3),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(3),
+                      color: active
+                          ? AppTheme.accent
+                          : Colors.white.withValues(alpha: 0.3),
                     ),
-                    child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 200),
-                      width: isActive ? 24 : 8,
-                      height: 8,
-                      margin: const EdgeInsets.symmetric(horizontal: 3),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(4),
-                        color: isActive
-                            ? AppTheme.accent
-                            : Colors.white.withValues(alpha: 0.3),
-                      ),
-                    ),
-                  );
-                }).toList(),
-              ),
-            ),
-
-          // Left arrow — positioned at left edge only
-          if (widget.images.length > 1)
-            Positioned(
-              left: 4,
-              top: 0,
-              bottom: 0,
-              child: Center(
-                child: _ArrowButton(
-                  icon: Icons.chevron_left,
-                  onTap: () => _pageController.previousPage(
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeInOut,
                   ),
-                ),
-              ),
+                );
+              }).toList(),
             ),
+          ),
 
-          // Right arrow — positioned at right edge only
-          if (widget.images.length > 1)
-            Positioned(
-              right: 4,
-              top: 0,
-              bottom: 0,
-              child: Center(
-                child: _ArrowButton(
-                  icon: Icons.chevron_right,
-                  onTap: () => _pageController.nextPage(
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeInOut,
-                  ),
-                ),
+          // Arrow buttons
+          Positioned(
+            left: 4,
+            top: 0,
+            bottom: 0,
+            child: Center(
+              child: _Arrow(
+                icon: Icons.chevron_left,
+                onTap: _goToPreviousPage,
               ),
             ),
+          ),
+          Positioned(
+            right: 4,
+            top: 0,
+            bottom: 0,
+            child: Center(
+              child: _Arrow(
+                icon: Icons.chevron_right,
+                onTap: _goToNextPage,
+              ),
+            ),
+          ),
         ],
-      ),
+      ],
+    );
+  }
+
+  void _goToPreviousPage() {
+    if (!mounted || !_pageCtrl.hasClients) return;
+
+    _pageCtrl.animateToPage(
+      _page - 1,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
+  }
+
+  void _goToNextPage() {
+    if (!mounted || !_pageCtrl.hasClients) return;
+
+    _pageCtrl.animateToPage(
+      _page + 1,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
+  }
+
+  void _animateToImageIndex(int imageIndex) {
+    if (!mounted || !_pageCtrl.hasClients) return;
+
+    final targetPage = _page - _currentIndex + imageIndex;
+    _pageCtrl.animateToPage(
+      targetPage,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
     );
   }
 }
 
-/// Compact, translucent arrow button that doesn't block swipe area.
-class _ArrowButton extends StatelessWidget {
+class _Arrow extends StatelessWidget {
   final IconData icon;
   final VoidCallback onTap;
 
-  const _ArrowButton({required this.icon, required this.onTap});
+  const _Arrow({required this.icon, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 32,
-        height: 32,
+        width: 28,
+        height: 28,
         decoration: BoxDecoration(
-          color: Colors.black.withValues(alpha: 0.4),
-          borderRadius: BorderRadius.circular(16),
+          color: Colors.black.withValues(alpha: 0.45),
+          borderRadius: BorderRadius.circular(14),
         ),
-        child: Icon(icon, color: Colors.white, size: 20),
+        child: Icon(icon, color: Colors.white, size: 18),
       ),
     );
   }
