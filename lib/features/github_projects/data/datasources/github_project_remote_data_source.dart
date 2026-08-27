@@ -25,7 +25,7 @@ abstract interface class GitHubProjectRemoteDataSource {
 final class GitHubProjectRemoteDataSourceImpl
     implements GitHubProjectRemoteDataSource {
   GitHubProjectRemoteDataSourceImpl({http.Client? client})
-      : _client = client ?? http.Client();
+    : _client = client ?? http.Client();
 
   final http.Client _client;
 
@@ -41,7 +41,7 @@ final class GitHubProjectRemoteDataSourceImpl
 
     for (var page = 1; page <= safeMaxPages; page++) {
       final uri = Uri.https('api.github.com', '/users/$owner/repos', {
-        'type': 'public',
+        'type': 'owner',
         'sort': 'updated',
         'direction': 'desc',
         'per_page': '$safePerPage',
