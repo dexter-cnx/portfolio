@@ -88,9 +88,9 @@ void main() {
     expect(document.toJson()['locale'], 'th');
   });
 
-  test('filters projects using export selection metadata', () {
+  test('uses dedicated export projects instead of visible projects', () {
     const includedUrl = 'https://github.com/dexter-cnx/dxtr_box';
-    const excludedUrl = 'https://github.com/dexter-cnx/analythis';
+    const visibleOnlyUrl = 'https://github.com/dexter-cnx/analythis';
     final fallback = PortfolioData.empty();
     final data = PortfolioDataWithExportSelection(
       site: fallback.site,
@@ -99,8 +99,24 @@ void main() {
       experience: fallback.experience,
       featuredProjects: [
         FeaturedProject(
+          name: 'analythis',
+          summary: 'Visible only',
+          longDescription: '',
+          repoUrl: visibleOnlyUrl,
+          liveUrl: '',
+          images: const [],
+          urls: const [],
+          tags: const [],
+        ),
+      ],
+      otherProjects: const [],
+      contact: fallback.contact,
+      socialLinks: fallback.socialLinks,
+      nav: fallback.nav,
+      pdfFeaturedProjects: [
+        FeaturedProject(
           name: 'dxtr_box',
-          summary: 'Included',
+          summary: 'PDF only',
           longDescription: '',
           repoUrl: includedUrl,
           liveUrl: '',
@@ -109,20 +125,7 @@ void main() {
           tags: const [],
         ),
       ],
-      otherProjects: [
-        OtherProject(
-          name: 'analythis',
-          summary: 'Excluded',
-          repoUrl: excludedUrl,
-          liveUrl: '',
-          images: const [],
-          tags: const [],
-        ),
-      ],
-      contact: fallback.contact,
-      socialLinks: fallback.socialLinks,
-      nav: fallback.nav,
-      pdfProjectRepositoryUrls: const {includedUrl},
+      pdfOtherProjects: const [],
     );
 
     final document = const PortfolioDocumentMapper().map(
