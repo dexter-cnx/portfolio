@@ -7,7 +7,7 @@ enum GitHubProjectsStatus { initial, loading, success, empty, error }
 
 final class GitHubProjectsController extends ChangeNotifier {
   GitHubProjectsController({required GitHubProjectRepository repository})
-      : _repository = repository;
+    : _repository = repository;
 
   final GitHubProjectRepository _repository;
   int _requestGeneration = 0;
