@@ -65,6 +65,8 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
         : await PdfGoogleFonts.interBold();
     final labels = _labelsFor(data.locale);
     final projects = _projectsForTemplate(data, template);
+    final includeProjectDescriptions =
+        template == PortfolioReportTemplateId.portfolioFull;
     final generatedAt = data.generatedAt.toLocal();
     final dateStr =
         '${generatedAt.day}/${generatedAt.month}/${generatedAt.year}';
@@ -111,7 +113,13 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
           ),
           pw.SizedBox(height: 20),
           _sectionTitle(labels.projects),
-          ...projects.map((project) => _project(project, labels)),
+          ...projects.map(
+            (project) => _project(
+              project,
+              labels,
+              includeDescription: includeProjectDescriptions,
+            ),
+          ),
           pw.SizedBox(height: 20),
           _sectionTitle(labels.links),
           ...data.links.map(_link),
@@ -230,7 +238,11 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
     );
   }
 
-  pw.Widget _project(PortfolioDocumentProject project, _ResumeLabels labels) {
+  pw.Widget _project(
+    PortfolioDocumentProject project,
+    _ResumeLabels labels, {
+    required bool includeDescription,
+  }) {
     return pw.Column(
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [
@@ -239,7 +251,7 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
           style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 11),
         ),
         pw.Text(project.summary, style: const pw.TextStyle(fontSize: 10)),
-        if (project.description.isNotEmpty)
+        if (includeDescription && project.description.isNotEmpty)
           pw.Text(project.description, style: const pw.TextStyle(fontSize: 9)),
         if (project.tags.isNotEmpty)
           pw.Text(
