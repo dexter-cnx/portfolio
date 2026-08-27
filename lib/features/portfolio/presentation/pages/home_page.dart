@@ -7,12 +7,14 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../../app/theme/app_theme.dart';
 import '../../../portfolio_documents/domain/reporting/portfolio_report_template.dart';
 import '../../data/datasources/local_content_loader.dart';
+import '../../models/portfolio_data_with_export_selection.dart';
 import '../../models/portfolio_models.dart';
 import '../widgets/about_section_widget.dart';
 import '../widgets/contact_section_widget.dart';
 import '../widgets/experience_section_widget.dart';
 import '../widgets/hero_section_widget.dart';
 import '../widgets/mouse_glow_background.dart';
+import '../widgets/open_source_projects_section_widget.dart';
 import '../widgets/projects_section_widget.dart';
 import '../widgets/responsive_layout.dart';
 import '../widgets/resume_pdf_generator.dart';
@@ -113,6 +115,9 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
         }
 
         final data = snapshot.data!;
+        final openSourceProjects = data is PortfolioDataWithExportSelection
+            ? data.openSourceProjects
+            : const <OtherProject>[];
 
         return Scaffold(
           backgroundColor: Colors.transparent,
@@ -154,6 +159,10 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
                         key: _projectsKey,
                         featured: data.featuredProjects,
                         other: data.otherProjects,
+                        onLinkTap: _launchURL,
+                      ),
+                      OpenSourceProjectsSectionWidget(
+                        projects: openSourceProjects,
                         onLinkTap: _launchURL,
                       ),
                       ContactSectionWidget(
