@@ -88,9 +88,9 @@ void main() {
     expect(document.toJson()['locale'], 'th');
   });
 
-  test('uses dedicated export projects instead of visible projects', () {
+  test('keeps portfolio featured projects and dedicated open source export projects', () {
     const includedUrl = 'https://github.com/dexter-cnx/dxtr_box';
-    const visibleOnlyUrl = 'https://github.com/dexter-cnx/analythis';
+    const portfolioFeaturedUrl = 'https://github.com/dexter-cnx/analythis';
     final fallback = PortfolioData.empty();
     final data = PortfolioDataWithExportSelection(
       site: fallback.site,
@@ -100,9 +100,9 @@ void main() {
       featuredProjects: [
         FeaturedProject(
           name: 'analythis',
-          summary: 'Visible only',
+          summary: 'Portfolio featured project',
           longDescription: '',
-          repoUrl: visibleOnlyUrl,
+          repoUrl: portfolioFeaturedUrl,
           liveUrl: '',
           images: const [],
           urls: const [],
@@ -117,7 +117,7 @@ void main() {
       pdfFeaturedProjects: [
         FeaturedProject(
           name: 'dxtr_box',
-          summary: 'PDF only',
+          summary: 'Open source PDF project',
           longDescription: '',
           repoUrl: includedUrl,
           liveUrl: '',
@@ -135,8 +135,11 @@ void main() {
       generatedAt: DateTime.utc(2026),
     );
 
-    expect(document.projects, hasLength(1));
-    expect(document.projects.single.repositoryUrl, includedUrl);
+    expect(document.projects, hasLength(2));
+    expect(document.projects.first.repositoryUrl, portfolioFeaturedUrl);
+    expect(document.projects.first.featured, isTrue);
+    expect(document.projects.last.repositoryUrl, includedUrl);
+    expect(document.projects.last.featured, isFalse);
   });
 
   test('normalizes unsupported locale to English', () {
