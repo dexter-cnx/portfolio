@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 
 import '../../github_projects/domain/entities/github_project.dart';
@@ -5,14 +7,14 @@ import '../../github_projects/domain/repositories/github_project_repository.dart
 import '../domain/entities/portfolio_project_config.dart';
 import '../domain/repositories/project_selection_store.dart';
 
-enum ProjectSelectionStatus { initial, loading, ready, saving, error }
+enum ProjectSelectionStatus { initial, loading, ready, error }
 
 final class ProjectSelectionController extends ChangeNotifier {
   ProjectSelectionController({
     required GitHubProjectRepository githubRepository,
     required ProjectSelectionStore store,
-  })  : _githubRepository = githubRepository,
-        _store = store;
+  }) : _githubRepository = githubRepository,
+       _store = store;
 
   final GitHubProjectRepository _githubRepository;
   final ProjectSelectionStore _store;
@@ -27,9 +29,11 @@ final class ProjectSelectionController extends ChangeNotifier {
     final query = search.trim().toLowerCase();
     if (query.isEmpty) return repositories;
     return repositories
-        .where((repo) =>
-            repo.name.toLowerCase().contains(query) ||
-            repo.description.toLowerCase().contains(query))
+        .where(
+          (repo) =>
+              repo.name.toLowerCase().contains(query) ||
+              repo.description.toLowerCase().contains(query),
+        )
         .toList(growable: false);
   }
 
@@ -67,29 +71,32 @@ final class ProjectSelectionController extends ChangeNotifier {
     String? summaryOverride,
   }) {
     final current = config.forRepository(repositoryId);
-    config = config.replace(current.copyWith(
-      visible: visible,
-      featured: featured,
-      includeInPdf: includeInPdf,
-      sortOrder: sortOrder,
-      titleOverride: titleOverride,
-      summaryOverride: summaryOverride,
-    ));
+    config = config.replace(
+      current.copyWith(
+        visible: visible,
+        featured: featured,
+        includeInPdf: includeInPdf,
+        sortOrder: sortOrder,
+        titleOverride: titleOverride,
+        summaryOverride: summaryOverride,
+      ),
+    );
     notifyListeners();
   }
 
-  Future<void> save() async {
-    status = ProjectSelectionStatus.saving;
-    error = null;
+  String exportJson({DateTime? now}) {
+    final exported = config.markUpdated((now ?? DateTime.now()).toUtc());
+    config = exported;
     notifyListeners();
-    try {
-      await _store.save(config);
-      config = await _store.load();
-      status = ProjectSelectionStatus.ready;
-    } catch (exception) {
-      error = exception;
-      status = ProjectSelectionStatus.error;
+    return const JsonEncoder.withIndent('  ').convert(exported.toJson());
+  }
+
+  void importJson(String rawJson) {
+    final decoded = jsonDecode(rawJson);
+    if (decoded is! Map<String, dynamic>) {
+      throw const FormatException('Project selection config must be a JSON object.');
     }
+    config = ProjectSelectionConfig.fromJson(decoded);
     notifyListeners();
   }
 }
