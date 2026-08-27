@@ -7,7 +7,7 @@ void main() {
     expect(PortfolioReportTemplateId.resumeCompact.value, 'resume_compact');
   });
 
-  test('template registry keeps full and compact policies distinct', () {
+  test('template registry keeps description policies distinct', () {
     const registry = PortfolioReportTemplateRegistry();
 
     final full = registry.definitionFor(
@@ -19,7 +19,7 @@ void main() {
 
     expect(full.featuredProjectsOnly, isFalse);
     expect(full.includeProjectDescriptions, isTrue);
-    expect(compact.featuredProjectsOnly, isTrue);
+    expect(compact.featuredProjectsOnly, isFalse);
     expect(compact.includeProjectDescriptions, isFalse);
   });
 }
