@@ -131,14 +131,16 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
           style: const pw.TextStyle(fontSize: 11, lineSpacing: 1.4),
         ),
       ],
-      PortfolioReportSectionId.experience =>
-        _maps(value).map(_experience).toList(growable: false),
+      PortfolioReportSectionId.experience => _maps(
+        value,
+      ).map(_experience).toList(growable: false),
       PortfolioReportSectionId.skills => <pw.Widget>[_skills(_strings(value))],
-      PortfolioReportSectionId.projects => _maps(value)
-          .map((project) => _project(project, labels))
-          .toList(growable: false),
-      PortfolioReportSectionId.links =>
-        _maps(value).map(_link).toList(growable: false),
+      PortfolioReportSectionId.projects => _maps(
+        value,
+      ).map((project) => _project(project, labels)).toList(growable: false),
+      PortfolioReportSectionId.links => _maps(
+        value,
+      ).map(_link).toList(growable: false),
     };
 
     return <pw.Widget>[
