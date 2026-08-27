@@ -26,6 +26,7 @@ void main() {
       ),
     ],
     otherProjects: const [],
+    openSourceProjects: const [],
     contact: fallback.contact,
     socialLinks: fallback.socialLinks,
     nav: fallback.nav,
@@ -43,9 +44,9 @@ void main() {
     ],
     pdfOtherProjects: [
       OtherProject(
-        name: 'pdf-other',
-        summary: 'Other PDF project',
-        repoUrl: 'https://github.com/dexter-cnx/pdf-other',
+        name: 'pdf-open-source',
+        summary: 'Open source PDF project',
+        repoUrl: 'https://github.com/dexter-cnx/pdf-open-source',
         liveUrl: '',
         images: const [],
         tags: const ['Flutter'],
@@ -53,7 +54,7 @@ void main() {
     ],
   );
 
-  test('compact export uses PDF selection and featured policy end to end', () {
+  test('compact export keeps featured and open source sections end to end', () {
     final document = const PortfolioDocumentMapper().map(
       source,
       locale: 'en',
@@ -66,29 +67,35 @@ void main() {
     final composition = const PortfolioReportSectionCompositionBuilder().build(
       plan,
     );
-    final projects = plan.payload['projects'] as List<dynamic>;
+    final featuredProjects = plan.payload['featuredProjects'] as List<dynamic>;
+    final openSourceProjects =
+        plan.payload['openSourceProjects'] as List<dynamic>;
 
     expect(document.projects, hasLength(2));
     expect(document.projects.map((project) => project.name), <String>[
       'pdf-featured',
-      'pdf-other',
+      'pdf-open-source',
     ]);
-    expect(projects, hasLength(1));
-    expect((projects.single as Map<String, dynamic>)['name'], 'pdf-featured');
-    expect((projects.single as Map<String, dynamic>)['description'], '');
+    expect(featuredProjects, hasLength(1));
+    expect(openSourceProjects, hasLength(1));
     expect(
-      composition.map((section) => section.definition.id),
-      <PortfolioReportSectionId>[
-        PortfolioReportSectionId.summary,
-        PortfolioReportSectionId.experience,
-        PortfolioReportSectionId.skills,
-        PortfolioReportSectionId.projects,
-        PortfolioReportSectionId.links,
+      (featuredProjects.single as Map<String, dynamic>)['description'],
+      '',
+    );
+    expect(
+      composition.map((section) => section.definition.dataExpression),
+      <String>[
+        'summary',
+        'experience',
+        'skills',
+        'featuredProjects',
+        'openSourceProjects',
+        'links',
       ],
     );
   });
 
-  test('full Thai export keeps all selected PDF projects and descriptions', () {
+  test('full Thai export keeps separate project groups and descriptions', () {
     final document = const PortfolioDocumentMapper().map(
       source,
       locale: 'th',
@@ -101,22 +108,25 @@ void main() {
     final composition = const PortfolioReportSectionCompositionBuilder().build(
       plan,
     );
-    final projects = plan.payload['projects'] as List<dynamic>;
-    final projectSection = composition.singleWhere(
-      (section) => section.definition.id == PortfolioReportSectionId.projects,
+    final featuredProjects = plan.payload['featuredProjects'] as List<dynamic>;
+    final openSourceProjects =
+        plan.payload['openSourceProjects'] as List<dynamic>;
+    final featuredSection = composition.singleWhere(
+      (section) => section.definition.dataExpression == 'featuredProjects',
+    );
+    final openSourceSection = composition.singleWhere(
+      (section) => section.definition.dataExpression == 'openSourceProjects',
     );
 
     expect(document.locale, 'th');
     expect(plan.payload['locale'], 'th');
-    expect(projects, hasLength(2));
+    expect(featuredProjects, hasLength(1));
+    expect(openSourceProjects, hasLength(1));
     expect(
-      (projects.first as Map<String, dynamic>)['description'],
+      (featuredProjects.first as Map<String, dynamic>)['description'],
       'Featured project description.',
     );
-    expect(projectSection.value, same(projects));
-    expect(
-      projects.map((project) => (project as Map<String, dynamic>)['name']),
-      <String>['pdf-featured', 'pdf-other'],
-    );
+    expect(featuredSection.value, same(featuredProjects));
+    expect(openSourceSection.value, same(openSourceProjects));
   });
 }
