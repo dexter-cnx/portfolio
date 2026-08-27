@@ -66,8 +66,13 @@ final class PortfolioReportTemplateRegistry {
     ),
     PortfolioReportSectionDefinition(
       id: PortfolioReportSectionId.projects,
-      labelKey: 'projects',
-      dataExpression: 'projects',
+      labelKey: 'featured_projects',
+      dataExpression: 'featuredProjects',
+    ),
+    PortfolioReportSectionDefinition(
+      id: PortfolioReportSectionId.projects,
+      labelKey: 'open_source_projects',
+      dataExpression: 'openSourceProjects',
     ),
     PortfolioReportSectionDefinition(
       id: PortfolioReportSectionId.links,
