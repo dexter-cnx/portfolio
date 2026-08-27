@@ -40,7 +40,15 @@ final class PortfolioReportTemplateDefinition {
 }
 
 final class PortfolioReportTemplateRegistry {
-  const PortfolioReportTemplateRegistry();
+  const PortfolioReportTemplateRegistry({
+    this.overrides = const <
+      PortfolioReportTemplateId,
+      PortfolioReportTemplateDefinition
+    >{},
+  });
+
+  final Map<PortfolioReportTemplateId, PortfolioReportTemplateDefinition>
+  overrides;
 
   static const _standardSections = <PortfolioReportSectionDefinition>[
     PortfolioReportSectionDefinition(
@@ -73,6 +81,9 @@ final class PortfolioReportTemplateRegistry {
   PortfolioReportTemplateDefinition definitionFor(
     PortfolioReportTemplateId id,
   ) {
+    final override = overrides[id];
+    if (override != null) return override;
+
     return switch (id) {
       PortfolioReportTemplateId.portfolioFull =>
         const PortfolioReportTemplateDefinition(
