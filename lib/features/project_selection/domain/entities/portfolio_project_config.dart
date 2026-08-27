@@ -105,14 +105,18 @@ final class ProjectSelectionConfig {
 
     final updatedAtValue = json['updatedAt'];
     return ProjectSelectionConfig(
-      projects: rawProjects.map((item) {
-        if (item is! Map) {
-          throw const FormatException('Each project config must be an object.');
-        }
-        return PortfolioProjectConfig.fromJson(
-          Map<String, Object?>.from(item),
-        );
-      }).toList(growable: false),
+      projects: rawProjects
+          .map((item) {
+            if (item is! Map) {
+              throw const FormatException(
+                'Each project config must be an object.',
+              );
+            }
+            return PortfolioProjectConfig.fromJson(
+              Map<String, Object?>.from(item),
+            );
+          })
+          .toList(growable: false),
       updatedAt: updatedAtValue is String && updatedAtValue.isNotEmpty
           ? DateTime.tryParse(updatedAtValue)?.toUtc()
           : null,
