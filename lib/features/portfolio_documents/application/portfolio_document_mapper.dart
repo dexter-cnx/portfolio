@@ -10,14 +10,12 @@ final class PortfolioDocumentMapper {
     required String locale,
     DateTime? generatedAt,
   }) {
-    final pdfRepositoryUrls = data is PortfolioDataWithExportSelection
-        ? data.pdfProjectRepositoryUrls
-        : null;
-
-    bool includeProject(String repositoryUrl) {
-      return pdfRepositoryUrls == null ||
-          pdfRepositoryUrls.contains(repositoryUrl);
-    }
+    final featuredProjects = data is PortfolioDataWithExportSelection
+        ? data.pdfFeaturedProjects
+        : data.featuredProjects;
+    final otherProjects = data is PortfolioDataWithExportSelection
+        ? data.pdfOtherProjects
+        : data.otherProjects;
 
     return PortfolioDocumentData(
       locale: locale == 'th' ? 'th' : 'en',
@@ -44,7 +42,7 @@ final class PortfolioDocumentMapper {
           )
           .toList(growable: false),
       projects: <PortfolioDocumentProject>[
-        ...data.featuredProjects.where((item) => includeProject(item.repoUrl)).map(
+        ...featuredProjects.map(
           (item) => PortfolioDocumentProject(
             name: item.name,
             summary: item.summary,
@@ -61,7 +59,7 @@ final class PortfolioDocumentMapper {
             featured: true,
           ),
         ),
-        ...data.otherProjects.where((item) => includeProject(item.repoUrl)).map(
+        ...otherProjects.map(
           (item) => PortfolioDocumentProject(
             name: item.name,
             summary: item.summary,
