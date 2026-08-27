@@ -158,7 +158,9 @@ class ResumePdfGenerator {
           ),
           pw.SizedBox(height: 20),
           _buildSectionTitle(labels.projects),
-          ...data.projects.where((project) => project.featured).map(
+          ...data.projects
+              .where((project) => project.featured)
+              .map(
                 (project) => pw.Column(
                   crossAxisAlignment: pw.CrossAxisAlignment.start,
                   children: [
