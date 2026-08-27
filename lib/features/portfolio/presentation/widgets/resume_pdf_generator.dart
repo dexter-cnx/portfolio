@@ -6,7 +6,7 @@ import 'package:printing/printing.dart';
 
 import '../../../portfolio_documents/application/portfolio_document_mapper.dart';
 import '../../../portfolio_documents/application/portfolio_report_render_plan.dart';
-import '../../../portfolio_documents/application/portfolio_report_value_resolver.dart';
+import '../../../portfolio_documents/application/portfolio_report_section_composition.dart';
 import '../../../portfolio_documents/domain/entities/portfolio_document_data.dart';
 import '../../../portfolio_documents/domain/reporting/portfolio_report_template.dart';
 import '../../../portfolio_documents/presentation/pdf/portfolio_pdf_components.dart';
@@ -57,17 +57,17 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
   PortfolioPdfRenderer({
     PortfolioReportRenderPlanBuilder renderPlanBuilder =
         const PortfolioReportRenderPlanBuilder(),
-    PortfolioReportValueResolver valueResolver =
-        const PortfolioReportValueResolver(),
+    PortfolioReportSectionCompositionBuilder sectionCompositionBuilder =
+        const PortfolioReportSectionCompositionBuilder(),
     PortfolioPdfComponents components = const PortfolioPdfComponents(),
     PortfolioPdfLabelCatalog labelCatalog = const PortfolioPdfLabelCatalog(),
   }) : _renderPlanBuilder = renderPlanBuilder,
-       _valueResolver = valueResolver,
+       _sectionCompositionBuilder = sectionCompositionBuilder,
        _components = components,
        _labelCatalog = labelCatalog;
 
   final PortfolioReportRenderPlanBuilder _renderPlanBuilder;
-  final PortfolioReportValueResolver _valueResolver;
+  final PortfolioReportSectionCompositionBuilder _sectionCompositionBuilder;
   final PortfolioPdfComponents _components;
   final PortfolioPdfLabelCatalog _labelCatalog;
 
@@ -78,6 +78,7 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
   }) async {
     final plan = _renderPlanBuilder.build(data, template: template);
     final payload = plan.payload;
+    final sections = _sectionCompositionBuilder.build(plan);
     final locale = payload['locale']?.toString() ?? 'en';
     final profile = _map(payload['profile']);
     final generatedAt = DateTime.tryParse(
@@ -111,9 +112,9 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
           _header(profile),
           pw.Divider(thickness: 1, color: PdfColors.grey300),
           pw.SizedBox(height: 10),
-          for (final entry in plan.template.sections.indexed) ...[
+          for (final entry in sections.indexed) ...[
             if (entry.$1 > 0) pw.SizedBox(height: 20),
-            ..._renderSection(entry.$2, payload, labels),
+            ..._renderSection(entry.$2, labels),
           ],
         ],
       ),
@@ -123,14 +124,14 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
   }
 
   List<pw.Widget> _renderSection(
-    PortfolioReportSectionDefinition section,
-    Map<String, dynamic> payload,
+    PortfolioReportSectionComposition section,
     PortfolioPdfLabels labels,
   ) {
-    final value = _valueResolver.resolve(section.dataExpression, payload);
-    final title = labels.forKey(section.labelKey);
+    final definition = section.definition;
+    final value = section.value;
+    final title = labels.forKey(definition.labelKey);
 
-    final content = switch (section.id) {
+    final content = switch (definition.id) {
       PortfolioReportSectionId.summary => <pw.Widget>[
         pw.Text(
           _strings(value).join('\n\n'),
