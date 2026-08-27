@@ -19,6 +19,9 @@ final class ProjectSelectionController extends ChangeNotifier {
   final GitHubProjectRepository _githubRepository;
   final ProjectSelectionStore _store;
 
+  bool _disposed = false;
+  int _loadGeneration = 0;
+
   ProjectSelectionStatus status = ProjectSelectionStatus.initial;
   List<GitHubProject> repositories = const <GitHubProject>[];
   ProjectSelectionConfig config = const ProjectSelectionConfig();
@@ -38,6 +41,7 @@ final class ProjectSelectionController extends ChangeNotifier {
   }
 
   Future<void> load() async {
+    final generation = ++_loadGeneration;
     status = ProjectSelectionStatus.loading;
     error = null;
     notifyListeners();
@@ -46,17 +50,20 @@ final class ProjectSelectionController extends ChangeNotifier {
         _githubRepository.loadPublicProjects(),
         _store.load(),
       ]);
+      if (_disposed || generation != _loadGeneration) return;
       repositories = results[0] as List<GitHubProject>;
       config = results[1] as ProjectSelectionConfig;
       status = ProjectSelectionStatus.ready;
     } catch (exception) {
+      if (_disposed || generation != _loadGeneration) return;
       error = exception;
       status = ProjectSelectionStatus.error;
     }
-    notifyListeners();
+    if (!_disposed) notifyListeners();
   }
 
   void setSearch(String value) {
+    if (_disposed) return;
     search = value;
     notifyListeners();
   }
@@ -70,11 +77,14 @@ final class ProjectSelectionController extends ChangeNotifier {
     String? titleOverride,
     String? summaryOverride,
   }) {
+    if (_disposed) return;
     final current = config.forRepository(repositoryId);
+    final nextVisible = visible ?? current.visible;
+    final nextFeatured = featured ?? current.featured;
     config = config.replace(
       current.copyWith(
-        visible: visible,
-        featured: featured,
+        visible: nextVisible,
+        featured: nextVisible ? nextFeatured : false,
         includeInPdf: includeInPdf,
         sortOrder: sortOrder,
         titleOverride: titleOverride,
@@ -94,9 +104,18 @@ final class ProjectSelectionController extends ChangeNotifier {
   void importJson(String rawJson) {
     final decoded = jsonDecode(rawJson);
     if (decoded is! Map<String, dynamic>) {
-      throw const FormatException('Project selection config must be a JSON object.');
+      throw const FormatException(
+        'Project selection config must be a JSON object.',
+      );
     }
     config = ProjectSelectionConfig.fromJson(decoded);
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    _disposed = true;
+    _loadGeneration++;
+    super.dispose();
   }
 }
