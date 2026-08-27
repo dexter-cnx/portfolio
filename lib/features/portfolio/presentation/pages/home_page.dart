@@ -143,10 +143,7 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
                         hero: data.hero,
                         onCtaTap: _launchURL,
                       ),
-                      AboutSectionWidget(
-                        key: _aboutKey,
-                        about: data.about,
-                      ),
+                      AboutSectionWidget(key: _aboutKey, about: data.about),
                       ExperienceSectionWidget(
                         key: _experienceKey,
                         experience: data.experience,
@@ -331,15 +328,13 @@ class _GlassNavBarState extends State<_GlassNavBar> {
                         },
                         leading: Text(
                           '0${entry.key + 1}.',
-                          style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                            color: AppTheme.accent,
-                          ),
+                          style: Theme.of(context).textTheme.labelLarge
+                              ?.copyWith(color: AppTheme.accent),
                         ),
                         title: Text(
                           entry.value.label,
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: AppTheme.textPrimary,
-                          ),
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(color: AppTheme.textPrimary),
                         ),
                       ),
                     ),
