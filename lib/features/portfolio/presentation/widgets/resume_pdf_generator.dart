@@ -8,6 +8,7 @@ import '../../../portfolio_documents/application/portfolio_document_mapper.dart'
 import '../../../portfolio_documents/application/portfolio_report_render_plan.dart';
 import '../../../portfolio_documents/domain/entities/portfolio_document_data.dart';
 import '../../../portfolio_documents/domain/reporting/portfolio_report_template.dart';
+import '../../../portfolio_documents/presentation/pdf/portfolio_pdf_components.dart';
 import '../../models/portfolio_models.dart';
 
 class ResumePdfGenerator {
@@ -54,9 +55,12 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
   PortfolioPdfRenderer({
     PortfolioReportRenderPlanBuilder renderPlanBuilder =
         const PortfolioReportRenderPlanBuilder(),
-  }) : _renderPlanBuilder = renderPlanBuilder;
+    PortfolioPdfComponents components = const PortfolioPdfComponents(),
+  }) : _renderPlanBuilder = renderPlanBuilder,
+       _components = components;
 
   final PortfolioReportRenderPlanBuilder _renderPlanBuilder;
+  final PortfolioPdfComponents _components;
 
   @override
   Future<Uint8List> render(
@@ -94,19 +98,24 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
         pageFormat: PdfPageFormat.a4,
         margin: const pw.EdgeInsets.all(32),
         theme: pw.ThemeData.withFont(base: font, bold: fontBold),
+        footer: (context) => _components.footer(
+          context: context,
+          generatedLabel: labels.generated,
+          dateText: dateStr.isEmpty ? '' : 'Date: $dateStr',
+        ),
         build: (_) => <pw.Widget>[
           _header(profile),
           pw.Divider(thickness: 1, color: PdfColors.grey300),
           pw.SizedBox(height: 10),
-          _sectionTitle(labels.summary),
+          _components.sectionTitle(labels.summary),
           pw.Text(
             summary.join('\n\n'),
             style: const pw.TextStyle(fontSize: 11, lineSpacing: 1.4),
           ),
           pw.SizedBox(height: 20),
-          _sectionTitle(labels.experience),
+          _components.sectionTitle(labels.experience),
           ...experience.map(_experience),
-          _sectionTitle(labels.skills),
+          _components.sectionTitle(labels.skills),
           pw.Wrap(
             spacing: 5,
             runSpacing: 5,
@@ -130,33 +139,11 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
                 .toList(),
           ),
           pw.SizedBox(height: 20),
-          _sectionTitle(labels.projects),
+          _components.sectionTitle(labels.projects),
           ...projects.map((project) => _project(project, labels)),
           pw.SizedBox(height: 20),
-          _sectionTitle(labels.links),
+          _components.sectionTitle(labels.links),
           ...links.map(_link),
-          pw.Spacer(),
-          pw.Divider(thickness: 0.5, color: PdfColors.grey300),
-          pw.Row(
-            mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-            children: [
-              pw.Text(
-                labels.generated,
-                style: const pw.TextStyle(
-                  fontSize: 8,
-                  color: PdfColors.grey500,
-                ),
-              ),
-              if (dateStr.isNotEmpty)
-                pw.Text(
-                  'Date: $dateStr',
-                  style: const pw.TextStyle(
-                    fontSize: 8,
-                    color: PdfColors.grey500,
-                  ),
-                ),
-            ],
-          ),
         ],
       ),
     );
@@ -292,18 +279,7 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
 
     return pw.Padding(
       padding: const pw.EdgeInsets.only(bottom: 4),
-      child: pw.Row(
-        children: [
-          pw.Text(
-            '$label: ',
-            style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 10),
-          ),
-          pw.Text(
-            url,
-            style: const pw.TextStyle(fontSize: 10, color: PdfColors.blue700),
-          ),
-        ],
-      ),
+      child: _components.externalLink(label: label, url: url),
     );
   }
 
@@ -327,25 +303,6 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
       techStack: 'Tech Stack',
       generated: 'Generated from Portfolio Website',
       links: 'Links & Social',
-    );
-  }
-
-  pw.Widget _sectionTitle(String title) {
-    return pw.Column(
-      crossAxisAlignment: pw.CrossAxisAlignment.start,
-      children: [
-        pw.Text(
-          title.toUpperCase(),
-          style: pw.TextStyle(
-            fontWeight: pw.FontWeight.bold,
-            fontSize: 13,
-            color: PdfColors.blueGrey700,
-          ),
-        ),
-        pw.SizedBox(height: 4),
-        pw.Container(height: 1.5, width: 40, color: PdfColors.blueGrey700),
-        pw.SizedBox(height: 8),
-      ],
     );
   }
 }
