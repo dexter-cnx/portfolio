@@ -27,7 +27,8 @@ final class GitHubProjectRepositoryImpl implements GitHubProjectRepository {
     final cached = _cache[cacheKey];
     final now = _now();
     final cacheAge = cached == null ? null : now.difference(cached.cachedAt);
-    final isFresh = cached != null &&
+    final isFresh =
+        cached != null &&
         cacheAge != null &&
         cacheAge >= Duration.zero &&
         cacheAge < cacheTtl;
@@ -44,17 +45,16 @@ final class GitHubProjectRepositoryImpl implements GitHubProjectRepository {
       allProjects = models
           .map((model) => model.toEntity())
           .toList(growable: false);
-      _cache[cacheKey] = _CacheEntry(
-        cachedAt: now,
-        projects: allProjects,
-      );
+      _cache[cacheKey] = _CacheEntry(cachedAt: now, projects: allProjects);
     }
 
-    final filtered = allProjects.where((project) {
-      if (!query.includeArchived && project.archived) return false;
-      if (!query.includeForks && project.isFork) return false;
-      return true;
-    }).toList(growable: true);
+    final filtered = allProjects
+        .where((project) {
+          if (!query.includeArchived && project.archived) return false;
+          if (!query.includeForks && project.isFork) return false;
+          return true;
+        })
+        .toList(growable: true);
 
     filtered.sort((left, right) {
       if (query.sort == GitHubProjectSort.pushedAt) {
