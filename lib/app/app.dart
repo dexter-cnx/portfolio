@@ -19,9 +19,7 @@ class PortfolioApp extends StatelessWidget {
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,
-      routes: {
-        '/admin/projects': (_) => const ProjectSelectionAdminPage(),
-      },
+      routes: {'/admin/projects': (_) => const ProjectSelectionAdminPage()},
       home: PortfolioHomePage(
         onLocaleChanged: (newLocaleCode) {
           context.setLocale(Locale(newLocaleCode));
