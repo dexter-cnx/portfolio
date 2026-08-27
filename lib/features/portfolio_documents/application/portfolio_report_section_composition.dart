@@ -19,7 +19,9 @@ final class PortfolioReportSectionCompositionBuilder {
 
   final PortfolioReportValueResolver valueResolver;
 
-  List<PortfolioReportSectionComposition> build(PortfolioReportRenderPlan plan) {
+  List<PortfolioReportSectionComposition> build(
+    PortfolioReportRenderPlan plan,
+  ) {
     return plan.template.sections
         .map(
           (section) => PortfolioReportSectionComposition(
