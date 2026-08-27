@@ -11,6 +11,41 @@ enum PortfolioReportTemplateId {
   final String value;
 }
 
+final class PortfolioReportTemplateDefinition {
+  const PortfolioReportTemplateDefinition({
+    required this.id,
+    required this.featuredProjectsOnly,
+    required this.includeProjectDescriptions,
+  });
+
+  final PortfolioReportTemplateId id;
+  final bool featuredProjectsOnly;
+  final bool includeProjectDescriptions;
+}
+
+final class PortfolioReportTemplateRegistry {
+  const PortfolioReportTemplateRegistry();
+
+  PortfolioReportTemplateDefinition definitionFor(
+    PortfolioReportTemplateId id,
+  ) {
+    return switch (id) {
+      PortfolioReportTemplateId.portfolioFull =>
+        const PortfolioReportTemplateDefinition(
+          id: PortfolioReportTemplateId.portfolioFull,
+          featuredProjectsOnly: false,
+          includeProjectDescriptions: true,
+        ),
+      PortfolioReportTemplateId.resumeCompact =>
+        const PortfolioReportTemplateDefinition(
+          id: PortfolioReportTemplateId.resumeCompact,
+          featuredProjectsOnly: true,
+          includeProjectDescriptions: false,
+        ),
+    };
+  }
+}
+
 abstract interface class PortfolioReportRenderer {
   Future<Uint8List> render(
     PortfolioDocumentData data, {
