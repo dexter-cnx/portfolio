@@ -3,6 +3,7 @@
   "projects": [
     {
       "repositoryId": 1334788374,
+      "repositoryFullName": "dexter-cnx/dxtr_box",
       "visible": true,
       "featured": true,
       "includeInPdf": true,
@@ -12,6 +13,7 @@
     },
     {
       "repositoryId": 1332055663,
+      "repositoryFullName": "dexter-cnx/nixin",
       "visible": true,
       "featured": true,
       "includeInPdf": true,
@@ -21,6 +23,7 @@
     },
     {
       "repositoryId": 1322529344,
+      "repositoryFullName": "dexter-cnx/PixelCraft",
       "visible": true,
       "featured": true,
       "includeInPdf": true,
@@ -30,6 +33,7 @@
     },
     {
       "repositoryId": 1341609788,
+      "repositoryFullName": "dexter-cnx/typhoon_ocr_flutter",
       "visible": true,
       "featured": true,
       "includeInPdf": true,
@@ -39,6 +43,7 @@
     },
     {
       "repositoryId": 1202735011,
+      "repositoryFullName": "dexter-cnx/analythis",
       "visible": true,
       "featured": true,
       "includeInPdf": true,
@@ -48,6 +53,7 @@
     },
     {
       "repositoryId": 1338946844,
+      "repositoryFullName": "dexter-cnx/dxtr_card_scan",
       "visible": true,
       "featured": false,
       "includeInPdf": true,
@@ -57,6 +63,7 @@
     },
     {
       "repositoryId": 1339073982,
+      "repositoryFullName": "dexter-cnx/med_reminder",
       "visible": true,
       "featured": false,
       "includeInPdf": true,
@@ -66,6 +73,7 @@
     },
     {
       "repositoryId": 1343269625,
+      "repositoryFullName": "dexter-cnx/dxtr_cleaner",
       "visible": true,
       "featured": false,
       "includeInPdf": true,
@@ -75,6 +83,7 @@
     },
     {
       "repositoryId": 1331536790,
+      "repositoryFullName": "dexter-cnx/flutter_report_suite",
       "visible": true,
       "featured": false,
       "includeInPdf": true,
@@ -84,6 +93,7 @@
     },
     {
       "repositoryId": 1338055559,
+      "repositoryFullName": "dexter-cnx/dxtr_imgs",
       "visible": true,
       "featured": false,
       "includeInPdf": true,
@@ -93,6 +103,7 @@
     },
     {
       "repositoryId": 1344306427,
+      "repositoryFullName": "dexter-cnx/easy-gpui-l10n",
       "visible": true,
       "featured": false,
       "includeInPdf": true,
@@ -102,6 +113,7 @@
     },
     {
       "repositoryId": 1344249221,
+      "repositoryFullName": "dexter-cnx/screen_sidekick",
       "visible": true,
       "featured": false,
       "includeInPdf": true,
@@ -111,6 +123,7 @@
     },
     {
       "repositoryId": 1209101464,
+      "repositoryFullName": "dexter-cnx/dot_matrix_animated_counter",
       "visible": true,
       "featured": false,
       "includeInPdf": true,
@@ -120,6 +133,7 @@
     },
     {
       "repositoryId": 1205415261,
+      "repositoryFullName": "dexter-cnx/glass_bar_widget",
       "visible": true,
       "featured": false,
       "includeInPdf": true,
@@ -129,6 +143,7 @@
     },
     {
       "repositoryId": 1208481621,
+      "repositoryFullName": "dexter-cnx/flutter_pokedex",
       "visible": true,
       "featured": false,
       "includeInPdf": true,
@@ -138,6 +153,7 @@
     },
     {
       "repositoryId": 1310446861,
+      "repositoryFullName": "dexter-cnx/movie_tracker",
       "visible": true,
       "featured": false,
       "includeInPdf": true,
