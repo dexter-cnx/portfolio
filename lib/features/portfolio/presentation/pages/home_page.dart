@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../app/theme/app_theme.dart';
+import '../../../portfolio_documents/domain/reporting/portfolio_report_template.dart';
 import '../../data/datasources/local_content_loader.dart';
 import '../../models/portfolio_models.dart';
 import '../widgets/about_section_widget.dart';
@@ -124,10 +125,11 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
               if (key != null) _scrollToSection(key);
             },
             onLanguageToggle: _toggleLanguage,
-            onResumeTap: () {
+            onExportTap: (template) {
               ResumePdfGenerator.generateAndDownload(
                 data,
                 context.locale.languageCode,
+                template: template,
               );
             },
           ),
@@ -195,14 +197,14 @@ class _GlassNavBar extends StatefulWidget implements PreferredSizeWidget {
   final List<NavItem> nav;
   final Function(String id) onNavTap;
   final VoidCallback onLanguageToggle;
-  final VoidCallback onResumeTap;
+  final ValueChanged<PortfolioReportTemplateId> onExportTap;
 
   const _GlassNavBar({
     required this.ownerName,
     required this.nav,
     required this.onNavTap,
     required this.onLanguageToggle,
-    required this.onResumeTap,
+    required this.onExportTap,
   });
 
   @override
@@ -278,7 +280,7 @@ class _GlassNavBarState extends State<_GlassNavBar> {
                         const SizedBox(width: 28),
                         _LangToggle(onTap: widget.onLanguageToggle),
                         const SizedBox(width: 16),
-                        _ResumeButton(onTap: widget.onResumeTap),
+                        _ExportPdfButton(onSelected: widget.onExportTap),
                       ],
                     )
                   else ...[
@@ -343,7 +345,7 @@ class _GlassNavBarState extends State<_GlassNavBar> {
                         horizontal: 16,
                         vertical: 12,
                       ),
-                      child: _ResumeButton(onTap: widget.onResumeTap),
+                      child: _ExportPdfButton(onSelected: widget.onExportTap),
                     ),
                     const SizedBox(height: 8),
                   ],
@@ -433,19 +435,38 @@ class _LangToggle extends StatelessWidget {
   }
 }
 
-class _ResumeButton extends StatelessWidget {
-  final VoidCallback onTap;
+class _ExportPdfButton extends StatelessWidget {
+  final ValueChanged<PortfolioReportTemplateId> onSelected;
 
-  const _ResumeButton({required this.onTap});
+  const _ExportPdfButton({required this.onSelected});
 
   @override
   Widget build(BuildContext context) {
-    return OutlinedButton(
-      onPressed: onTap,
-      style: OutlinedButton.styleFrom(
-        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+    final isThai = context.locale.languageCode == 'th';
+
+    return PopupMenuButton<PortfolioReportTemplateId>(
+      onSelected: onSelected,
+      tooltip: isThai ? 'เลือกเอกสาร PDF' : 'Choose PDF export',
+      itemBuilder: (context) => [
+        PopupMenuItem(
+          value: PortfolioReportTemplateId.resumeCompact,
+          child: Text(isThai ? 'Resume PDF แบบย่อ' : 'Resume PDF'),
+        ),
+        PopupMenuItem(
+          value: PortfolioReportTemplateId.portfolioFull,
+          child: Text(isThai ? 'Portfolio PDF แบบเต็ม' : 'Full Portfolio PDF'),
+        ),
+      ],
+      child: OutlinedButton.icon(
+        onPressed: null,
+        icon: const Icon(Icons.picture_as_pdf_outlined, size: 18),
+        label: Text('btn_resume'.tr()),
+        style: OutlinedButton.styleFrom(
+          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+          disabledForegroundColor: AppTheme.accent,
+          side: const BorderSide(color: AppTheme.accent),
+        ),
       ),
-      child: Text('btn_resume'.tr()),
     );
   }
 }
