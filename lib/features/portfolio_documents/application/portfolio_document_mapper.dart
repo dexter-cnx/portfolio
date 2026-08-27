@@ -1,3 +1,4 @@
+import '../../portfolio/models/portfolio_data_with_export_selection.dart';
 import '../../portfolio/models/portfolio_models.dart';
 import '../domain/entities/portfolio_document_data.dart';
 
@@ -9,6 +10,15 @@ final class PortfolioDocumentMapper {
     required String locale,
     DateTime? generatedAt,
   }) {
+    final pdfRepositoryUrls = data is PortfolioDataWithExportSelection
+        ? data.pdfProjectRepositoryUrls
+        : null;
+
+    bool includeProject(String repositoryUrl) {
+      return pdfRepositoryUrls == null ||
+          pdfRepositoryUrls.contains(repositoryUrl);
+    }
+
     return PortfolioDocumentData(
       locale: locale == 'th' ? 'th' : 'en',
       profile: PortfolioDocumentProfile(
@@ -34,7 +44,7 @@ final class PortfolioDocumentMapper {
           )
           .toList(growable: false),
       projects: <PortfolioDocumentProject>[
-        ...data.featuredProjects.map(
+        ...data.featuredProjects.where((item) => includeProject(item.repoUrl)).map(
           (item) => PortfolioDocumentProject(
             name: item.name,
             summary: item.summary,
@@ -51,7 +61,7 @@ final class PortfolioDocumentMapper {
             featured: true,
           ),
         ),
-        ...data.otherProjects.map(
+        ...data.otherProjects.where((item) => includeProject(item.repoUrl)).map(
           (item) => PortfolioDocumentProject(
             name: item.name,
             summary: item.summary,
