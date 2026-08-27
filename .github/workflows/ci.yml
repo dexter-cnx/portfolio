@@ -36,7 +36,11 @@ jobs:
             echo "No changed Dart files to format-check."
             exit 0
           fi
-          dart format --output=none --set-exit-if-changed "${files[@]}"
+          dart format "${files[@]}"
+          if ! git diff --exit-code -- "${files[@]}"; then
+            echo "::error::Changed Dart files are not formatted. Run dart format on the files shown above."
+            exit 1
+          fi
 
       - name: Analyze
         run: flutter analyze
