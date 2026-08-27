@@ -21,3 +21,25 @@ contact_body,"I’m open to interesting product work, collaborations, and Flutte
 contact_btn,Say Hello,ทักทายกันหน่อย
 footer_built_by,Built by Dexter-CNX with Flutter,"สร้างโดย Dexter-CNX ด้วย Flutter"
 project_type,Flutter Project,โปรเจกต์ Flutter
+admin_title,Portfolio project admin,จัดการโปรเจกต์พอร์ตโฟลิโอ
+admin_import_json,Import JSON,นำเข้า JSON
+admin_export_json,Export JSON,ส่งออก JSON
+admin_import_title,Import project selection JSON,นำเข้า JSON การเลือกโปรเจกต์
+admin_import_hint,Paste project_selection.json here,วาง project_selection.json ที่นี่
+admin_cancel,Cancel,ยกเลิก
+admin_import,Import,นำเข้า
+admin_export_copied,"Project selection JSON copied. Replace assets/content/project_selection.json and commit it.","คัดลอก JSON แล้ว ให้นำไปแทน assets/content/project_selection.json และ commit"
+admin_import_success,JSON imported into the editor.,นำเข้า JSON เข้าตัวแก้ไขแล้ว
+admin_import_invalid,Invalid project selection JSON,JSON การเลือกโปรเจกต์ไม่ถูกต้อง
+admin_static_notice,"This static site cannot write bundled assets. Edit selections here, export JSON, replace assets/content/project_selection.json in the repository, then commit and deploy.","เว็บแบบ static ไม่สามารถเขียนกลับลง asset ได้ ให้แก้รายการที่นี่ ส่งออก JSON แล้วนำไปแทน assets/content/project_selection.json ใน repository จากนั้น commit และ deploy"
+admin_search,Search repositories,ค้นหา repository
+admin_config_updated,Config updated,อัปเดต config
+admin_empty,No repositories found,ไม่พบ repository
+admin_visible,Visible,แสดง
+admin_featured,Featured,แนะนำ
+admin_include_pdf,Include in PDF,รวมใน PDF
+admin_sort_order,Sort order,ลำดับ
+admin_title_override,Title override,ชื่อที่ใช้แสดง
+admin_summary_override,Summary override,สรุปที่ใช้แสดง
+admin_load_error,Unable to load repositories,ไม่สามารถโหลด repository ได้
+admin_retry,Retry,ลองใหม่
