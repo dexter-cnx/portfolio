@@ -31,7 +31,6 @@ final class PortfolioProjectsLoader {
         ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
       final byId = {for (final repo in repositories) repo.id: repo};
       final openSource = <OtherProject>[];
-      final pdfFeatured = <FeaturedProject>[...fallback.featuredProjects];
       final pdfOpenSource = <OtherProject>[];
 
       for (final config in configured) {
@@ -61,7 +60,7 @@ final class PortfolioProjectsLoader {
         contact: fallback.contact,
         socialLinks: fallback.socialLinks,
         nav: fallback.nav,
-        pdfFeaturedProjects: pdfFeatured,
+        pdfFeaturedProjects: const <FeaturedProject>[],
         pdfOtherProjects: pdfOpenSource,
       );
     } catch (_) {
