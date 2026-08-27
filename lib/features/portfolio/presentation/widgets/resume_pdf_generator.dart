@@ -74,8 +74,8 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
     final labels = _labelsFor(data.locale);
     final projects = definition.featuredProjectsOnly
         ? data.projects
-            .where((project) => project.featured)
-            .toList(growable: false)
+              .where((project) => project.featured)
+              .toList(growable: false)
         : data.projects;
     final generatedAt = data.generatedAt.toLocal();
     final dateStr =
