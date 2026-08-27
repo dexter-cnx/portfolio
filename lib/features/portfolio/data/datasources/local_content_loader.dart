@@ -12,15 +12,16 @@ import '../../models/portfolio_models.dart';
 
 class LocalContentLoader {
   LocalContentLoader({PortfolioProjectsLoader? projectsLoader})
-      : _projectsLoader = projectsLoader ??
-            PortfolioProjectsLoader(
-              githubRepository: GitHubProjectRepositoryImpl(
-                owner: portfolioGitHubOwner,
-                remoteDataSource: GitHubProjectRemoteDataSourceImpl(),
-              ),
-              selectionStore: const AssetProjectSelectionStore(),
-              statusDataSource: RepositoryPortfolioStatusRemoteDataSourceImpl(),
-            );
+    : _projectsLoader =
+          projectsLoader ??
+          PortfolioProjectsLoader(
+            githubRepository: GitHubProjectRepositoryImpl(
+              owner: portfolioGitHubOwner,
+              remoteDataSource: GitHubProjectRemoteDataSourceImpl(),
+            ),
+            selectionStore: const AssetProjectSelectionStore(),
+            statusDataSource: RepositoryPortfolioStatusRemoteDataSourceImpl(),
+          );
 
   final PortfolioProjectsLoader _projectsLoader;
 
@@ -36,6 +37,8 @@ class LocalContentLoader {
   }
 
   Future<String> loadRawJson([String locale = 'en']) {
-    return rootBundle.loadString('assets/content/portfolio_content_$locale.json');
+    return rootBundle.loadString(
+      'assets/content/portfolio_content_$locale.json',
+    );
   }
 }
