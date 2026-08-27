@@ -28,6 +28,9 @@ jobs:
       - name: Get dependencies
         run: flutter pub get
 
+      - name: Prepare static assets
+        run: make prepare
+
       - name: Check formatting for changed Dart files
         shell: bash
         run: |
