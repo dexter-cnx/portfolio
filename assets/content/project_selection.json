@@ -92,22 +92,12 @@
       "summaryOverride": ""
     },
     {
-      "repositoryId": 1338055559,
-      "repositoryFullName": "dexter-cnx/dxtr_imgs",
-      "visible": true,
-      "featured": false,
-      "includeInPdf": true,
-      "sortOrder": 9,
-      "titleOverride": "",
-      "summaryOverride": ""
-    },
-    {
       "repositoryId": 1344306427,
       "repositoryFullName": "dexter-cnx/easy-gpui-l10n",
       "visible": true,
       "featured": false,
       "includeInPdf": true,
-      "sortOrder": 10,
+      "sortOrder": 9,
       "titleOverride": "",
       "summaryOverride": ""
     },
@@ -117,7 +107,7 @@
       "visible": true,
       "featured": false,
       "includeInPdf": true,
-      "sortOrder": 11,
+      "sortOrder": 10,
       "titleOverride": "",
       "summaryOverride": ""
     },
@@ -127,7 +117,7 @@
       "visible": true,
       "featured": false,
       "includeInPdf": true,
-      "sortOrder": 12,
+      "sortOrder": 11,
       "titleOverride": "",
       "summaryOverride": ""
     },
@@ -137,7 +127,7 @@
       "visible": true,
       "featured": false,
       "includeInPdf": true,
-      "sortOrder": 13,
+      "sortOrder": 12,
       "titleOverride": "",
       "summaryOverride": ""
     },
@@ -147,7 +137,7 @@
       "visible": true,
       "featured": false,
       "includeInPdf": true,
-      "sortOrder": 14,
+      "sortOrder": 13,
       "titleOverride": "",
       "summaryOverride": ""
     },
@@ -157,7 +147,7 @@
       "visible": true,
       "featured": false,
       "includeInPdf": true,
-      "sortOrder": 15,
+      "sortOrder": 14,
       "titleOverride": "",
       "summaryOverride": ""
     }
