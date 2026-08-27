@@ -53,4 +53,41 @@ void main() {
     expect(restored.titleOverride, 'Package title');
     expect(restored.summaryOverride, 'Portfolio summary');
   });
+
+  test('project selection config round-trips through json maps', () {
+    final updatedAt = DateTime.utc(2026, 8, 27, 8, 30);
+    final config = ProjectSelectionConfig(
+      updatedAt: updatedAt,
+      projects: const <PortfolioProjectConfig>[
+        PortfolioProjectConfig(
+          repositoryId: 99,
+          visible: true,
+          featured: true,
+          includeInPdf: true,
+          sortOrder: 2,
+          titleOverride: 'dxtr_box',
+          summaryOverride: 'Fast local data layer',
+        ),
+      ],
+    );
+
+    final restored = ProjectSelectionConfig.fromJson(config.toJson());
+
+    expect(restored.updatedAt, updatedAt);
+    expect(restored.projects, hasLength(1));
+    expect(restored.projects.single.repositoryId, 99);
+    expect(restored.projects.single.visible, isTrue);
+    expect(restored.projects.single.featured, isTrue);
+    expect(restored.projects.single.includeInPdf, isTrue);
+    expect(restored.projects.single.sortOrder, 2);
+    expect(restored.projects.single.titleOverride, 'dxtr_box');
+    expect(restored.projects.single.summaryOverride, 'Fast local data layer');
+  });
+
+  test('rejects project config without a numeric repository id', () {
+    expect(
+      () => PortfolioProjectConfig.fromJson(const <String, Object?>{}),
+      throwsFormatException,
+    );
+  });
 }
