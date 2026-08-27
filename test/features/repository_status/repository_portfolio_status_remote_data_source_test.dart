@@ -1,12 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_web_portfolio_starter/features/repository_status/data/datasources/repository_portfolio_status_remote_data_source.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
-import 'package:flutter_web_portfolio_starter/features/repository_status/data/datasources/repository_portfolio_status_remote_data_source.dart';
 
 void main() {
-  test('loads and decodes repository-owned status metadata', () async {
+  test('loads repository-owned status metadata from raw GitHub', () async {
     final statusJson = jsonEncode({
       'schemaVersion': 1,
       'project': {
@@ -28,14 +28,12 @@ void main() {
       'updatedAt': '2026-08-27T00:00:00Z',
     });
     final client = MockClient((request) async {
+      expect(request.url.host, 'raw.githubusercontent.com');
       expect(
         request.url.path,
-        '/repos/dexter-cnx/dxtr_box/contents/.portfolio/status_th.json',
+        '/dexter-cnx/dxtr_box/main/.portfolio/status_th.json',
       );
-      return http.Response(
-        jsonEncode({'content': base64Encode(utf8.encode(statusJson))}),
-        200,
-      );
+      return http.Response(statusJson, 200);
     });
     final dataSource = RepositoryPortfolioStatusRemoteDataSourceImpl(
       client: client,
@@ -49,6 +47,35 @@ void main() {
     expect(status?.title, 'dxtr_box');
     expect(status?.tech, ['Dart', 'Rust']);
     expect(status?.updatedAt, DateTime.utc(2026, 8, 27));
+  });
+
+  test('falls back to master when main has no status metadata', () async {
+    final requestedPaths = <String>[];
+    final client = MockClient((request) async {
+      requestedPaths.add(request.url.path);
+      if (request.url.path.contains('/main/')) return http.Response('', 404);
+      return http.Response(
+        jsonEncode({
+          'project': {'title': 'legacy'},
+          'summary': {'short': 'Legacy status'},
+        }),
+        200,
+      );
+    });
+    final dataSource = RepositoryPortfolioStatusRemoteDataSourceImpl(
+      client: client,
+    );
+
+    final status = await dataSource.load(
+      repositoryFullName: 'dexter-cnx/legacy',
+      languageCode: 'en',
+    );
+
+    expect(status?.title, 'legacy');
+    expect(requestedPaths, <String>[
+      '/dexter-cnx/legacy/main/.portfolio/status_en.json',
+      '/dexter-cnx/legacy/master/.portfolio/status_en.json',
+    ]);
   });
 
   test('returns null when repository has no status metadata', () async {
