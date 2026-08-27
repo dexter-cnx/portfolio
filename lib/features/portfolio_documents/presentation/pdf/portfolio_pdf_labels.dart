@@ -4,6 +4,8 @@ final class PortfolioPdfLabels {
     required this.experience,
     required this.skills,
     required this.projects,
+    required this.featuredProjects,
+    required this.openSourceProjects,
     required this.techStack,
     required this.generated,
     required this.links,
@@ -13,6 +15,8 @@ final class PortfolioPdfLabels {
   final String experience;
   final String skills;
   final String projects;
+  final String featuredProjects;
+  final String openSourceProjects;
   final String techStack;
   final String generated;
   final String links;
@@ -39,6 +43,8 @@ final class PortfolioPdfLabelCatalog {
         experience: 'ประสบการณ์การทำงาน',
         skills: 'ทักษะทางเทคนิค',
         projects: 'ผลงาน',
+        featuredProjects: 'ผลงานเด่น',
+        openSourceProjects: 'โปรเจกต์โอเพนซอร์สของผม',
         techStack: 'เทคโนโลยีที่ใช้',
         generated: 'สร้างจากเว็บไซต์พอร์ตโฟลิโอ',
         links: 'ลิงก์และโซเชียล',
@@ -50,6 +56,8 @@ final class PortfolioPdfLabelCatalog {
       experience: 'Experience',
       skills: 'Technical Skills',
       projects: 'Projects',
+      featuredProjects: 'Featured Projects',
+      openSourceProjects: 'My Open Source Projects',
       techStack: 'Tech Stack',
       generated: 'Generated from Portfolio Website',
       links: 'Links & Social',
