@@ -101,7 +101,10 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
                       color: PdfColors.grey200,
                       borderRadius: pw.BorderRadius.all(pw.Radius.circular(4)),
                     ),
-                    child: pw.Text(skill, style: const pw.TextStyle(fontSize: 9)),
+                    child: pw.Text(
+                      skill,
+                      style: const pw.TextStyle(fontSize: 9),
+                    ),
                   ),
                 )
                 .toList(),
@@ -119,11 +122,17 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
             children: [
               pw.Text(
                 labels.generated,
-                style: const pw.TextStyle(fontSize: 8, color: PdfColors.grey500),
+                style: const pw.TextStyle(
+                  fontSize: 8,
+                  color: PdfColors.grey500,
+                ),
               ),
               pw.Text(
                 'Date: $dateStr',
-                style: const pw.TextStyle(fontSize: 8, color: PdfColors.grey500),
+                style: const pw.TextStyle(
+                  fontSize: 8,
+                  color: PdfColors.grey500,
+                ),
               ),
             ],
           ),
@@ -140,9 +149,10 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
   ) {
     return switch (template) {
       PortfolioReportTemplateId.portfolioFull => data.projects,
-      PortfolioReportTemplateId.resumeCompact => data.projects
-          .where((project) => project.featured)
-          .toList(growable: false),
+      PortfolioReportTemplateId.resumeCompact =>
+        data.projects
+            .where((project) => project.featured)
+            .toList(growable: false),
     };
   }
 
@@ -166,13 +176,19 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
         pw.Column(
           crossAxisAlignment: pw.CrossAxisAlignment.end,
           children: [
-            pw.Text(data.profile.email, style: const pw.TextStyle(fontSize: 10)),
+            pw.Text(
+              data.profile.email,
+              style: const pw.TextStyle(fontSize: 10),
+            ),
             pw.Text(
               data.profile.location,
               style: const pw.TextStyle(fontSize: 10),
             ),
             if (data.profile.phone.isNotEmpty)
-              pw.Text(data.profile.phone, style: const pw.TextStyle(fontSize: 10)),
+              pw.Text(
+                data.profile.phone,
+                style: const pw.TextStyle(fontSize: 10),
+              ),
           ],
         ),
       ],
