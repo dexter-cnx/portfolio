@@ -29,35 +29,40 @@ final class PortfolioProjectsLoader {
       ]);
       final repositories = results[0] as List<GitHubProject>;
       final selection = results[1] as ProjectSelectionConfig;
-      final selected = selection.projects.where((item) => item.visible).toList()
+      if (selection.projects.isEmpty) return fallback;
+
+      final configured = selection.projects.toList()
         ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
-
-      if (selected.isEmpty) return fallback;
-
       final byId = {for (final repo in repositories) repo.id: repo};
       final featured = <FeaturedProject>[];
       final other = <OtherProject>[];
-      final pdfProjectRepositoryUrls = <String>{};
+      final pdfFeatured = <FeaturedProject>[];
+      final pdfOther = <OtherProject>[];
 
-      for (final config in selected) {
+      for (final config in configured) {
+        if (!config.visible && !config.includeInPdf) continue;
         final repository = byId[config.repositoryId];
         if (repository == null) continue;
         final status = await _loadStatus(repository, languageCode);
         final project = _compose(repository, config, status);
-        final repositoryUrl = project.$1.repoUrl.isNotEmpty
-            ? project.$1.repoUrl
-            : project.$2.repoUrl;
-        if (config.includeInPdf && repositoryUrl.isNotEmpty) {
-          pdfProjectRepositoryUrls.add(repositoryUrl);
+
+        if (config.visible) {
+          if (config.featured) {
+            featured.add(project.$1);
+          } else {
+            other.add(project.$2);
+          }
         }
-        if (config.featured) {
-          featured.add(project.$1);
-        } else {
-          other.add(project.$2);
+
+        if (config.includeInPdf) {
+          if (config.featured) {
+            pdfFeatured.add(project.$1);
+          } else {
+            pdfOther.add(project.$2);
+          }
         }
       }
 
-      if (featured.isEmpty && other.isEmpty) return fallback;
       return PortfolioDataWithExportSelection(
         site: fallback.site,
         hero: fallback.hero,
@@ -68,7 +73,8 @@ final class PortfolioProjectsLoader {
         contact: fallback.contact,
         socialLinks: fallback.socialLinks,
         nav: fallback.nav,
-        pdfProjectRepositoryUrls: pdfProjectRepositoryUrls,
+        pdfFeaturedProjects: pdfFeatured,
+        pdfOtherProjects: pdfOther,
       );
     } catch (_) {
       return fallback;
