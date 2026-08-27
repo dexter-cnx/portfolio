@@ -72,8 +72,9 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
     final skills = _strings(payload['skills']);
     final projects = _maps(payload['projects']);
     final links = _maps(payload['links']);
-    final generatedAt =
-        DateTime.tryParse(payload['generatedAt']?.toString() ?? '')?.toLocal();
+    final generatedAt = DateTime.tryParse(
+      payload['generatedAt']?.toString() ?? '',
+    )?.toLocal();
 
     final pdf = pw.Document();
     final isThai = locale == 'th';
