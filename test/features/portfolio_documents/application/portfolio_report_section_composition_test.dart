@@ -42,9 +42,10 @@ void main() {
     );
     const renderPlanBuilder = PortfolioReportRenderPlanBuilder(
       templateRegistry: PortfolioReportTemplateRegistry(
-        overrides: <PortfolioReportTemplateId, PortfolioReportTemplateDefinition>{
-          PortfolioReportTemplateId.portfolioFull: definition,
-        },
+        overrides:
+            <PortfolioReportTemplateId, PortfolioReportTemplateDefinition>{
+              PortfolioReportTemplateId.portfolioFull: definition,
+            },
       ),
     );
 
