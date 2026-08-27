@@ -16,12 +16,31 @@ void main() {
         PortfolioReportSectionId.experience,
         PortfolioReportSectionId.skills,
         PortfolioReportSectionId.projects,
+        PortfolioReportSectionId.projects,
         PortfolioReportSectionId.links,
       ],
     );
     expect(
       definition.sections.map((section) => section.dataExpression),
-      <String>['summary', 'experience', 'skills', 'projects', 'links'],
+      <String>[
+        'summary',
+        'experience',
+        'skills',
+        'featuredProjects',
+        'openSourceProjects',
+        'links',
+      ],
+    );
+    expect(
+      definition.sections.map((section) => section.labelKey),
+      <String>[
+        'summary',
+        'experience',
+        'skills',
+        'featured_projects',
+        'open_source_projects',
+        'links',
+      ],
     );
   });
 
@@ -36,7 +55,7 @@ void main() {
     expect(compact.sections, same(full.sections));
     expect(full.featuredProjectsOnly, isFalse);
     expect(full.includeProjectDescriptions, isTrue);
-    expect(compact.featuredProjectsOnly, isTrue);
+    expect(compact.featuredProjectsOnly, isFalse);
     expect(compact.includeProjectDescriptions, isFalse);
   });
 }
