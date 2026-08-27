@@ -23,10 +23,7 @@ final class PortfolioPdfComponents {
     );
   }
 
-  pw.Widget externalLink({
-    required String label,
-    required String url,
-  }) {
+  pw.Widget externalLink({required String label, required String url}) {
     final text = label.isEmpty ? url : '$label: $url';
     if (url.isEmpty) {
       return pw.Text(text, style: const pw.TextStyle(fontSize: 10));
@@ -54,20 +51,14 @@ final class PortfolioPdfComponents {
           children: [
             pw.Text(
               generatedLabel,
-              style: const pw.TextStyle(
-                fontSize: 8,
-                color: PdfColors.grey500,
-              ),
+              style: const pw.TextStyle(fontSize: 8, color: PdfColors.grey500),
             ),
             pw.Text(
               [
                 if (dateText.isNotEmpty) dateText,
                 '${context.pageNumber}/${context.pagesCount}',
               ].join(' · '),
-              style: const pw.TextStyle(
-                fontSize: 8,
-                color: PdfColors.grey500,
-              ),
+              style: const pw.TextStyle(fontSize: 8, color: PdfColors.grey500),
             ),
           ],
         ),
