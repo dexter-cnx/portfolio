@@ -4,6 +4,9 @@ nav_experience,Experience,ประสบการณ์
 nav_projects,Projects,ผลงาน
 nav_contact,Contact,ติดต่อ
 btn_resume,Resume,เรซูเม่
+pdf_export_tooltip,Choose PDF export,เลือกเอกสาร PDF
+pdf_export_resume,Resume PDF,Resume PDF แบบย่อ
+pdf_export_portfolio,Full Portfolio PDF,Portfolio PDF แบบเต็ม
 hero_eyebrow,"Hi, my name is Kitipong Sarajan","สวัสดีครับผมชื่อ กิติพงษ์ สาระจันทร์"
 hero_headline,"Your Name.","ชื่อของคุณ."
 hero_subheadline,"I build clean, useful digital products.","ฉันสร้างผลิตภัณฑ์ดิจิทัลที่สะอาดและมีประโยชน์"
