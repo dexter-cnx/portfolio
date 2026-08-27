@@ -23,14 +23,10 @@ final class PortfolioProjectsLoader {
     required String languageCode,
   }) async {
     try {
-      final results = await Future.wait<Object>([
-        githubRepository.loadPublicProjects(),
-        selectionStore.load(),
-      ]);
-      final repositories = results[0] as List<GitHubProject>;
-      final selection = results[1] as ProjectSelectionConfig;
+      final selection = await selectionStore.load();
       if (selection.projects.isEmpty) return fallback;
 
+      final repositories = await _loadRepositoriesBestEffort();
       final configured = selection.projects.toList()
         ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
       final byId = {for (final repo in repositories) repo.id: repo};
@@ -40,7 +36,7 @@ final class PortfolioProjectsLoader {
 
       for (final config in configured) {
         if (!config.visible && !config.includeInPdf) continue;
-        final repository = byId[config.repositoryId];
+        final repository = byId[config.repositoryId] ?? _snapshotRepository(config);
         if (repository == null) continue;
         final status = await _loadStatus(repository, languageCode);
         final project = _compose(repository, config, status);
@@ -71,6 +67,42 @@ final class PortfolioProjectsLoader {
     } catch (_) {
       return fallback;
     }
+  }
+
+  Future<List<GitHubProject>> _loadRepositoriesBestEffort() async {
+    try {
+      return await githubRepository.loadPublicProjects();
+    } catch (_) {
+      return const <GitHubProject>[];
+    }
+  }
+
+  GitHubProject? _snapshotRepository(PortfolioProjectConfig config) {
+    final fullName = config.repositoryFullName.trim();
+    final separator = fullName.indexOf('/');
+    if (separator <= 0 || separator == fullName.length - 1) return null;
+
+    final owner = fullName.substring(0, separator);
+    final name = fullName.substring(separator + 1);
+    return GitHubProject(
+      id: config.repositoryId,
+      ownerLogin: owner,
+      name: name,
+      fullName: fullName,
+      description: '',
+      htmlUrl: 'https://github.com/$fullName',
+      homepageUrl: '',
+      language: '',
+      topics: const <String>[],
+      stars: 0,
+      forks: 0,
+      archived: false,
+      isFork: false,
+      createdAt: null,
+      updatedAt: null,
+      pushedAt: null,
+      licenseSpdxId: null,
+    );
   }
 
   Future<RepositoryPortfolioStatus?> _loadStatus(
