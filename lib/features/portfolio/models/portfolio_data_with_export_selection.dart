@@ -11,10 +11,13 @@ final class PortfolioDataWithExportSelection extends PortfolioData {
     required super.contact,
     required super.socialLinks,
     required super.nav,
-    required Set<String> pdfProjectRepositoryUrls,
-  }) : pdfProjectRepositoryUrls = Set<String>.unmodifiable(
-         pdfProjectRepositoryUrls,
-       );
+    required List<FeaturedProject> pdfFeaturedProjects,
+    required List<OtherProject> pdfOtherProjects,
+  }) : pdfFeaturedProjects = List<FeaturedProject>.unmodifiable(
+         pdfFeaturedProjects,
+       ),
+       pdfOtherProjects = List<OtherProject>.unmodifiable(pdfOtherProjects);
 
-  final Set<String> pdfProjectRepositoryUrls;
+  final List<FeaturedProject> pdfFeaturedProjects;
+  final List<OtherProject> pdfOtherProjects;
 }
