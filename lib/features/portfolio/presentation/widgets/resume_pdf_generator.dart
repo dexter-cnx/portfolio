@@ -64,9 +64,10 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
     required PortfolioReportTemplateId template,
   }) async {
     final plan = _renderPlanBuilder.build(data, template: template);
-    final projectPayloads = (plan.payload['projects'] as List<dynamic>? ?? const [])
-        .whereType<Map<String, dynamic>>()
-        .toList(growable: false);
+    final projectPayloads =
+        (plan.payload['projects'] as List<dynamic>? ?? const [])
+            .whereType<Map<String, dynamic>>()
+            .toList(growable: false);
     final pdf = pw.Document();
     final isThai = data.locale == 'th';
     final font = isThai
