@@ -42,28 +42,40 @@ void main() {
     generatedAt: DateTime.utc(2026, 8, 27),
   );
 
-  test('compact plan filters projects and strips descriptions', () {
+  test('compact plan keeps both project groups and strips descriptions', () {
     final plan = const PortfolioReportRenderPlanBuilder().build(
       data,
       template: PortfolioReportTemplateId.resumeCompact,
     );
     final projects = plan.payload['projects'] as List<dynamic>;
+    final featuredProjects = plan.payload['featuredProjects'] as List<dynamic>;
+    final openSourceProjects =
+        plan.payload['openSourceProjects'] as List<dynamic>;
 
     expect(plan.template.id, PortfolioReportTemplateId.resumeCompact);
-    expect(projects, hasLength(1));
-    expect((projects.first as Map<String, dynamic>)['name'], 'featured');
+    expect(projects, hasLength(2));
+    expect(featuredProjects, hasLength(1));
+    expect(openSourceProjects, hasLength(1));
+    expect((featuredProjects.first as Map<String, dynamic>)['name'], 'featured');
+    expect((openSourceProjects.first as Map<String, dynamic>)['name'], 'other');
     expect((projects.first as Map<String, dynamic>)['description'], '');
+    expect((projects.last as Map<String, dynamic>)['description'], '');
   });
 
-  test('full plan keeps all projects and descriptions', () {
+  test('full plan keeps both project groups and descriptions', () {
     final plan = const PortfolioReportRenderPlanBuilder().build(
       data,
       template: PortfolioReportTemplateId.portfolioFull,
     );
     final projects = plan.payload['projects'] as List<dynamic>;
+    final featuredProjects = plan.payload['featuredProjects'] as List<dynamic>;
+    final openSourceProjects =
+        plan.payload['openSourceProjects'] as List<dynamic>;
 
     expect(plan.template.id, PortfolioReportTemplateId.portfolioFull);
     expect(projects, hasLength(2));
+    expect(featuredProjects, hasLength(1));
+    expect(openSourceProjects, hasLength(1));
     expect(
       (projects.first as Map<String, dynamic>)['description'],
       'Featured description',
