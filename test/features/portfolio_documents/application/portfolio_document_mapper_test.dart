@@ -88,59 +88,62 @@ void main() {
     expect(document.toJson()['locale'], 'th');
   });
 
-  test('keeps portfolio featured projects and dedicated open source export projects', () {
-    const includedUrl = 'https://github.com/dexter-cnx/dxtr_box';
-    const portfolioFeaturedUrl = 'https://github.com/dexter-cnx/analythis';
-    final fallback = PortfolioData.empty();
-    final data = PortfolioDataWithExportSelection(
-      site: fallback.site,
-      hero: fallback.hero,
-      about: fallback.about,
-      experience: fallback.experience,
-      featuredProjects: [
-        FeaturedProject(
-          name: 'analythis',
-          summary: 'Portfolio featured project',
-          longDescription: '',
-          repoUrl: portfolioFeaturedUrl,
-          liveUrl: '',
-          images: const [],
-          urls: const [],
-          tags: const [],
-        ),
-      ],
-      otherProjects: const [],
-      openSourceProjects: const [],
-      contact: fallback.contact,
-      socialLinks: fallback.socialLinks,
-      nav: fallback.nav,
-      pdfFeaturedProjects: [
-        FeaturedProject(
-          name: 'dxtr_box',
-          summary: 'Open source PDF project',
-          longDescription: '',
-          repoUrl: includedUrl,
-          liveUrl: '',
-          images: const [],
-          urls: const [],
-          tags: const [],
-        ),
-      ],
-      pdfOtherProjects: const [],
-    );
+  test(
+    'keeps portfolio featured projects and dedicated open source export projects',
+    () {
+      const includedUrl = 'https://github.com/dexter-cnx/dxtr_box';
+      const portfolioFeaturedUrl = 'https://github.com/dexter-cnx/analythis';
+      final fallback = PortfolioData.empty();
+      final data = PortfolioDataWithExportSelection(
+        site: fallback.site,
+        hero: fallback.hero,
+        about: fallback.about,
+        experience: fallback.experience,
+        featuredProjects: [
+          FeaturedProject(
+            name: 'analythis',
+            summary: 'Portfolio featured project',
+            longDescription: '',
+            repoUrl: portfolioFeaturedUrl,
+            liveUrl: '',
+            images: const [],
+            urls: const [],
+            tags: const [],
+          ),
+        ],
+        otherProjects: const [],
+        openSourceProjects: const [],
+        contact: fallback.contact,
+        socialLinks: fallback.socialLinks,
+        nav: fallback.nav,
+        pdfFeaturedProjects: [
+          FeaturedProject(
+            name: 'dxtr_box',
+            summary: 'Open source PDF project',
+            longDescription: '',
+            repoUrl: includedUrl,
+            liveUrl: '',
+            images: const [],
+            urls: const [],
+            tags: const [],
+          ),
+        ],
+        pdfOtherProjects: const [],
+      );
 
-    final document = const PortfolioDocumentMapper().map(
-      data,
-      locale: 'en',
-      generatedAt: DateTime.utc(2026),
-    );
+      final document = const PortfolioDocumentMapper().map(
+        data,
+        locale: 'en',
+        generatedAt: DateTime.utc(2026),
+      );
 
-    expect(document.projects, hasLength(2));
-    expect(document.projects.first.repositoryUrl, portfolioFeaturedUrl);
-    expect(document.projects.first.featured, isTrue);
-    expect(document.projects.last.repositoryUrl, includedUrl);
-    expect(document.projects.last.featured, isFalse);
-  });
+      expect(document.projects, hasLength(2));
+      expect(document.projects.first.repositoryUrl, portfolioFeaturedUrl);
+      expect(document.projects.first.featured, isTrue);
+      expect(document.projects.last.repositoryUrl, includedUrl);
+      expect(document.projects.last.featured, isFalse);
+    },
+  );
 
   test('normalizes unsupported locale to English', () {
     final data = PortfolioData.empty();
