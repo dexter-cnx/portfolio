@@ -17,7 +17,7 @@ void main() {
       FeaturedProject(
         name: 'visible-only',
         summary: 'Visible on site only',
-        longDescription: 'Should not be exported.',
+        longDescription: 'Should be exported as a portfolio featured project.',
         repoUrl: 'https://github.com/dexter-cnx/visible-only',
         liveUrl: '',
         images: const [],
@@ -33,8 +33,8 @@ void main() {
     pdfFeaturedProjects: [
       FeaturedProject(
         name: 'pdf-featured',
-        summary: 'Featured PDF project',
-        longDescription: 'Featured project description.',
+        summary: 'Featured open source PDF project',
+        longDescription: 'Open source featured project description.',
         repoUrl: 'https://github.com/dexter-cnx/pdf-featured',
         liveUrl: '',
         images: const [],
@@ -71,13 +71,14 @@ void main() {
     final openSourceProjects =
         plan.payload['openSourceProjects'] as List<dynamic>;
 
-    expect(document.projects, hasLength(2));
+    expect(document.projects, hasLength(3));
     expect(document.projects.map((project) => project.name), <String>[
+      'visible-only',
       'pdf-featured',
       'pdf-open-source',
     ]);
     expect(featuredProjects, hasLength(1));
-    expect(openSourceProjects, hasLength(1));
+    expect(openSourceProjects, hasLength(2));
     expect(
       (featuredProjects.single as Map<String, dynamic>)['description'],
       '',
@@ -121,10 +122,14 @@ void main() {
     expect(document.locale, 'th');
     expect(plan.payload['locale'], 'th');
     expect(featuredProjects, hasLength(1));
-    expect(openSourceProjects, hasLength(1));
+    expect(openSourceProjects, hasLength(2));
     expect(
       (featuredProjects.first as Map<String, dynamic>)['description'],
-      'Featured project description.',
+      'Should be exported as a portfolio featured project.',
+    );
+    expect(
+      (openSourceProjects.first as Map<String, dynamic>)['description'],
+      'Open source featured project description.',
     );
     expect(featuredSection.value, same(featuredProjects));
     expect(openSourceSection.value, same(openSourceProjects));
