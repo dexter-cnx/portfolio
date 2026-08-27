@@ -1,5 +1,6 @@
 import '../../github_projects/domain/entities/github_project.dart';
 import '../../github_projects/domain/repositories/github_project_repository.dart';
+import '../../portfolio/models/portfolio_data_with_export_selection.dart';
 import '../../portfolio/models/portfolio_models.dart';
 import '../../project_selection/domain/entities/portfolio_project_config.dart';
 import '../../project_selection/domain/repositories/project_selection_store.dart';
@@ -36,12 +37,19 @@ final class PortfolioProjectsLoader {
       final byId = {for (final repo in repositories) repo.id: repo};
       final featured = <FeaturedProject>[];
       final other = <OtherProject>[];
+      final pdfProjectRepositoryUrls = <String>{};
 
       for (final config in selected) {
         final repository = byId[config.repositoryId];
         if (repository == null) continue;
         final status = await _loadStatus(repository, languageCode);
         final project = _compose(repository, config, status);
+        final repositoryUrl = project.$1.repoUrl.isNotEmpty
+            ? project.$1.repoUrl
+            : project.$2.repoUrl;
+        if (config.includeInPdf && repositoryUrl.isNotEmpty) {
+          pdfProjectRepositoryUrls.add(repositoryUrl);
+        }
         if (config.featured) {
           featured.add(project.$1);
         } else {
@@ -50,7 +58,7 @@ final class PortfolioProjectsLoader {
       }
 
       if (featured.isEmpty && other.isEmpty) return fallback;
-      return PortfolioData(
+      return PortfolioDataWithExportSelection(
         site: fallback.site,
         hero: fallback.hero,
         about: fallback.about,
@@ -60,6 +68,7 @@ final class PortfolioProjectsLoader {
         contact: fallback.contact,
         socialLinks: fallback.socialLinks,
         nav: fallback.nav,
+        pdfProjectRepositoryUrls: pdfProjectRepositoryUrls,
       );
     } catch (_) {
       return fallback;
