@@ -17,7 +17,9 @@ final class AssetProjectSelectionStore implements ProjectSelectionStore {
     final raw = await rootBundle.loadString(assetPath);
     final decoded = jsonDecode(raw);
     if (decoded is! Map<String, dynamic>) {
-      throw const FormatException('Project selection config must be a JSON object.');
+      throw const FormatException(
+        'Project selection config must be a JSON object.',
+      );
     }
     return ProjectSelectionConfig.fromJson(decoded);
   }
