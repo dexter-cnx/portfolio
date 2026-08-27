@@ -6,6 +6,7 @@ import 'package:printing/printing.dart';
 
 import '../../../portfolio_documents/application/portfolio_document_mapper.dart';
 import '../../../portfolio_documents/application/portfolio_report_render_plan.dart';
+import '../../../portfolio_documents/application/portfolio_report_value_resolver.dart';
 import '../../../portfolio_documents/domain/entities/portfolio_document_data.dart';
 import '../../../portfolio_documents/domain/reporting/portfolio_report_template.dart';
 import '../../../portfolio_documents/presentation/pdf/portfolio_pdf_components.dart';
@@ -55,11 +56,15 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
   PortfolioPdfRenderer({
     PortfolioReportRenderPlanBuilder renderPlanBuilder =
         const PortfolioReportRenderPlanBuilder(),
+    PortfolioReportValueResolver valueResolver =
+        const PortfolioReportValueResolver(),
     PortfolioPdfComponents components = const PortfolioPdfComponents(),
   }) : _renderPlanBuilder = renderPlanBuilder,
+       _valueResolver = valueResolver,
        _components = components;
 
   final PortfolioReportRenderPlanBuilder _renderPlanBuilder;
+  final PortfolioReportValueResolver _valueResolver;
   final PortfolioPdfComponents _components;
 
   @override
@@ -71,11 +76,6 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
     final payload = plan.payload;
     final locale = payload['locale']?.toString() ?? 'en';
     final profile = _map(payload['profile']);
-    final summary = _strings(payload['summary']);
-    final experience = _maps(payload['experience']);
-    final skills = _strings(payload['skills']);
-    final projects = _maps(payload['projects']);
-    final links = _maps(payload['links']);
     final generatedAt = DateTime.tryParse(
       payload['generatedAt']?.toString() ?? '',
     )?.toLocal();
@@ -107,48 +107,67 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
           _header(profile),
           pw.Divider(thickness: 1, color: PdfColors.grey300),
           pw.SizedBox(height: 10),
-          _components.sectionTitle(labels.summary),
-          pw.Text(
-            summary.join('\n\n'),
-            style: const pw.TextStyle(fontSize: 11, lineSpacing: 1.4),
-          ),
-          pw.SizedBox(height: 20),
-          _components.sectionTitle(labels.experience),
-          ...experience.map(_experience),
-          _components.sectionTitle(labels.skills),
-          pw.Wrap(
-            spacing: 5,
-            runSpacing: 5,
-            children: skills
-                .map(
-                  (skill) => pw.Container(
-                    padding: const pw.EdgeInsets.symmetric(
-                      horizontal: 6,
-                      vertical: 4,
-                    ),
-                    decoration: const pw.BoxDecoration(
-                      color: PdfColors.grey200,
-                      borderRadius: pw.BorderRadius.all(pw.Radius.circular(4)),
-                    ),
-                    child: pw.Text(
-                      skill,
-                      style: const pw.TextStyle(fontSize: 9),
-                    ),
-                  ),
-                )
-                .toList(),
-          ),
-          pw.SizedBox(height: 20),
-          _components.sectionTitle(labels.projects),
-          ...projects.map((project) => _project(project, labels)),
-          pw.SizedBox(height: 20),
-          _components.sectionTitle(labels.links),
-          ...links.map(_link),
+          for (final section in plan.template.sections)
+            ..._renderSection(section, payload, labels),
         ],
       ),
     );
 
     return pdf.save();
+  }
+
+  List<pw.Widget> _renderSection(
+    PortfolioReportSectionDefinition section,
+    Map<String, dynamic> payload,
+    _ResumeLabels labels,
+  ) {
+    final value = _valueResolver.resolve(section.dataExpression, payload);
+    final title = labels.forKey(section.labelKey);
+
+    final content = switch (section.id) {
+      PortfolioReportSectionId.summary => <pw.Widget>[
+        pw.Text(
+          _strings(value).join('\n\n'),
+          style: const pw.TextStyle(fontSize: 11, lineSpacing: 1.4),
+        ),
+      ],
+      PortfolioReportSectionId.experience =>
+        _maps(value).map(_experience).toList(growable: false),
+      PortfolioReportSectionId.skills => <pw.Widget>[_skills(_strings(value))],
+      PortfolioReportSectionId.projects => _maps(value)
+          .map((project) => _project(project, labels))
+          .toList(growable: false),
+      PortfolioReportSectionId.links =>
+        _maps(value).map(_link).toList(growable: false),
+    };
+
+    return <pw.Widget>[
+      _components.sectionTitle(title),
+      ...content,
+      pw.SizedBox(height: 20),
+    ];
+  }
+
+  pw.Widget _skills(List<String> skills) {
+    return pw.Wrap(
+      spacing: 5,
+      runSpacing: 5,
+      children: skills
+          .map(
+            (skill) => pw.Container(
+              padding: const pw.EdgeInsets.symmetric(
+                horizontal: 6,
+                vertical: 4,
+              ),
+              decoration: const pw.BoxDecoration(
+                color: PdfColors.grey200,
+                borderRadius: pw.BorderRadius.all(pw.Radius.circular(4)),
+              ),
+              child: pw.Text(skill, style: const pw.TextStyle(fontSize: 9)),
+            ),
+          )
+          .toList(),
+    );
   }
 
   Map<String, dynamic> _map(dynamic value) {
@@ -325,4 +344,15 @@ final class _ResumeLabels {
   final String techStack;
   final String generated;
   final String links;
+
+  String forKey(String key) {
+    return switch (key) {
+      'summary' => summary,
+      'experience' => experience,
+      'skills' => skills,
+      'projects' => projects,
+      'links' => links,
+      _ => key,
+    };
+  }
 }
