@@ -5,12 +5,31 @@ import 'package:flutter_web_portfolio_starter/features/github_projects/data/repo
 import 'package:flutter_web_portfolio_starter/features/github_projects/domain/repositories/github_project_repository.dart';
 
 void main() {
-  test('filters archived and fork repositories by default and sorts by push date', () async {
+  test(
+    'filters archived and fork repositories by default and sorts by push date',
+    () async {
+      final dataSource = _FakeRemoteDataSource(<GitHubProjectModel>[
+        _project(id: 1, name: 'old', pushedAt: DateTime.utc(2026, 1)),
+        _project(id: 2, name: 'new', pushedAt: DateTime.utc(2026, 3)),
+        _project(id: 3, name: 'archived', archived: true),
+        _project(id: 4, name: 'fork', isFork: true),
+      ]);
+      final repository = GitHubProjectRepositoryImpl(
+        owner: 'dexter-cnx',
+        remoteDataSource: dataSource,
+      );
+
+      final projects = await repository.loadPublicProjects();
+
+      expect(projects.map((project) => project.name), <String>['new', 'old']);
+    },
+  );
+
+  test('keeps repositories without push dates last when descending', () async {
     final dataSource = _FakeRemoteDataSource(<GitHubProjectModel>[
-      _project(id: 1, name: 'old', pushedAt: DateTime.utc(2026, 1)),
-      _project(id: 2, name: 'new', pushedAt: DateTime.utc(2026, 3)),
-      _project(id: 3, name: 'archived', archived: true),
-      _project(id: 4, name: 'fork', isFork: true),
+      _project(id: 1, name: 'never-pushed', neverPushed: true),
+      _project(id: 2, name: 'recent', pushedAt: DateTime.utc(2026, 8)),
+      _project(id: 3, name: 'older', pushedAt: DateTime.utc(2026, 4)),
     ]);
     final repository = GitHubProjectRepositoryImpl(
       owner: 'dexter-cnx',
@@ -19,7 +38,10 @@ void main() {
 
     final projects = await repository.loadPublicProjects();
 
-    expect(projects.map((project) => project.name), <String>['new', 'old']);
+    expect(
+      projects.map((project) => project.name),
+      <String>['recent', 'older', 'never-pushed'],
+    );
   });
 
   test('can explicitly include archived and fork repositories', () async {
@@ -72,6 +94,7 @@ GitHubProjectModel _project({
   required int id,
   required String name,
   DateTime? pushedAt,
+  bool neverPushed = false,
   bool archived = false,
   bool isFork = false,
 }) {
@@ -91,7 +114,7 @@ GitHubProjectModel _project({
     isFork: isFork,
     createdAt: DateTime.utc(2025),
     updatedAt: pushedAt ?? DateTime.utc(2026, 1),
-    pushedAt: pushedAt ?? DateTime.utc(2026, 1),
+    pushedAt: neverPushed ? null : pushedAt ?? DateTime.utc(2026, 1),
     licenseSpdxId: 'MIT',
   );
 }
