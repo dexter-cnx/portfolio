@@ -64,22 +64,29 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
     required PortfolioReportTemplateId template,
   }) async {
     final plan = _renderPlanBuilder.build(data, template: template);
-    final projectPayloads =
-        (plan.payload['projects'] as List<dynamic>? ?? const [])
-            .whereType<Map<String, dynamic>>()
-            .toList(growable: false);
+    final payload = plan.payload;
+    final locale = payload['locale']?.toString() ?? 'en';
+    final profile = _map(payload['profile']);
+    final summary = _strings(payload['summary']);
+    final experience = _maps(payload['experience']);
+    final skills = _strings(payload['skills']);
+    final projects = _maps(payload['projects']);
+    final links = _maps(payload['links']);
+    final generatedAt =
+        DateTime.tryParse(payload['generatedAt']?.toString() ?? '')?.toLocal();
+
     final pdf = pw.Document();
-    final isThai = data.locale == 'th';
+    final isThai = locale == 'th';
     final font = isThai
         ? await PdfGoogleFonts.notoSansThaiRegular()
         : await PdfGoogleFonts.interRegular();
     final fontBold = isThai
         ? await PdfGoogleFonts.notoSansThaiBold()
         : await PdfGoogleFonts.interBold();
-    final labels = _labelsFor(data.locale);
-    final generatedAt = data.generatedAt.toLocal();
-    final dateStr =
-        '${generatedAt.day}/${generatedAt.month}/${generatedAt.year}';
+    final labels = _labelsFor(locale);
+    final dateStr = generatedAt == null
+        ? ''
+        : '${generatedAt.day}/${generatedAt.month}/${generatedAt.year}';
 
     pdf.addPage(
       pw.MultiPage(
@@ -87,22 +94,22 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
         margin: const pw.EdgeInsets.all(32),
         theme: pw.ThemeData.withFont(base: font, bold: fontBold),
         build: (_) => <pw.Widget>[
-          _header(data),
+          _header(profile),
           pw.Divider(thickness: 1, color: PdfColors.grey300),
           pw.SizedBox(height: 10),
           _sectionTitle(labels.summary),
           pw.Text(
-            data.summary.join('\n\n'),
+            summary.join('\n\n'),
             style: const pw.TextStyle(fontSize: 11, lineSpacing: 1.4),
           ),
           pw.SizedBox(height: 20),
           _sectionTitle(labels.experience),
-          ...data.experience.map(_experience),
+          ...experience.map(_experience),
           _sectionTitle(labels.skills),
           pw.Wrap(
             spacing: 5,
             runSpacing: 5,
-            children: data.skills
+            children: skills
                 .map(
                   (skill) => pw.Container(
                     padding: const pw.EdgeInsets.symmetric(
@@ -123,10 +130,10 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
           ),
           pw.SizedBox(height: 20),
           _sectionTitle(labels.projects),
-          ...projectPayloads.map((project) => _project(project, labels)),
+          ...projects.map((project) => _project(project, labels)),
           pw.SizedBox(height: 20),
           _sectionTitle(labels.links),
-          ...data.links.map(_link),
+          ...links.map(_link),
           pw.Spacer(),
           pw.Divider(thickness: 0.5, color: PdfColors.grey300),
           pw.Row(
@@ -139,13 +146,14 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
                   color: PdfColors.grey500,
                 ),
               ),
-              pw.Text(
-                'Date: $dateStr',
-                style: const pw.TextStyle(
-                  fontSize: 8,
-                  color: PdfColors.grey500,
+              if (dateStr.isNotEmpty)
+                pw.Text(
+                  'Date: $dateStr',
+                  style: const pw.TextStyle(
+                    fontSize: 8,
+                    color: PdfColors.grey500,
+                  ),
                 ),
-              ),
             ],
           ),
         ],
@@ -155,7 +163,30 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
     return pdf.save();
   }
 
-  pw.Widget _header(PortfolioDocumentData data) {
+  Map<String, dynamic> _map(dynamic value) {
+    return value is Map<String, dynamic> ? value : const <String, dynamic>{};
+  }
+
+  List<Map<String, dynamic>> _maps(dynamic value) {
+    return (value as List<dynamic>? ?? const [])
+        .whereType<Map<String, dynamic>>()
+        .toList(growable: false);
+  }
+
+  List<String> _strings(dynamic value) {
+    return (value as List<dynamic>? ?? const [])
+        .map((item) => item.toString())
+        .where((item) => item.isNotEmpty)
+        .toList(growable: false);
+  }
+
+  pw.Widget _header(Map<String, dynamic> profile) {
+    final name = profile['name']?.toString() ?? '';
+    final role = profile['role']?.toString() ?? '';
+    final email = profile['email']?.toString() ?? '';
+    final location = profile['location']?.toString() ?? '';
+    final phone = profile['phone']?.toString() ?? '';
+
     return pw.Row(
       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
       children: [
@@ -163,11 +194,11 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
           crossAxisAlignment: pw.CrossAxisAlignment.start,
           children: [
             pw.Text(
-              data.profile.name,
+              name,
               style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 24),
             ),
             pw.Text(
-              data.profile.role,
+              role,
               style: const pw.TextStyle(fontSize: 16, color: PdfColors.grey700),
             ),
           ],
@@ -175,26 +206,25 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
         pw.Column(
           crossAxisAlignment: pw.CrossAxisAlignment.end,
           children: [
-            pw.Text(
-              data.profile.email,
-              style: const pw.TextStyle(fontSize: 10),
-            ),
-            pw.Text(
-              data.profile.location,
-              style: const pw.TextStyle(fontSize: 10),
-            ),
-            if (data.profile.phone.isNotEmpty)
-              pw.Text(
-                data.profile.phone,
-                style: const pw.TextStyle(fontSize: 10),
-              ),
+            if (email.isNotEmpty)
+              pw.Text(email, style: const pw.TextStyle(fontSize: 10)),
+            if (location.isNotEmpty)
+              pw.Text(location, style: const pw.TextStyle(fontSize: 10)),
+            if (phone.isNotEmpty)
+              pw.Text(phone, style: const pw.TextStyle(fontSize: 10)),
           ],
         ),
       ],
     );
   }
 
-  pw.Widget _experience(PortfolioDocumentExperience item) {
+  pw.Widget _experience(Map<String, dynamic> item) {
+    final company = item['company']?.toString() ?? '';
+    final title = item['title']?.toString() ?? '';
+    final period = item['period']?.toString() ?? '';
+    final summary = item['summary']?.toString() ?? '';
+    final highlights = _strings(item['highlights']);
+
     return pw.Column(
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [
@@ -202,23 +232,23 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
           mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
           children: [
             pw.Text(
-              item.company,
+              company,
               style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 12),
             ),
             pw.Text(
-              item.period,
+              period,
               style: const pw.TextStyle(fontSize: 10, color: PdfColors.grey700),
             ),
           ],
         ),
         pw.Text(
-          item.title,
+          title,
           style: pw.TextStyle(fontSize: 11, fontStyle: pw.FontStyle.italic),
         ),
         pw.SizedBox(height: 4),
-        pw.Text(item.summary, style: const pw.TextStyle(fontSize: 10)),
+        pw.Text(summary, style: const pw.TextStyle(fontSize: 10)),
         pw.SizedBox(height: 4),
-        ...item.highlights.map(
+        ...highlights.map(
           (highlight) => pw.Bullet(
             text: highlight,
             style: const pw.TextStyle(fontSize: 10),
@@ -233,10 +263,7 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
     final name = project['name']?.toString() ?? '';
     final summary = project['summary']?.toString() ?? '';
     final description = project['description']?.toString() ?? '';
-    final tags = (project['tags'] as List<dynamic>? ?? const [])
-        .map((tag) => tag.toString())
-        .where((tag) => tag.isNotEmpty)
-        .toList(growable: false);
+    final tags = _strings(project['tags']);
 
     return pw.Column(
       crossAxisAlignment: pw.CrossAxisAlignment.start,
@@ -258,17 +285,20 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
     );
   }
 
-  pw.Widget _link(PortfolioDocumentLink link) {
+  pw.Widget _link(Map<String, dynamic> link) {
+    final label = link['label']?.toString() ?? '';
+    final url = link['url']?.toString() ?? '';
+
     return pw.Padding(
       padding: const pw.EdgeInsets.only(bottom: 4),
       child: pw.Row(
         children: [
           pw.Text(
-            '${link.label}: ',
+            '$label: ',
             style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 10),
           ),
           pw.Text(
-            link.url,
+            url,
             style: const pw.TextStyle(fontSize: 10, color: PdfColors.blue700),
           ),
         ],
