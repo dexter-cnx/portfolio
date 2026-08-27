@@ -26,7 +26,9 @@ void main() {
   });
 
   test('shares section metadata while preserving template policies', () {
-    final full = registry.definitionFor(PortfolioReportTemplateId.portfolioFull);
+    final full = registry.definitionFor(
+      PortfolioReportTemplateId.portfolioFull,
+    );
     final compact = registry.definitionFor(
       PortfolioReportTemplateId.resumeCompact,
     );
