@@ -1,5 +1,6 @@
 import '../../github_projects/domain/entities/github_project.dart';
 import '../../github_projects/domain/repositories/github_project_repository.dart';
+import '../../portfolio/models/portfolio_data_with_export_selection.dart';
 import '../../portfolio/models/portfolio_models.dart';
 import '../../project_selection/domain/entities/portfolio_project_config.dart';
 import '../../project_selection/domain/repositories/project_selection_store.dart';
@@ -28,29 +29,41 @@ final class PortfolioProjectsLoader {
       ]);
       final repositories = results[0] as List<GitHubProject>;
       final selection = results[1] as ProjectSelectionConfig;
-      final selected = selection.projects.where((item) => item.visible).toList()
+      if (selection.projects.isEmpty) return fallback;
+
+      final configured = selection.projects.toList()
         ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
-
-      if (selected.isEmpty) return fallback;
-
       final byId = {for (final repo in repositories) repo.id: repo};
       final featured = <FeaturedProject>[];
       final other = <OtherProject>[];
+      final pdfFeatured = <FeaturedProject>[];
+      final pdfOther = <OtherProject>[];
 
-      for (final config in selected) {
+      for (final config in configured) {
+        if (!config.visible && !config.includeInPdf) continue;
         final repository = byId[config.repositoryId];
         if (repository == null) continue;
         final status = await _loadStatus(repository, languageCode);
         final project = _compose(repository, config, status);
-        if (config.featured) {
-          featured.add(project.$1);
-        } else {
-          other.add(project.$2);
+
+        if (config.visible) {
+          if (config.featured) {
+            featured.add(project.$1);
+          } else {
+            other.add(project.$2);
+          }
+        }
+
+        if (config.includeInPdf) {
+          if (config.featured) {
+            pdfFeatured.add(project.$1);
+          } else {
+            pdfOther.add(project.$2);
+          }
         }
       }
 
-      if (featured.isEmpty && other.isEmpty) return fallback;
-      return PortfolioData(
+      return PortfolioDataWithExportSelection(
         site: fallback.site,
         hero: fallback.hero,
         about: fallback.about,
@@ -60,6 +73,8 @@ final class PortfolioProjectsLoader {
         contact: fallback.contact,
         socialLinks: fallback.socialLinks,
         nav: fallback.nav,
+        pdfFeaturedProjects: pdfFeatured,
+        pdfOtherProjects: pdfOther,
       );
     } catch (_) {
       return fallback;

@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_web_portfolio_starter/features/portfolio/models/portfolio_data_with_export_selection.dart';
 import 'package:flutter_web_portfolio_starter/features/portfolio/models/portfolio_models.dart';
 import 'package:flutter_web_portfolio_starter/features/portfolio_documents/application/portfolio_document_mapper.dart';
 
@@ -85,6 +86,56 @@ void main() {
     expect(document.links.single.label, 'GitHub');
     expect(document.generatedAt, generatedAt);
     expect(document.toJson()['locale'], 'th');
+  });
+
+  test('uses dedicated export projects instead of visible projects', () {
+    const includedUrl = 'https://github.com/dexter-cnx/dxtr_box';
+    const visibleOnlyUrl = 'https://github.com/dexter-cnx/analythis';
+    final fallback = PortfolioData.empty();
+    final data = PortfolioDataWithExportSelection(
+      site: fallback.site,
+      hero: fallback.hero,
+      about: fallback.about,
+      experience: fallback.experience,
+      featuredProjects: [
+        FeaturedProject(
+          name: 'analythis',
+          summary: 'Visible only',
+          longDescription: '',
+          repoUrl: visibleOnlyUrl,
+          liveUrl: '',
+          images: const [],
+          urls: const [],
+          tags: const [],
+        ),
+      ],
+      otherProjects: const [],
+      contact: fallback.contact,
+      socialLinks: fallback.socialLinks,
+      nav: fallback.nav,
+      pdfFeaturedProjects: [
+        FeaturedProject(
+          name: 'dxtr_box',
+          summary: 'PDF only',
+          longDescription: '',
+          repoUrl: includedUrl,
+          liveUrl: '',
+          images: const [],
+          urls: const [],
+          tags: const [],
+        ),
+      ],
+      pdfOtherProjects: const [],
+    );
+
+    final document = const PortfolioDocumentMapper().map(
+      data,
+      locale: 'en',
+      generatedAt: DateTime.utc(2026),
+    );
+
+    expect(document.projects, hasLength(1));
+    expect(document.projects.single.repositoryUrl, includedUrl);
   });
 
   test('normalizes unsupported locale to English', () {
