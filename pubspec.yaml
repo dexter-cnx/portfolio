@@ -34,6 +34,7 @@ flutter:
   assets:
     - assets/content/portfolio_content_en.json
     - assets/content/portfolio_content_th.json
+    - assets/content/project_selection.json
     - assets/translations/
     - assets/images/
     - assets/pdf/
