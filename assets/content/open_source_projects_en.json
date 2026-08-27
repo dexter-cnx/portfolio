@@ -1,0 +1,336 @@
+{
+  "schemaVersion": 1,
+  "locale": "en",
+  "selectionUpdatedAt": "2026-08-27T08:33:00Z",
+  "projects": [
+    {
+      "repositoryId": 1334788374,
+      "repositoryFullName": "dexter-cnx/dxtr_box",
+      "visible": true,
+      "includeInPdf": true,
+      "sortOrder": 0,
+      "name": "dxtr_box",
+      "summary": "dxtr_box is a custom local data layer focused on fast Flutter access, a Rust-backed storage core, and a Flutter-friendly API.",
+      "longDescription": "Current work includes performance hardening, cross-frontend validation, benchmark evidence, and a roadmap toward the Fluent Box Query API while keeping the core frontend-neutral.",
+      "repoUrl": "https://github.com/dexter-cnx/dxtr_box",
+      "liveUrl": "",
+      "images": [],
+      "urls": [],
+      "tags": [
+        "Dart",
+        "Flutter",
+        "Rust"
+      ]
+    },
+    {
+      "repositoryId": 1332055663,
+      "repositoryFullName": "dexter-cnx/nixin",
+      "visible": true,
+      "includeInPdf": true,
+      "sortOrder": 1,
+      "name": "Dextryx Images",
+      "summary": "Dextryx Images is a local RAW photo editor with a Rust processing core, a GPUI-first desktop direction, and an architecture kept independent enough to support a Flutter frontend later.",
+      "longDescription": "The current scope uses embedded JPEG previews for RAW formats, supports exposure, temperature, contrast, subject and sky masks, LUTs, JPEG export, XMP basics, workplace import flows, and a responsive desktop workspace.",
+      "repoUrl": "https://github.com/dexter-cnx/nixin",
+      "liveUrl": "",
+      "images": [],
+      "urls": [],
+      "tags": [
+        "Rust",
+        "GPUI",
+        "Flutter",
+        "Dart"
+      ]
+    },
+    {
+      "repositoryId": 1322529344,
+      "repositoryFullName": "dexter-cnx/PixelCraft",
+      "visible": true,
+      "includeInPdf": true,
+      "sortOrder": 2,
+      "name": "Dextryx Pixels",
+      "summary": "Dextryx Pixels is a Flutter image editing product with an emphasis on GPU-backed preview, camera and film workflows, and repeatable reliability validation on real devices.",
+      "longDescription": "GPU preview and the G6 reliability track are closed and verified. Current validation is focused on PF9 physical smoke evidence for native preview suspension behavior and the remaining production-oriented preview workflow closure.",
+      "repoUrl": "https://github.com/dexter-cnx/PixelCraft",
+      "liveUrl": "",
+      "images": [],
+      "urls": [],
+      "tags": [
+        "Dart",
+        "Flutter",
+        "GPU"
+      ]
+    },
+    {
+      "repositoryId": 1341609788,
+      "repositoryFullName": "dexter-cnx/typhoon_ocr_flutter",
+      "visible": true,
+      "includeInPdf": true,
+      "sortOrder": 3,
+      "name": "typhoon_ocr_flutter",
+      "summary": "typhoon_ocr_flutter provides a Flutter-friendly client and structured document models for Typhoon OCR, including Thai ID cards, receipts, bank slips, passports, and general documents.",
+      "longDescription": "The package includes provider configuration, document-specific parsing and validation, examples for Thai ID scanning, documentation for API-key setup, and a public package release workflow.",
+      "repoUrl": "https://github.com/dexter-cnx/typhoon_ocr_flutter",
+      "liveUrl": "",
+      "images": [],
+      "urls": [
+        {
+          "image": "",
+          "title": "Package",
+          "url": "https://pub.dev/packages/typhoon_ocr_flutter"
+        }
+      ],
+      "tags": [
+        "Dart",
+        "Flutter",
+        "HTTP",
+        "Typhoon OCR"
+      ]
+    },
+    {
+      "repositoryId": 1202735011,
+      "repositoryFullName": "dexter-cnx/analythis",
+      "visible": true,
+      "includeInPdf": true,
+      "sortOrder": 4,
+      "name": "analythis",
+      "summary": "analythis analyzes local folders or Git repositories to infer structure, architecture, modules, entities, APIs, risks, and reusable parts, then exports machine-readable blueprints and Markdown reports.",
+      "longDescription": "Version 1.0 intentionally uses heuristic analysis for fast structured context. It generates inventory, blueprint, prompt-pack, Markdown, and YAML outputs, supports web/backend/mobile/library/monorepo profiles, and is designed to feed coding agents, refactor planning, regeneration, core extraction, and onboarding workflows.",
+      "repoUrl": "https://github.com/dexter-cnx/analythis",
+      "liveUrl": "",
+      "images": [],
+      "urls": [
+        {
+          "image": "",
+          "title": "Package",
+          "url": "https://www.npmjs.com/package/@dextercnx/analythis"
+        }
+      ],
+      "tags": [
+        "TypeScript",
+        "Node.js",
+        "CLI",
+        "Git"
+      ]
+    },
+    {
+      "repositoryId": 1338946844,
+      "repositoryFullName": "dexter-cnx/dxtr_card_scan",
+      "visible": true,
+      "includeInPdf": true,
+      "sortOrder": 5,
+      "name": "dxtr_card_scan",
+      "summary": "dxtr_card_scan provides a configurable camera/gallery capture flow for document scanning with orientation-aware framing, theming, flash/torch controls, zoom, and Rust-backed post-processing.",
+      "longDescription": "The package is being calibrated for real devices and supports portrait/landscape constraints, frame alignment and padding, customizable capture controls, gallery input, edge detection, deskew, optional black-and-white conversion, and resize processing.",
+      "repoUrl": "https://github.com/dexter-cnx/dxtr_card_scan",
+      "liveUrl": "",
+      "images": [],
+      "urls": [],
+      "tags": [
+        "Dart",
+        "Flutter",
+        "Rust",
+        "Camera"
+      ]
+    },
+    {
+      "repositoryId": 1339073982,
+      "repositoryFullName": "dexter-cnx/med_reminder",
+      "visible": true,
+      "includeInPdf": true,
+      "sortOrder": 6,
+      "name": "med_reminder",
+      "summary": "med_reminder is a Flutter app for medication management and reminders with a local-first data model and an expanding personal health utility direction.",
+      "longDescription": "Current work focuses on medicine data improvements, reminder workflows, and privacy-conscious local-first design. Additional personal health features are being evaluated separately; period tracking remains an unapproved proposal rather than committed roadmap scope.",
+      "repoUrl": "https://github.com/dexter-cnx/med_reminder",
+      "liveUrl": "",
+      "images": [],
+      "urls": [],
+      "tags": [
+        "Dart",
+        "Flutter"
+      ]
+    },
+    {
+      "repositoryId": 1343269625,
+      "repositoryFullName": "dexter-cnx/dxtr_cleaner",
+      "visible": true,
+      "includeInPdf": true,
+      "sortOrder": 7,
+      "name": "dxtr_cleaner",
+      "summary": "dxtr_cleaner is a Rust desktop cleanup application built with GPUI, currently focused on making macOS cleanup reliable and easy to use before expanding platform scope.",
+      "longDescription": "The project prioritizes macOS cleanup correctness, usability, layout quality, and maintainable Rust core architecture, with Windows support planned after the Mac experience is stabilized.",
+      "repoUrl": "https://github.com/dexter-cnx/dxtr_cleaner",
+      "liveUrl": "",
+      "images": [],
+      "urls": [],
+      "tags": [
+        "Rust",
+        "GPUI",
+        "macOS"
+      ]
+    },
+    {
+      "repositoryId": 1331536790,
+      "repositoryFullName": "dexter-cnx/flutter_report_suite",
+      "visible": true,
+      "includeInPdf": true,
+      "sortOrder": 8,
+      "name": "flutter_report_suite",
+      "summary": "flutter_report_suite provides reusable report_engine components for template-driven PDF rendering, report values, paper configuration, printing, and storage.",
+      "longDescription": "The repository includes reusable report_engine architecture with ReportTemplate, PaperConfig, ReportElement, ReportValueResolver, PdfRenderService, FlutterReportPrinter, template storage, JSON templates, and Thai font support.",
+      "repoUrl": "https://github.com/dexter-cnx/flutter_report_suite",
+      "liveUrl": "",
+      "images": [],
+      "urls": [],
+      "tags": [
+        "Dart",
+        "Flutter",
+        "PDF"
+      ]
+    },
+    {
+      "repositoryId": 1344306427,
+      "repositoryFullName": "dexter-cnx/easy-gpui-l10n",
+      "visible": true,
+      "includeInPdf": true,
+      "sortOrder": 9,
+      "name": "easy-gpui-l10n",
+      "summary": "easy-gpui-l10n is a CSV-first localization crate for Rust and GPUI with runtime translation, fallback locales, placeholders, and generated JSON or Fluent locale files.",
+      "longDescription": "The crate keeps translation data in a reusable core independent from GPUI, supports dot-notation keys, runtime placeholders, missing-key fallback behavior, JSON and Fluent generation, and optional GPUI global integration.",
+      "repoUrl": "https://github.com/dexter-cnx/easy-gpui-l10n",
+      "liveUrl": "",
+      "images": [],
+      "urls": [],
+      "tags": [
+        "Rust",
+        "GPUI",
+        "CSV",
+        "Fluent"
+      ]
+    },
+    {
+      "repositoryId": 1344249221,
+      "repositoryFullName": "dexter-cnx/screen_sidekick",
+      "visible": true,
+      "includeInPdf": true,
+      "sortOrder": 10,
+      "name": "Screen Sidekick",
+      "summary": "Screen Sidekick is a macOS-first Rust + GPUI screenshot utility with portable core boundaries for capture, preview stacks, annotation, and future Windows support.",
+      "longDescription": "Milestones M0-M3 are complete, covering capture-to-overlay, tray and hotkeys, capture modes, native macOS window behavior, and the annotation foundation. M4 advanced annotation is in progress with blur/pixelate and highlight dimmer complete; PNG/JPEG export, JPEG quality controls, clipboard render, and Quick Save remain to be completed.",
+      "repoUrl": "https://github.com/dexter-cnx/screen_sidekick",
+      "liveUrl": "",
+      "images": [],
+      "urls": [],
+      "tags": [
+        "Rust",
+        "GPUI",
+        "xcap",
+        "macOS"
+      ]
+    },
+    {
+      "repositoryId": 1209101464,
+      "repositoryFullName": "dexter-cnx/dot_matrix_animated_counter",
+      "visible": true,
+      "includeInPdf": true,
+      "sortOrder": 11,
+      "name": "dot_matrix_animated_counter",
+      "summary": "dot_matrix_animated_counter is a Flutter package for animated dot-matrix numeric counters with controller-based updates, ThemeExtension styling, multiple transition styles, negative values, and grouping support.",
+      "longDescription": "The package supports fadeScale, slide, and flip transitions, configurable digit formatting, zero padding, grouping separators, local or app-wide theming, and a published web demo.",
+      "repoUrl": "https://github.com/dexter-cnx/dot_matrix_animated_counter",
+      "liveUrl": "https://dexter-cnx.github.io/dot_matrix_animated_counter/",
+      "images": [],
+      "urls": [
+        {
+          "image": "",
+          "title": "Package",
+          "url": "https://pub.dev/packages/dot_matrix_animated_counter"
+        },
+        {
+          "image": "",
+          "title": "Demo",
+          "url": "https://dexter-cnx.github.io/dot_matrix_animated_counter/"
+        }
+      ],
+      "tags": [
+        "Dart",
+        "Flutter"
+      ]
+    },
+    {
+      "repositoryId": 1205415261,
+      "repositoryFullName": "dexter-cnx/glass_bar_widget",
+      "visible": true,
+      "includeInPdf": true,
+      "sortOrder": 12,
+      "name": "GlassBar",
+      "summary": "GlassBar is a Flutter navigation package supporting horizontal and vertical layouts, pinned or auto-hidden panels, controlled and uncontrolled selection, theming, badges, accessibility, and optional haptics.",
+      "longDescription": "The package includes configurable blur, selected indicators, drag-to-change-tab behavior, safe-area handling, panel timing, responsive extent constraints, accessibility semantics, CI, and a GitHub Pages demo.",
+      "repoUrl": "https://github.com/dexter-cnx/glass_bar_widget",
+      "liveUrl": "https://dexter-cnx.github.io/glass_bar_widget/",
+      "images": [],
+      "urls": [
+        {
+          "image": "",
+          "title": "Package",
+          "url": "https://pub.dev/packages/glass_bar"
+        },
+        {
+          "image": "",
+          "title": "Demo",
+          "url": "https://dexter-cnx.github.io/glass_bar_widget/"
+        }
+      ],
+      "tags": [
+        "Dart",
+        "Flutter"
+      ]
+    },
+    {
+      "repositoryId": 1208481621,
+      "repositoryFullName": "dexter-cnx/flutter_pokedex",
+      "visible": true,
+      "includeInPdf": true,
+      "sortOrder": 13,
+      "name": "Pokedex",
+      "summary": "flutter_pokedex is a Flutter Pokédex explorer covering Pokémon, items, abilities, moves, berries, types, species, evolution chains, and locations with searchable paged browsing and detail screens.",
+      "longDescription": "The app uses Clean Architecture with Riverpod and Dio, supports pagination, lazy loading, and infinite scroll, and can switch the Pokémon flow between PokéAPI REST and a GraphQL Pokémon source while keeping category-specific data logic in the repository and data layers.",
+      "repoUrl": "https://github.com/dexter-cnx/flutter_pokedex",
+      "liveUrl": "",
+      "images": [],
+      "urls": [],
+      "tags": [
+        "Dart",
+        "Flutter",
+        "Riverpod",
+        "Dio",
+        "REST",
+        "GraphQL"
+      ]
+    },
+    {
+      "repositoryId": 1310446861,
+      "repositoryFullName": "dexter-cnx/movie_tracker",
+      "visible": true,
+      "includeInPdf": true,
+      "sortOrder": 14,
+      "name": "Popcorn — Movie Tracker & Watchlist",
+      "summary": "movie_tracker is a Flutter portfolio application for discovering TMDB movies, viewing details, managing watchlists and watched/favorite state, editing profiles, and demonstrating production engineering patterns.",
+      "longDescription": "The project combines lightweight Clean Architecture with Riverpod, Dio, Hive caching, secure token storage, localization, responsive layouts, typed failures, retry and offline behavior, demo authentication, synchronized token refresh, structured logging, crash-reporting abstractions, automated tests, coverage gates, CI, and release preparation.",
+      "repoUrl": "https://github.com/dexter-cnx/movie_tracker",
+      "liveUrl": "",
+      "images": [],
+      "urls": [],
+      "tags": [
+        "Dart",
+        "Flutter",
+        "Riverpod",
+        "Dio",
+        "Hive",
+        "TMDB",
+        "go_router"
+      ]
+    }
+  ]
+}

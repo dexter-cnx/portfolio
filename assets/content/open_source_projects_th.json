@@ -1,0 +1,336 @@
+{
+  "schemaVersion": 1,
+  "locale": "th",
+  "selectionUpdatedAt": "2026-08-27T08:33:00Z",
+  "projects": [
+    {
+      "repositoryId": 1334788374,
+      "repositoryFullName": "dexter-cnx/dxtr_box",
+      "visible": true,
+      "includeInPdf": true,
+      "sortOrder": 0,
+      "name": "dxtr_box",
+      "summary": "dxtr_box เป็นเลเยอร์ข้อมูลภายในเครื่องที่เน้นการเข้าถึงจาก Flutter อย่างรวดเร็ว ใช้ Rust เป็นแกนจัดเก็บข้อมูล และมี API ที่เป็นมิตรกับ Flutter",
+      "longDescription": "งานปัจจุบันเน้นการปรับปรุง performance, การทดสอบข้าม frontend, เก็บ benchmark evidence และวาง roadmap สำหรับ Fluent Box Query API โดยให้ core ไม่ผูกกับ frontend ใด frontend หนึ่ง",
+      "repoUrl": "https://github.com/dexter-cnx/dxtr_box",
+      "liveUrl": "",
+      "images": [],
+      "urls": [],
+      "tags": [
+        "Dart",
+        "Flutter",
+        "Rust"
+      ]
+    },
+    {
+      "repositoryId": 1332055663,
+      "repositoryFullName": "dexter-cnx/nixin",
+      "visible": true,
+      "includeInPdf": true,
+      "sortOrder": 1,
+      "name": "Dextryx Images",
+      "summary": "Dextryx Images เป็นโปรแกรมแต่งภาพ RAW แบบ local ที่ใช้ Rust เป็น processing core โดยมุ่งไปทาง GPUI บนเดสก์ท็อป และออกแบบ core ให้ไม่ผูกกับ UI เพื่อรองรับ Flutter frontend ในอนาคตได้",
+      "longDescription": "ขอบเขตปัจจุบันใช้ embedded JPEG preview ของไฟล์ RAW รองรับ exposure, temperature, contrast, subject/sky mask, LUT, JPEG export, XMP เบื้องต้น, workplace import และ responsive desktop workspace",
+      "repoUrl": "https://github.com/dexter-cnx/nixin",
+      "liveUrl": "",
+      "images": [],
+      "urls": [],
+      "tags": [
+        "Rust",
+        "GPUI",
+        "Flutter",
+        "Dart"
+      ]
+    },
+    {
+      "repositoryId": 1322529344,
+      "repositoryFullName": "dexter-cnx/PixelCraft",
+      "visible": true,
+      "includeInPdf": true,
+      "sortOrder": 2,
+      "name": "Dextryx Pixels",
+      "summary": "Dextryx Pixels เป็นผลิตภัณฑ์แต่งภาพด้วย Flutter ที่เน้น GPU-backed preview, camera/film workflow และการตรวจสอบ reliability ซ้ำได้บนอุปกรณ์จริง",
+      "longDescription": "งาน GPU preview และ G6 reliability ปิดและผ่านการยืนยันแล้ว ปัจจุบันโฟกัสที่ PF9 physical smoke evidence สำหรับ native preview suspension behavior และการปิดงานส่วนที่เหลือของ production-oriented preview workflow",
+      "repoUrl": "https://github.com/dexter-cnx/PixelCraft",
+      "liveUrl": "",
+      "images": [],
+      "urls": [],
+      "tags": [
+        "Dart",
+        "Flutter",
+        "GPU"
+      ]
+    },
+    {
+      "repositoryId": 1341609788,
+      "repositoryFullName": "dexter-cnx/typhoon_ocr_flutter",
+      "visible": true,
+      "includeInPdf": true,
+      "sortOrder": 3,
+      "name": "typhoon_ocr_flutter",
+      "summary": "typhoon_ocr_flutter เป็น client สำหรับ Flutter และมี model เอกสารแบบมีโครงสร้างสำหรับ Typhoon OCR รองรับบัตรประชาชนไทย ใบเสร็จ สลิปธนาคาร หนังสือเดินทาง และเอกสารทั่วไป",
+      "longDescription": "แพ็กเกจมีการตั้งค่า provider, parsing และ validation ตามชนิดเอกสาร, ตัวอย่างสแกนบัตรประชาชนไทย, เอกสารวิธีขอ API key และ workflow สำหรับเผยแพร่แพ็กเกจสาธารณะ",
+      "repoUrl": "https://github.com/dexter-cnx/typhoon_ocr_flutter",
+      "liveUrl": "",
+      "images": [],
+      "urls": [
+        {
+          "image": "",
+          "title": "Package",
+          "url": "https://pub.dev/packages/typhoon_ocr_flutter"
+        }
+      ],
+      "tags": [
+        "Dart",
+        "Flutter",
+        "HTTP",
+        "Typhoon OCR"
+      ]
+    },
+    {
+      "repositoryId": 1202735011,
+      "repositoryFullName": "dexter-cnx/analythis",
+      "visible": true,
+      "includeInPdf": true,
+      "sortOrder": 4,
+      "name": "analythis",
+      "summary": "analythis วิเคราะห์โฟลเดอร์ในเครื่องหรือ Git repository เพื่ออนุมานโครงสร้าง สถาปัตยกรรม โมดูล entities, APIs, ความเสี่ยง และส่วนที่นำกลับมาใช้ใหม่ได้ ก่อนส่งออกเป็น blueprint และรายงาน Markdown",
+      "longDescription": "เวอร์ชัน 1.0 ใช้ heuristic analysis โดยตั้งใจเพื่อสร้าง structured context ได้เร็ว รองรับ inventory, blueprint, prompt-pack, Markdown และ YAML รวมถึง profile สำหรับ web, backend, mobile, library และ monorepo และออกแบบให้ใช้ต่อกับ coding agent, refactor planning, regeneration, core extraction และ onboarding workflow",
+      "repoUrl": "https://github.com/dexter-cnx/analythis",
+      "liveUrl": "",
+      "images": [],
+      "urls": [
+        {
+          "image": "",
+          "title": "Package",
+          "url": "https://www.npmjs.com/package/@dextercnx/analythis"
+        }
+      ],
+      "tags": [
+        "TypeScript",
+        "Node.js",
+        "CLI",
+        "Git"
+      ]
+    },
+    {
+      "repositoryId": 1338946844,
+      "repositoryFullName": "dexter-cnx/dxtr_card_scan",
+      "visible": true,
+      "includeInPdf": true,
+      "sortOrder": 5,
+      "name": "dxtr_card_scan",
+      "summary": "dxtr_card_scan เป็น flow กล้องและ gallery สำหรับสแกนเอกสาร รองรับกรอบตาม orientation, theme, flash/torch, zoom และ post-processing ด้วย Rust",
+      "longDescription": "แพ็กเกจกำลังอยู่ในช่วง calibration บนอุปกรณ์จริง รองรับ portrait/landscape, การจัดตำแหน่งและ padding ของกรอบ, ปรับรูปแบบปุ่ม capture, gallery input, edge detection, deskew, แปลงขาวดำแบบ optional และ resize",
+      "repoUrl": "https://github.com/dexter-cnx/dxtr_card_scan",
+      "liveUrl": "",
+      "images": [],
+      "urls": [],
+      "tags": [
+        "Dart",
+        "Flutter",
+        "Rust",
+        "Camera"
+      ]
+    },
+    {
+      "repositoryId": 1339073982,
+      "repositoryFullName": "dexter-cnx/med_reminder",
+      "visible": true,
+      "includeInPdf": true,
+      "sortOrder": 6,
+      "name": "med_reminder",
+      "summary": "med_reminder เป็นแอป Flutter สำหรับจัดการยาและการแจ้งเตือน โดยใช้แนวทาง local-first และออกแบบให้ขยายไปสู่เครื่องมือสุขภาพส่วนตัวเพิ่มเติมได้",
+      "longDescription": "งานปัจจุบันเน้นการปรับข้อมูลยา, flow การแจ้งเตือน และการออกแบบแบบ local-first ที่ให้ความสำคัญกับความเป็นส่วนตัว ส่วนฟีเจอร์สุขภาพเพิ่มเติมอยู่ระหว่างการประเมินแยกต่างหาก โดย period tracking ยังเป็นข้อเสนอที่ยังไม่ได้อนุมัติ ไม่ใช่ roadmap ที่ผูกมัดแล้ว",
+      "repoUrl": "https://github.com/dexter-cnx/med_reminder",
+      "liveUrl": "",
+      "images": [],
+      "urls": [],
+      "tags": [
+        "Dart",
+        "Flutter"
+      ]
+    },
+    {
+      "repositoryId": 1343269625,
+      "repositoryFullName": "dexter-cnx/dxtr_cleaner",
+      "visible": true,
+      "includeInPdf": true,
+      "sortOrder": 7,
+      "name": "dxtr_cleaner",
+      "summary": "dxtr_cleaner เป็นแอป cleanup บนเดสก์ท็อปที่พัฒนาด้วย Rust และ GPUI โดยตอนนี้เน้นให้ cleanup บน macOS ทำงานได้ถูกต้อง ใช้งานง่าย และมี layout ที่ดี",
+      "longDescription": "โปรเจกต์ให้ความสำคัญกับความถูกต้องของ cleanup, usability และคุณภาพ UI บน macOS พร้อมรักษาโครงสร้าง Rust core ให้ดูแลง่าย ก่อนกลับไปเพิ่ม Windows support ภายหลัง",
+      "repoUrl": "https://github.com/dexter-cnx/dxtr_cleaner",
+      "liveUrl": "",
+      "images": [],
+      "urls": [],
+      "tags": [
+        "Rust",
+        "GPUI",
+        "macOS"
+      ]
+    },
+    {
+      "repositoryId": 1331536790,
+      "repositoryFullName": "dexter-cnx/flutter_report_suite",
+      "visible": true,
+      "includeInPdf": true,
+      "sortOrder": 8,
+      "name": "flutter_report_suite",
+      "summary": "flutter_report_suite มี report_engine ที่นำกลับมาใช้ซ้ำได้สำหรับสร้าง PDF จาก template พร้อมระบบค่าในรายงาน การตั้งค่ากระดาษ การพิมพ์ และการจัดเก็บ template",
+      "longDescription": "repository มีสถาปัตยกรรม report_engine ที่ประกอบด้วย ReportTemplate, PaperConfig, ReportElement, ReportValueResolver, PdfRenderService, FlutterReportPrinter, template storage, JSON template และรองรับฟอนต์ภาษาไทย",
+      "repoUrl": "https://github.com/dexter-cnx/flutter_report_suite",
+      "liveUrl": "",
+      "images": [],
+      "urls": [],
+      "tags": [
+        "Dart",
+        "Flutter",
+        "PDF"
+      ]
+    },
+    {
+      "repositoryId": 1344306427,
+      "repositoryFullName": "dexter-cnx/easy-gpui-l10n",
+      "visible": true,
+      "includeInPdf": true,
+      "sortOrder": 9,
+      "name": "easy-gpui-l10n",
+      "summary": "easy-gpui-l10n เป็น crate localization แบบ CSV-first สำหรับ Rust และ GPUI รองรับ runtime translation, fallback locale, placeholder และการ generate locale file เป็น JSON หรือ Fluent",
+      "longDescription": "crate แยก translation data ไว้ใน core ที่ไม่ผูกกับ GPUI รองรับ dot-notation key, runtime placeholder, fallback เมื่อหา key ไม่เจอ, การ generate JSON/Fluent และ optional GPUI global integration",
+      "repoUrl": "https://github.com/dexter-cnx/easy-gpui-l10n",
+      "liveUrl": "",
+      "images": [],
+      "urls": [],
+      "tags": [
+        "Rust",
+        "GPUI",
+        "CSV",
+        "Fluent"
+      ]
+    },
+    {
+      "repositoryId": 1344249221,
+      "repositoryFullName": "dexter-cnx/screen_sidekick",
+      "visible": true,
+      "includeInPdf": true,
+      "sortOrder": 10,
+      "name": "Screen Sidekick",
+      "summary": "Screen Sidekick เป็นเครื่องมือ screenshot แบบ macOS-first ที่ใช้ Rust + GPUI และแยก core ให้รองรับ capture, preview stack, annotation และ Windows ในอนาคตได้โดยไม่ต้องรื้อ domain logic",
+      "longDescription": "Milestone M0-M3 เสร็จแล้ว ครอบคลุม capture-to-overlay, tray และ hotkeys, capture modes, native macOS window behavior และ annotation foundation ส่วน M4 advanced annotation กำลังดำเนินการ โดย blur/pixelate และ highlight dimmer เสร็จแล้ว เหลือ PNG/JPEG export, JPEG quality controls, clipboard render และ Quick Save",
+      "repoUrl": "https://github.com/dexter-cnx/screen_sidekick",
+      "liveUrl": "",
+      "images": [],
+      "urls": [],
+      "tags": [
+        "Rust",
+        "GPUI",
+        "xcap",
+        "macOS"
+      ]
+    },
+    {
+      "repositoryId": 1209101464,
+      "repositoryFullName": "dexter-cnx/dot_matrix_animated_counter",
+      "visible": true,
+      "includeInPdf": true,
+      "sortOrder": 11,
+      "name": "dot_matrix_animated_counter",
+      "summary": "dot_matrix_animated_counter เป็นแพ็กเกจ Flutter สำหรับแสดงตัวเลขแบบ dot-matrix พร้อม animation รองรับการควบคุมผ่าน controller, ThemeExtension, หลาย transition, เลขติดลบ และการจัดกลุ่มตัวเลข",
+      "longDescription": "แพ็กเกจรองรับ transition แบบ fadeScale, slide และ flip, กำหนดจำนวนหลักและ zero padding, grouping separator, theme ทั้งระดับแอปและเฉพาะ widget และมี web demo ให้ทดลอง",
+      "repoUrl": "https://github.com/dexter-cnx/dot_matrix_animated_counter",
+      "liveUrl": "https://dexter-cnx.github.io/dot_matrix_animated_counter/",
+      "images": [],
+      "urls": [
+        {
+          "image": "",
+          "title": "Package",
+          "url": "https://pub.dev/packages/dot_matrix_animated_counter"
+        },
+        {
+          "image": "",
+          "title": "Demo",
+          "url": "https://dexter-cnx.github.io/dot_matrix_animated_counter/"
+        }
+      ],
+      "tags": [
+        "Dart",
+        "Flutter"
+      ]
+    },
+    {
+      "repositoryId": 1205415261,
+      "repositoryFullName": "dexter-cnx/glass_bar_widget",
+      "visible": true,
+      "includeInPdf": true,
+      "sortOrder": 12,
+      "name": "GlassBar",
+      "summary": "GlassBar เป็นแพ็กเกจ navigation สำหรับ Flutter รองรับ layout แนวนอนและแนวตั้ง, panel แบบ pinned หรือ auto-hide, controlled/uncontrolled selection, theme, badge, accessibility และ haptic feedback",
+      "longDescription": "แพ็กเกจมีตัวเลือก blur, selected indicator, drag-to-change-tab, safe area, panel timing, จำกัด extent, accessibility semantics, CI และ GitHub Pages demo",
+      "repoUrl": "https://github.com/dexter-cnx/glass_bar_widget",
+      "liveUrl": "https://dexter-cnx.github.io/glass_bar_widget/",
+      "images": [],
+      "urls": [
+        {
+          "image": "",
+          "title": "Package",
+          "url": "https://pub.dev/packages/glass_bar"
+        },
+        {
+          "image": "",
+          "title": "Demo",
+          "url": "https://dexter-cnx.github.io/glass_bar_widget/"
+        }
+      ],
+      "tags": [
+        "Dart",
+        "Flutter"
+      ]
+    },
+    {
+      "repositoryId": 1208481621,
+      "repositoryFullName": "dexter-cnx/flutter_pokedex",
+      "visible": true,
+      "includeInPdf": true,
+      "sortOrder": 13,
+      "name": "Pokedex",
+      "summary": "flutter_pokedex เป็นแอป Pokédex ด้วย Flutter ครอบคลุม Pokémon, item, ability, move, berry, type, species, evolution chain และ location พร้อม search, paging และ detail screen",
+      "longDescription": "แอปใช้ Clean Architecture ร่วมกับ Riverpod และ Dio รองรับ pagination, lazy loading และ infinite scroll และสามารถสลับ source ของ Pokémon ระหว่าง PokéAPI REST กับ GraphQL โดยแยก data logic ไว้ใน repository และ data layer",
+      "repoUrl": "https://github.com/dexter-cnx/flutter_pokedex",
+      "liveUrl": "",
+      "images": [],
+      "urls": [],
+      "tags": [
+        "Dart",
+        "Flutter",
+        "Riverpod",
+        "Dio",
+        "REST",
+        "GraphQL"
+      ]
+    },
+    {
+      "repositoryId": 1310446861,
+      "repositoryFullName": "dexter-cnx/movie_tracker",
+      "visible": true,
+      "includeInPdf": true,
+      "sortOrder": 14,
+      "name": "Popcorn — Movie Tracker & Watchlist",
+      "summary": "movie_tracker เป็น Flutter portfolio app สำหรับค้นหาและสำรวจภาพยนตร์จาก TMDB ดูรายละเอียด จัดการ watchlist และสถานะ watched/favorite แก้ไข profile และสาธิตแนวทาง production engineering",
+      "longDescription": "โปรเจกต์ใช้ lightweight Clean Architecture ร่วมกับ Riverpod, Dio, Hive caching, secure token storage, localization, responsive layout, typed failure, retry/offline behavior, demo authentication, synchronized token refresh, structured logging, crash-reporting abstraction, automated tests, coverage gate, CI และ release preparation",
+      "repoUrl": "https://github.com/dexter-cnx/movie_tracker",
+      "liveUrl": "",
+      "images": [],
+      "urls": [],
+      "tags": [
+        "Dart",
+        "Flutter",
+        "Riverpod",
+        "Dio",
+        "Hive",
+        "TMDB",
+        "go_router"
+      ]
+    }
+  ]
+}
