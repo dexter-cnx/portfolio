@@ -69,10 +69,10 @@ void main() {
     final projects = plan.payload['projects'] as List<dynamic>;
 
     expect(document.projects, hasLength(2));
-    expect(
-      document.projects.map((project) => project.name),
-      <String>['pdf-featured', 'pdf-other'],
-    );
+    expect(document.projects.map((project) => project.name), <String>[
+      'pdf-featured',
+      'pdf-other',
+    ]);
     expect(projects, hasLength(1));
     expect((projects.single as Map<String, dynamic>)['name'], 'pdf-featured');
     expect((projects.single as Map<String, dynamic>)['description'], '');
@@ -107,6 +107,7 @@ void main() {
     );
 
     expect(document.locale, 'th');
+    expect(plan.payload['locale'], 'th');
     expect(projects, hasLength(2));
     expect(
       (projects.first as Map<String, dynamic>)['description'],
