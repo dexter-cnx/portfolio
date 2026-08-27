@@ -48,9 +48,9 @@ class _ProjectSelectionAdminPageState extends State<ProjectSelectionAdminPage> {
     final json = _controller.exportJson();
     await Clipboard.setData(ClipboardData(text: json));
     if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('admin_export_copied'.tr())),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text('admin_export_copied'.tr())));
   }
 
   Future<void> _importJson() async {
@@ -88,9 +88,9 @@ class _ProjectSelectionAdminPageState extends State<ProjectSelectionAdminPage> {
 
     try {
       _controller.importJson(raw);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('admin_import_success'.tr())),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('admin_import_success'.tr())));
     } catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('${'admin_import_invalid'.tr()}: $error')),
@@ -214,11 +214,8 @@ class _ProjectSelectionAdminPageState extends State<ProjectSelectionAdminPage> {
                               FilterChip(
                                 label: Text('admin_visible'.tr()),
                                 selected: config.visible,
-                                onSelected: (value) =>
-                                    _controller.updateProject(
-                                      repo.id,
-                                      visible: value,
-                                    ),
+                                onSelected: (value) => _controller
+                                    .updateProject(repo.id, visible: value),
                               ),
                               FilterChip(
                                 label: Text('admin_featured'.tr()),
@@ -243,7 +240,9 @@ class _ProjectSelectionAdminPageState extends State<ProjectSelectionAdminPage> {
                           ),
                           const SizedBox(height: 12),
                           TextFormField(
-                            key: ValueKey('${repo.id}-sort-${config.sortOrder}'),
+                            key: ValueKey(
+                              '${repo.id}-sort-${config.sortOrder}',
+                            ),
                             initialValue: config.sortOrder.toString(),
                             keyboardType: TextInputType.number,
                             decoration: InputDecoration(
@@ -315,10 +314,7 @@ class _ErrorState extends StatelessWidget {
             const SizedBox(height: 12),
             Text(error?.toString() ?? 'admin_load_error'.tr()),
             const SizedBox(height: 12),
-            FilledButton(
-              onPressed: onRetry,
-              child: Text('admin_retry'.tr()),
-            ),
+            FilledButton(onPressed: onRetry, child: Text('admin_retry'.tr())),
           ],
         ),
       ),
