@@ -11,13 +11,16 @@ final class PortfolioDataWithExportSelection extends PortfolioData {
     required super.contact,
     required super.socialLinks,
     required super.nav,
+    required List<OtherProject> openSourceProjects,
     required List<FeaturedProject> pdfFeaturedProjects,
     required List<OtherProject> pdfOtherProjects,
-  }) : pdfFeaturedProjects = List<FeaturedProject>.unmodifiable(
+  }) : openSourceProjects = List<OtherProject>.unmodifiable(openSourceProjects),
+       pdfFeaturedProjects = List<FeaturedProject>.unmodifiable(
          pdfFeaturedProjects,
        ),
        pdfOtherProjects = List<OtherProject>.unmodifiable(pdfOtherProjects);
 
+  final List<OtherProject> openSourceProjects;
   final List<FeaturedProject> pdfFeaturedProjects;
   final List<OtherProject> pdfOtherProjects;
 }
