@@ -130,11 +130,11 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
               if (key != null) _scrollToSection(key);
             },
             onLanguageToggle: _toggleLanguage,
-            onExportTap: (template) {
+            onExportTap: () {
               ResumePdfGenerator.generateAndDownload(
                 data,
                 context.locale.languageCode,
-                template: template,
+                template: PortfolioReportTemplateId.resumeCompact,
               );
             },
           ),
@@ -206,7 +206,7 @@ class _GlassNavBar extends StatefulWidget implements PreferredSizeWidget {
   final List<NavItem> nav;
   final Function(String id) onNavTap;
   final VoidCallback onLanguageToggle;
-  final ValueChanged<PortfolioReportTemplateId> onExportTap;
+  final VoidCallback onExportTap;
 
   const _GlassNavBar({
     required this.ownerName,
@@ -289,7 +289,7 @@ class _GlassNavBarState extends State<_GlassNavBar> {
                         const SizedBox(width: 28),
                         _LangToggle(onTap: widget.onLanguageToggle),
                         const SizedBox(width: 16),
-                        _ExportPdfButton(onSelected: widget.onExportTap),
+                        _ExportPdfButton(onTap: widget.onExportTap),
                       ],
                     )
                   else ...[
@@ -354,7 +354,7 @@ class _GlassNavBarState extends State<_GlassNavBar> {
                         horizontal: 16,
                         vertical: 12,
                       ),
-                      child: _ExportPdfButton(onSelected: widget.onExportTap),
+                      child: _ExportPdfButton(onTap: widget.onExportTap),
                     ),
                     const SizedBox(height: 8),
                   ],
@@ -445,34 +445,20 @@ class _LangToggle extends StatelessWidget {
 }
 
 class _ExportPdfButton extends StatelessWidget {
-  final ValueChanged<PortfolioReportTemplateId> onSelected;
+  final VoidCallback onTap;
 
-  const _ExportPdfButton({required this.onSelected});
+  const _ExportPdfButton({required this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    return PopupMenuButton<PortfolioReportTemplateId>(
-      onSelected: onSelected,
-      tooltip: 'pdf_export_tooltip'.tr(),
-      itemBuilder: (context) => [
-        PopupMenuItem(
-          value: PortfolioReportTemplateId.resumeCompact,
-          child: Text('pdf_export_resume'.tr()),
-        ),
-        PopupMenuItem(
-          value: PortfolioReportTemplateId.portfolioFull,
-          child: Text('pdf_export_portfolio'.tr()),
-        ),
-      ],
-      child: OutlinedButton.icon(
-        onPressed: null,
-        icon: const Icon(Icons.picture_as_pdf_outlined, size: 18),
-        label: Text('btn_resume'.tr()),
-        style: OutlinedButton.styleFrom(
-          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
-          disabledForegroundColor: AppTheme.accent,
-          side: const BorderSide(color: AppTheme.accent),
-        ),
+    return OutlinedButton.icon(
+      onPressed: onTap,
+      icon: const Icon(Icons.picture_as_pdf_outlined, size: 18),
+      label: Text('btn_resume'.tr()),
+      style: OutlinedButton.styleFrom(
+        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+        foregroundColor: AppTheme.accent,
+        side: const BorderSide(color: AppTheme.accent),
       ),
     );
   }
