@@ -90,9 +90,10 @@ void main() {
     );
     const builder = PortfolioReportRenderPlanBuilder(
       templateRegistry: PortfolioReportTemplateRegistry(
-        overrides: <PortfolioReportTemplateId, PortfolioReportTemplateDefinition>{
-          PortfolioReportTemplateId.portfolioFull: customDefinition,
-        },
+        overrides:
+            <PortfolioReportTemplateId, PortfolioReportTemplateDefinition>{
+              PortfolioReportTemplateId.portfolioFull: customDefinition,
+            },
       ),
     );
 
@@ -101,12 +102,13 @@ void main() {
       template: PortfolioReportTemplateId.portfolioFull,
     );
 
-    expect(plan.template.sections.map((section) => section.id), <
-      PortfolioReportSectionId
-    >[
-      PortfolioReportSectionId.projects,
-      PortfolioReportSectionId.summary,
-    ]);
+    expect(
+      plan.template.sections.map((section) => section.id),
+      <PortfolioReportSectionId>[
+        PortfolioReportSectionId.projects,
+        PortfolioReportSectionId.summary,
+      ],
+    );
     expect(
       plan.template.sections.any(
         (section) => section.id == PortfolioReportSectionId.skills,
