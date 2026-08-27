@@ -1,20 +1,21 @@
 import 'dart:ui';
 
-import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 import '../../../../app/theme/app_theme.dart';
 import '../../data/datasources/local_content_loader.dart';
 import '../../models/portfolio_models.dart';
 import '../widgets/about_section_widget.dart';
 import '../widgets/contact_section_widget.dart';
 import '../widgets/experience_section_widget.dart';
-import '../widgets/projects_section_widget.dart';
 import '../widgets/hero_section_widget.dart';
-import '../widgets/responsive_layout.dart';
-import '../widgets/side_rails.dart';
-import '../widgets/resume_pdf_generator.dart';
 import '../widgets/mouse_glow_background.dart';
+import '../widgets/projects_section_widget.dart';
+import '../widgets/responsive_layout.dart';
+import '../widgets/resume_pdf_generator.dart';
+import '../widgets/side_rails.dart';
 
 class PortfolioHomePage extends StatefulWidget {
   final Function(String) onLocaleChanged;
@@ -31,7 +32,6 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
   final _scrollController = ScrollController();
   String? _lastLocale;
 
-  // Section keys for anchor navigation
   final _heroKey = GlobalKey();
   final _aboutKey = GlobalKey();
   final _experienceKey = GlobalKey();
@@ -72,13 +72,6 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
       return;
     }
 
-    // Local PDF assets served relative to index.html on web
-    if (url.startsWith('assets/pdf/') &&
-        (Uri.base.scheme == 'http' || Uri.base.scheme == 'https')) {
-      await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
-      return;
-    }
-
     final uri = Uri.parse(url);
     final mode = (uri.scheme == 'http' || uri.scheme == 'https')
         ? LaunchMode.platformDefault
@@ -98,12 +91,12 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
   }
 
   GlobalKey? _getKeyForId(String id) => switch (id) {
-        'about' => _aboutKey,
-        'experience' => _experienceKey,
-        'projects' => _projectsKey,
-        'contact' => _contactKey,
-        _ => null,
-      };
+    'about' => _aboutKey,
+    'experience' => _experienceKey,
+    'projects' => _projectsKey,
+    'contact' => _contactKey,
+    _ => null,
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -121,27 +114,21 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
         final data = snapshot.data!;
 
         return Scaffold(
-          // Transparent so the gradient background shows through the glass nav
           backgroundColor: Colors.transparent,
           extendBodyBehindAppBar: true,
           appBar: _GlassNavBar(
             ownerName: data.site.ownerName,
             nav: data.nav,
-            resumeUrl: data.site.resumeUrl,
             onNavTap: (id) {
               final key = _getKeyForId(id);
               if (key != null) _scrollToSection(key);
             },
             onLanguageToggle: _toggleLanguage,
             onResumeTap: () {
-              if (data.site.resumeUrl.isEmpty) {
-                ResumePdfGenerator.generateAndDownload(
-                  data,
-                  context.locale.languageCode,
-                );
-              } else {
-                _launchURL(data.site.resumeUrl);
-              }
+              ResumePdfGenerator.generateAndDownload(
+                data,
+                context.locale.languageCode,
+              );
             },
           ),
           body: MouseGlowBackground(
@@ -151,7 +138,6 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
                   controller: _scrollController,
                   child: Column(
                     children: [
-                      // Hero has its own top-padding to clear the transparent navbar
                       HeroSectionWidget(
                         key: _heroKey,
                         hero: data.hero,
@@ -180,8 +166,6 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
                     ],
                   ),
                 ),
-
-                // Desktop side rails
                 if (ResponsiveLayout.isDesktop(context))
                   Positioned(
                     left: 40,
@@ -209,12 +193,9 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
   }
 }
 
-// ── Glassmorphism Navigation Bar ───────────────────────────────────────────────
-
 class _GlassNavBar extends StatefulWidget implements PreferredSizeWidget {
   final String ownerName;
   final List<NavItem> nav;
-  final String resumeUrl;
   final Function(String id) onNavTap;
   final VoidCallback onLanguageToggle;
   final VoidCallback onResumeTap;
@@ -222,7 +203,6 @@ class _GlassNavBar extends StatefulWidget implements PreferredSizeWidget {
   const _GlassNavBar({
     required this.ownerName,
     required this.nav,
-    required this.resumeUrl,
     required this.onNavTap,
     required this.onLanguageToggle,
     required this.onResumeTap,
@@ -245,15 +225,12 @@ class _GlassNavBarState extends State<_GlassNavBar> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        // ── Main bar ──────────────────────────────────────────────────────────
         ClipRect(
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
             child: Container(
               height: 72,
-              padding: EdgeInsets.symmetric(
-                horizontal: isMobile ? 16 : 48,
-              ),
+              padding: EdgeInsets.symmetric(horizontal: isMobile ? 16 : 48),
               decoration: BoxDecoration(
                 color: Colors.white.withValues(alpha: AppTheme.glassNavOpacity),
                 border: Border(
@@ -265,30 +242,28 @@ class _GlassNavBarState extends State<_GlassNavBar> {
               ),
               child: Row(
                 children: [
-                  // Logo / name
                   InkWell(
                     onTap: () => widget.onNavTap('hero'),
                     borderRadius: BorderRadius.circular(4),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 4, vertical: 8),
+                        horizontal: 4,
+                        vertical: 8,
+                      ),
                       child: Text(
                         widget.ownerName.isNotEmpty
                             ? widget.ownerName
                             : 'Dexter CNX',
-                        style:
-                            Theme.of(context).textTheme.headlineMedium?.copyWith(
-                                  color: AppTheme.accent,
-                                  fontFamily: 'JetBrains Mono',
-                                  fontSize: 18,
-                                ),
+                        style: Theme.of(context).textTheme.headlineMedium
+                            ?.copyWith(
+                              color: AppTheme.accent,
+                              fontFamily: 'JetBrains Mono',
+                              fontSize: 18,
+                            ),
                       ),
                     ),
                   ),
-
                   const Spacer(),
-
-                  // Desktop nav links
                   if (!isMobile)
                     Row(
                       mainAxisSize: MainAxisSize.min,
@@ -329,8 +304,6 @@ class _GlassNavBarState extends State<_GlassNavBar> {
             ),
           ),
         ),
-
-        // ── Mobile dropdown ───────────────────────────────────────────────────
         if (isMobile && _menuOpen)
           ClipRect(
             child: BackdropFilter(
@@ -338,8 +311,9 @@ class _GlassNavBarState extends State<_GlassNavBar> {
               child: Container(
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  color: Colors.white
-                      .withValues(alpha: AppTheme.glassNavOpacity + 0.04),
+                  color: Colors.white.withValues(
+                    alpha: AppTheme.glassNavOpacity + 0.04,
+                  ),
                   border: Border(
                     bottom: BorderSide(
                       color: Colors.white.withValues(alpha: 0.08),
@@ -357,21 +331,23 @@ class _GlassNavBarState extends State<_GlassNavBar> {
                         },
                         leading: Text(
                           '0${entry.key + 1}.',
-                          style:
-                              Theme.of(context).textTheme.labelLarge?.copyWith(
-                                    color: AppTheme.accent,
-                                  ),
+                          style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                            color: AppTheme.accent,
+                          ),
                         ),
                         title: Text(
                           entry.value.label,
-                          style: Theme.of(context).textTheme.bodyMedium
-                              ?.copyWith(color: AppTheme.textPrimary),
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: AppTheme.textPrimary,
+                          ),
                         ),
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 12),
+                        horizontal: 16,
+                        vertical: 12,
+                      ),
                       child: _ResumeButton(onTap: widget.onResumeTap),
                     ),
                     const SizedBox(height: 8),
@@ -384,8 +360,6 @@ class _GlassNavBarState extends State<_GlassNavBar> {
     );
   }
 }
-
-// ── Nav sub-widgets ────────────────────────────────────────────────────────────
 
 class _NavLink extends StatefulWidget {
   final String number;
@@ -425,7 +399,9 @@ class _NavLinkState extends State<_NavLink> {
               children: [
                 TextSpan(
                   text: '${widget.number}. ',
-                  style: TextStyle(color: AppTheme.accent.withValues(alpha: 0.8)),
+                  style: TextStyle(
+                    color: AppTheme.accent.withValues(alpha: 0.8),
+                  ),
                 ),
                 TextSpan(
                   text: widget.label,
@@ -454,9 +430,9 @@ class _LangToggle extends StatelessWidget {
       child: Text(
         context.locale.languageCode == 'en' ? 'TH' : 'EN',
         style: Theme.of(context).textTheme.labelLarge?.copyWith(
-              color: AppTheme.accent,
-              fontFamily: 'JetBrains Mono',
-            ),
+          color: AppTheme.accent,
+          fontFamily: 'JetBrains Mono',
+        ),
       ),
     );
   }
