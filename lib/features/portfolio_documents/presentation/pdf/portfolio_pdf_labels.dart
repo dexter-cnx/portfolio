@@ -27,6 +27,8 @@ final class PortfolioPdfLabels {
       'experience' => experience,
       'skills' => skills,
       'projects' => projects,
+      'featured_projects' => featuredProjects,
+      'open_source_projects' => openSourceProjects,
       'links' => links,
       _ => key,
     };
