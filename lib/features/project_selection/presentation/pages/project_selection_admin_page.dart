@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -48,11 +49,7 @@ class _ProjectSelectionAdminPageState extends State<ProjectSelectionAdminPage> {
     await Clipboard.setData(ClipboardData(text: json));
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text(
-          'Project selection JSON copied. Replace assets/content/project_selection.json and commit it.',
-        ),
-      ),
+      SnackBar(content: Text('admin_export_copied'.tr())),
     );
   }
 
@@ -61,27 +58,27 @@ class _ProjectSelectionAdminPageState extends State<ProjectSelectionAdminPage> {
     final raw = await showDialog<String>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Import project selection JSON'),
+        title: Text('admin_import_title'.tr()),
         content: SizedBox(
           width: 640,
           child: TextField(
             controller: textController,
             minLines: 12,
             maxLines: 20,
-            decoration: const InputDecoration(
-              hintText: 'Paste project_selection.json here',
-              border: OutlineInputBorder(),
+            decoration: InputDecoration(
+              hintText: 'admin_import_hint'.tr(),
+              border: const OutlineInputBorder(),
             ),
           ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cancel'),
+            child: Text('admin_cancel'.tr()),
           ),
           FilledButton(
             onPressed: () => Navigator.of(context).pop(textController.text),
-            child: const Text('Import'),
+            child: Text('admin_import'.tr()),
           ),
         ],
       ),
@@ -92,11 +89,11 @@ class _ProjectSelectionAdminPageState extends State<ProjectSelectionAdminPage> {
     try {
       _controller.importJson(raw);
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('JSON imported into the editor.')),
+        SnackBar(content: Text('admin_import_success'.tr())),
       );
     } catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Invalid project selection JSON: $error')),
+        SnackBar(content: Text('${'admin_import_invalid'.tr()}: $error')),
       );
     }
   }
@@ -105,21 +102,21 @@ class _ProjectSelectionAdminPageState extends State<ProjectSelectionAdminPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Portfolio project admin'),
+        title: Text('admin_title'.tr()),
         actions: [
           TextButton.icon(
             onPressed: _controller.status == ProjectSelectionStatus.ready
                 ? _importJson
                 : null,
             icon: const Icon(Icons.upload_file_outlined),
-            label: const Text('Import JSON'),
+            label: Text('admin_import_json'.tr()),
           ),
           TextButton.icon(
             onPressed: _controller.status == ProjectSelectionStatus.ready
                 ? _exportJson
                 : null,
             icon: const Icon(Icons.content_copy_outlined),
-            label: const Text('Export JSON'),
+            label: Text('admin_export_json'.tr()),
           ),
         ],
       ),
@@ -151,7 +148,7 @@ class _ProjectSelectionAdminPageState extends State<ProjectSelectionAdminPage> {
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(
-                      'This static site cannot write bundled assets. Edit selections here, export JSON, replace assets/content/project_selection.json in the repository, then commit and deploy.',
+                      'admin_static_notice'.tr(),
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                   ),
@@ -164,10 +161,10 @@ class _ProjectSelectionAdminPageState extends State<ProjectSelectionAdminPage> {
           padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
           child: TextField(
             onChanged: _controller.setSearch,
-            decoration: const InputDecoration(
-              prefixIcon: Icon(Icons.search),
-              labelText: 'Search repositories',
-              border: OutlineInputBorder(),
+            decoration: InputDecoration(
+              prefixIcon: const Icon(Icons.search),
+              labelText: 'admin_search'.tr(),
+              border: const OutlineInputBorder(),
             ),
           ),
         ),
@@ -176,21 +173,24 @@ class _ProjectSelectionAdminPageState extends State<ProjectSelectionAdminPage> {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Align(
               alignment: Alignment.centerLeft,
-              child: Text('Config updated: ${updatedAt.toLocal()}'),
+              child: Text(
+                '${'admin_config_updated'.tr()}: ${updatedAt.toLocal()}',
+              ),
             ),
           ),
         const SizedBox(height: 8),
         Expanded(
           child: repositories.isEmpty
-              ? const Center(child: Text('No repositories found'))
+              ? Center(child: Text('admin_empty'.tr()))
               : ListView.separated(
                   padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
                   itemCount: repositories.length,
-                  separatorBuilder: (_, __) => const SizedBox(height: 10),
+                  separatorBuilder: (_, _) => const SizedBox(height: 10),
                   itemBuilder: (context, index) {
                     final repo = repositories[index];
                     final config = _controller.config.forRepository(repo.id);
                     return Card(
+                      key: ValueKey(repo.id),
                       child: ExpansionTile(
                         title: Text(repo.name),
                         subtitle: Text(
@@ -200,36 +200,44 @@ class _ProjectSelectionAdminPageState extends State<ProjectSelectionAdminPage> {
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                        childrenPadding: const EdgeInsets.fromLTRB(
+                          16,
+                          0,
+                          16,
+                          16,
+                        ),
                         children: [
                           Wrap(
                             spacing: 16,
                             runSpacing: 4,
                             children: [
                               FilterChip(
-                                label: const Text('Visible'),
+                                label: Text('admin_visible'.tr()),
                                 selected: config.visible,
-                                onSelected: (value) => _controller.updateProject(
-                                  repo.id,
-                                  visible: value,
-                                ),
+                                onSelected: (value) =>
+                                    _controller.updateProject(
+                                      repo.id,
+                                      visible: value,
+                                    ),
                               ),
                               FilterChip(
-                                label: const Text('Featured'),
+                                label: Text('admin_featured'.tr()),
                                 selected: config.featured,
-                                onSelected: (value) => _controller.updateProject(
-                                  repo.id,
-                                  featured: value,
-                                  visible: value ? true : null,
-                                ),
+                                onSelected: (value) =>
+                                    _controller.updateProject(
+                                      repo.id,
+                                      featured: value,
+                                      visible: value ? true : null,
+                                    ),
                               ),
                               FilterChip(
-                                label: const Text('Include in PDF'),
+                                label: Text('admin_include_pdf'.tr()),
                                 selected: config.includeInPdf,
-                                onSelected: (value) => _controller.updateProject(
-                                  repo.id,
-                                  includeInPdf: value,
-                                ),
+                                onSelected: (value) =>
+                                    _controller.updateProject(
+                                      repo.id,
+                                      includeInPdf: value,
+                                    ),
                               ),
                             ],
                           ),
@@ -238,9 +246,9 @@ class _ProjectSelectionAdminPageState extends State<ProjectSelectionAdminPage> {
                             key: ValueKey('${repo.id}-sort-${config.sortOrder}'),
                             initialValue: config.sortOrder.toString(),
                             keyboardType: TextInputType.number,
-                            decoration: const InputDecoration(
-                              labelText: 'Sort order',
-                              border: OutlineInputBorder(),
+                            decoration: InputDecoration(
+                              labelText: 'admin_sort_order'.tr(),
+                              border: const OutlineInputBorder(),
                             ),
                             onChanged: (value) => _controller.updateProject(
                               repo.id,
@@ -249,11 +257,13 @@ class _ProjectSelectionAdminPageState extends State<ProjectSelectionAdminPage> {
                           ),
                           const SizedBox(height: 12),
                           TextFormField(
-                            key: ValueKey('${repo.id}-title-${config.titleOverride}'),
+                            key: ValueKey(
+                              '${repo.id}-title-${config.titleOverride}',
+                            ),
                             initialValue: config.titleOverride,
-                            decoration: const InputDecoration(
-                              labelText: 'Title override',
-                              border: OutlineInputBorder(),
+                            decoration: InputDecoration(
+                              labelText: 'admin_title_override'.tr(),
+                              border: const OutlineInputBorder(),
                             ),
                             onChanged: (value) => _controller.updateProject(
                               repo.id,
@@ -262,12 +272,14 @@ class _ProjectSelectionAdminPageState extends State<ProjectSelectionAdminPage> {
                           ),
                           const SizedBox(height: 12),
                           TextFormField(
-                            key: ValueKey('${repo.id}-summary-${config.summaryOverride}'),
+                            key: ValueKey(
+                              '${repo.id}-summary-${config.summaryOverride}',
+                            ),
                             initialValue: config.summaryOverride,
                             maxLines: 3,
-                            decoration: const InputDecoration(
-                              labelText: 'Summary override',
-                              border: OutlineInputBorder(),
+                            decoration: InputDecoration(
+                              labelText: 'admin_summary_override'.tr(),
+                              border: const OutlineInputBorder(),
                             ),
                             onChanged: (value) => _controller.updateProject(
                               repo.id,
@@ -301,9 +313,12 @@ class _ErrorState extends StatelessWidget {
           children: [
             const Icon(Icons.error_outline, size: 48),
             const SizedBox(height: 12),
-            Text(error?.toString() ?? 'Unable to load repositories'),
+            Text(error?.toString() ?? 'admin_load_error'.tr()),
             const SizedBox(height: 12),
-            FilledButton(onPressed: onRetry, child: const Text('Retry')),
+            FilledButton(
+              onPressed: onRetry,
+              child: Text('admin_retry'.tr()),
+            ),
           ],
         ),
       ),
