@@ -24,40 +24,29 @@ final class RepositoryPortfolioStatusRemoteDataSourceImpl
     required String languageCode,
   }) async {
     final locale = languageCode == 'th' ? 'th' : 'en';
-    final uri = Uri.https(
-      'api.github.com',
-      '/repos/$repositoryFullName/contents/.portfolio/status_$locale.json',
-    );
-    final response = await _client.get(
-      uri,
-      headers: const {
-        'Accept': 'application/vnd.github+json',
-        'X-GitHub-Api-Version': '2022-11-28',
-      },
-    );
+    final path = '.portfolio/status_$locale.json';
 
-    if (response.statusCode == 404) return null;
-    if (response.statusCode < 200 || response.statusCode >= 300) {
-      throw http.ClientException(
-        'GitHub status request failed with ${response.statusCode}.',
-        uri,
+    for (final branch in const <String>['main', 'master']) {
+      final uri = Uri.https(
+        'raw.githubusercontent.com',
+        '/$repositoryFullName/$branch/$path',
       );
+      final response = await _client.get(uri);
+      if (response.statusCode == 404) continue;
+      if (response.statusCode < 200 || response.statusCode >= 300) {
+        throw http.ClientException(
+          'GitHub raw status request failed with ${response.statusCode}.',
+          uri,
+        );
+      }
+      return _decode(response.body);
     }
 
-    final envelope = jsonDecode(response.body);
-    if (envelope is! Map<String, dynamic>) {
-      throw const FormatException(
-        'GitHub contents response must be an object.',
-      );
-    }
-    final encoded = envelope['content'];
-    if (encoded is! String || encoded.isEmpty) {
-      throw const FormatException('GitHub contents response has no content.');
-    }
+    return null;
+  }
 
-    final normalized = encoded.replaceAll('\n', '');
-    final decoded = utf8.decode(base64Decode(normalized));
-    final json = jsonDecode(decoded);
+  RepositoryPortfolioStatus _decode(String source) {
+    final json = jsonDecode(source);
     if (json is! Map<String, dynamic>) {
       throw const FormatException('Portfolio status must be a JSON object.');
     }
