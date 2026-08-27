@@ -23,23 +23,28 @@ final class RepositoryPortfolioStatusRemoteDataSourceImpl
     required String repositoryFullName,
     required String languageCode,
   }) async {
-    final locale = languageCode == 'th' ? 'th' : 'en';
-    final path = '.portfolio/status_$locale.json';
+    final requestedLocale = languageCode == 'th' ? 'th' : 'en';
+    final locales = requestedLocale == 'th'
+        ? const <String>['th', 'en']
+        : const <String>['en'];
 
-    for (final branch in const <String>['main', 'master']) {
-      final uri = Uri.https(
-        'raw.githubusercontent.com',
-        '/$repositoryFullName/$branch/$path',
-      );
-      final response = await _client.get(uri);
-      if (response.statusCode == 404) continue;
-      if (response.statusCode < 200 || response.statusCode >= 300) {
-        throw http.ClientException(
-          'GitHub raw status request failed with ${response.statusCode}.',
-          uri,
+    for (final locale in locales) {
+      final path = '.portfolio/status_$locale.json';
+      for (final branch in const <String>['main', 'master']) {
+        final uri = Uri.https(
+          'raw.githubusercontent.com',
+          '/$repositoryFullName/$branch/$path',
         );
+        final response = await _client.get(uri);
+        if (response.statusCode == 404) continue;
+        if (response.statusCode < 200 || response.statusCode >= 300) {
+          throw http.ClientException(
+            'GitHub raw status request failed with ${response.statusCode}.',
+            uri,
+          );
+        }
+        return _decode(response.body);
       }
-      return _decode(response.body);
     }
 
     return null;
