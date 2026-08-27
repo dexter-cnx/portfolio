@@ -41,10 +41,8 @@ final class PortfolioReportTemplateDefinition {
 
 final class PortfolioReportTemplateRegistry {
   const PortfolioReportTemplateRegistry({
-    this.overrides = const <
-      PortfolioReportTemplateId,
-      PortfolioReportTemplateDefinition
-    >{},
+    this.overrides =
+        const <PortfolioReportTemplateId, PortfolioReportTemplateDefinition>{},
   });
 
   final Map<PortfolioReportTemplateId, PortfolioReportTemplateDefinition>
