@@ -38,10 +38,11 @@ void main() {
 
     final projects = await repository.loadPublicProjects();
 
-    expect(
-      projects.map((project) => project.name),
-      <String>['recent', 'older', 'never-pushed'],
-    );
+    expect(projects.map((project) => project.name), <String>[
+      'recent',
+      'older',
+      'never-pushed',
+    ]);
   });
 
   test('can explicitly include archived and fork repositories', () async {
@@ -64,10 +65,11 @@ void main() {
       ),
     );
 
-    expect(
-      projects.map((project) => project.name),
-      <String>['archived', 'fork', 'main'],
-    );
+    expect(projects.map((project) => project.name), <String>[
+      'archived',
+      'fork',
+      'main',
+    ]);
   });
 
   test('reuses fresh cached repository data until force refresh', () async {
