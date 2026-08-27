@@ -64,11 +64,10 @@ final class PortfolioProjectsLoader {
         about: fallback.about,
         experience: fallback.experience,
         featuredProjects: fallback.featuredProjects,
-        otherProjects: fallback.otherProjects,
+        otherProjects: openSource,
         contact: fallback.contact,
         socialLinks: fallback.socialLinks,
         nav: fallback.nav,
-        openSourceProjects: openSource,
         pdfFeaturedProjects: pdfFeatured,
         pdfOtherProjects: pdfOther,
       );
