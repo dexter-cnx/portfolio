@@ -37,22 +37,26 @@ final class PortfolioProjectConfig {
   }
 
   Map<String, Object?> toJson() => <String, Object?>{
-        'repositoryId': repositoryId,
-        'visible': visible,
-        'featured': featured,
-        'includeInPdf': includeInPdf,
-        'sortOrder': sortOrder,
-        'titleOverride': titleOverride,
-        'summaryOverride': summaryOverride,
-      };
+    'repositoryId': repositoryId,
+    'visible': visible,
+    'featured': featured,
+    'includeInPdf': includeInPdf,
+    'sortOrder': sortOrder,
+    'titleOverride': titleOverride,
+    'summaryOverride': summaryOverride,
+  };
 
   factory PortfolioProjectConfig.fromJson(Map<String, Object?> json) {
+    final repositoryId = json['repositoryId'];
+    if (repositoryId is! num) {
+      throw const FormatException('repositoryId must be a number.');
+    }
     return PortfolioProjectConfig(
-      repositoryId: json['repositoryId'] as int,
+      repositoryId: repositoryId.toInt(),
       visible: json['visible'] as bool? ?? false,
       featured: json['featured'] as bool? ?? false,
       includeInPdf: json['includeInPdf'] as bool? ?? false,
-      sortOrder: json['sortOrder'] as int? ?? 0,
+      sortOrder: (json['sortOrder'] as num?)?.toInt() ?? 0,
       titleOverride: json['titleOverride'] as String? ?? '',
       summaryOverride: json['summaryOverride'] as String? ?? '',
     );
@@ -82,5 +86,36 @@ final class ProjectSelectionConfig {
       project,
     ];
     return ProjectSelectionConfig(projects: next, updatedAt: updatedAt);
+  }
+
+  ProjectSelectionConfig markUpdated(DateTime value) {
+    return ProjectSelectionConfig(projects: projects, updatedAt: value);
+  }
+
+  Map<String, Object?> toJson() => <String, Object?>{
+    'updatedAt': updatedAt?.toUtc().toIso8601String(),
+    'projects': projects.map((project) => project.toJson()).toList(),
+  };
+
+  factory ProjectSelectionConfig.fromJson(Map<String, Object?> json) {
+    final rawProjects = json['projects'];
+    if (rawProjects is! List) {
+      throw const FormatException('projects must be a JSON array.');
+    }
+
+    final updatedAtValue = json['updatedAt'];
+    return ProjectSelectionConfig(
+      projects: rawProjects.map((item) {
+        if (item is! Map) {
+          throw const FormatException('Each project config must be an object.');
+        }
+        return PortfolioProjectConfig.fromJson(
+          Map<String, Object?>.from(item),
+        );
+      }).toList(growable: false),
+      updatedAt: updatedAtValue is String && updatedAtValue.isNotEmpty
+          ? DateTime.tryParse(updatedAtValue)?.toUtc()
+          : null,
+    );
   }
 }
