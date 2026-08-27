@@ -10,6 +10,7 @@ final class GitHubProjectsController extends ChangeNotifier {
       : _repository = repository;
 
   final GitHubProjectRepository _repository;
+  int _requestGeneration = 0;
 
   GitHubProjectsStatus status = GitHubProjectsStatus.initial;
   List<GitHubProject> projects = const <GitHubProject>[];
@@ -19,6 +20,7 @@ final class GitHubProjectsController extends ChangeNotifier {
     GitHubProjectQuery query = const GitHubProjectQuery(),
     bool forceRefresh = false,
   }) async {
+    final requestGeneration = ++_requestGeneration;
     status = GitHubProjectsStatus.loading;
     error = null;
     notifyListeners();
@@ -28,11 +30,15 @@ final class GitHubProjectsController extends ChangeNotifier {
         query: query,
         forceRefresh: forceRefresh,
       );
+      if (requestGeneration != _requestGeneration) return;
+
       projects = result;
       status = result.isEmpty
           ? GitHubProjectsStatus.empty
           : GitHubProjectsStatus.success;
     } catch (exception) {
+      if (requestGeneration != _requestGeneration) return;
+
       projects = const <GitHubProject>[];
       error = exception;
       status = GitHubProjectsStatus.error;
