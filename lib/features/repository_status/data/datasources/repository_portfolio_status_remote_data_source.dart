@@ -14,7 +14,7 @@ abstract interface class RepositoryPortfolioStatusRemoteDataSource {
 final class RepositoryPortfolioStatusRemoteDataSourceImpl
     implements RepositoryPortfolioStatusRemoteDataSource {
   RepositoryPortfolioStatusRemoteDataSourceImpl({http.Client? client})
-      : _client = client ?? http.Client();
+    : _client = client ?? http.Client();
 
   final http.Client _client;
 
@@ -46,7 +46,9 @@ final class RepositoryPortfolioStatusRemoteDataSourceImpl
 
     final envelope = jsonDecode(response.body);
     if (envelope is! Map<String, dynamic>) {
-      throw const FormatException('GitHub contents response must be an object.');
+      throw const FormatException(
+        'GitHub contents response must be an object.',
+      );
     }
     final encoded = envelope['content'];
     if (encoded is! String || encoded.isEmpty) {
