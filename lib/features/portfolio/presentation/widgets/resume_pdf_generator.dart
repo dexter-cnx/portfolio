@@ -5,6 +5,7 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 
 import '../../../portfolio_documents/application/portfolio_document_mapper.dart';
+import '../../../portfolio_documents/application/portfolio_report_render_plan.dart';
 import '../../../portfolio_documents/domain/entities/portfolio_document_data.dart';
 import '../../../portfolio_documents/domain/reporting/portfolio_report_template.dart';
 import '../../models/portfolio_models.dart';
@@ -51,18 +52,21 @@ class ResumePdfGenerator {
 
 final class PortfolioPdfRenderer implements PortfolioReportRenderer {
   PortfolioPdfRenderer({
-    PortfolioReportTemplateRegistry templateRegistry =
-        const PortfolioReportTemplateRegistry(),
-  }) : _templateRegistry = templateRegistry;
+    PortfolioReportRenderPlanBuilder renderPlanBuilder =
+        const PortfolioReportRenderPlanBuilder(),
+  }) : _renderPlanBuilder = renderPlanBuilder;
 
-  final PortfolioReportTemplateRegistry _templateRegistry;
+  final PortfolioReportRenderPlanBuilder _renderPlanBuilder;
 
   @override
   Future<Uint8List> render(
     PortfolioDocumentData data, {
     required PortfolioReportTemplateId template,
   }) async {
-    final definition = _templateRegistry.definitionFor(template);
+    final plan = _renderPlanBuilder.build(data, template: template);
+    final projectPayloads = (plan.payload['projects'] as List<dynamic>? ?? const [])
+        .whereType<Map<String, dynamic>>()
+        .toList(growable: false);
     final pdf = pw.Document();
     final isThai = data.locale == 'th';
     final font = isThai
@@ -72,11 +76,6 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
         ? await PdfGoogleFonts.notoSansThaiBold()
         : await PdfGoogleFonts.interBold();
     final labels = _labelsFor(data.locale);
-    final projects = definition.featuredProjectsOnly
-        ? data.projects
-              .where((project) => project.featured)
-              .toList(growable: false)
-        : data.projects;
     final generatedAt = data.generatedAt.toLocal();
     final dateStr =
         '${generatedAt.day}/${generatedAt.month}/${generatedAt.year}';
@@ -123,13 +122,7 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
           ),
           pw.SizedBox(height: 20),
           _sectionTitle(labels.projects),
-          ...projects.map(
-            (project) => _project(
-              project,
-              labels,
-              includeDescription: definition.includeProjectDescriptions,
-            ),
-          ),
+          ...projectPayloads.map((project) => _project(project, labels)),
           pw.SizedBox(height: 20),
           _sectionTitle(labels.links),
           ...data.links.map(_link),
@@ -235,24 +228,28 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
     );
   }
 
-  pw.Widget _project(
-    PortfolioDocumentProject project,
-    _ResumeLabels labels, {
-    required bool includeDescription,
-  }) {
+  pw.Widget _project(Map<String, dynamic> project, _ResumeLabels labels) {
+    final name = project['name']?.toString() ?? '';
+    final summary = project['summary']?.toString() ?? '';
+    final description = project['description']?.toString() ?? '';
+    final tags = (project['tags'] as List<dynamic>? ?? const [])
+        .map((tag) => tag.toString())
+        .where((tag) => tag.isNotEmpty)
+        .toList(growable: false);
+
     return pw.Column(
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [
         pw.Text(
-          project.name,
+          name,
           style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 11),
         ),
-        pw.Text(project.summary, style: const pw.TextStyle(fontSize: 10)),
-        if (includeDescription && project.description.isNotEmpty)
-          pw.Text(project.description, style: const pw.TextStyle(fontSize: 9)),
-        if (project.tags.isNotEmpty)
+        pw.Text(summary, style: const pw.TextStyle(fontSize: 10)),
+        if (description.isNotEmpty)
+          pw.Text(description, style: const pw.TextStyle(fontSize: 9)),
+        if (tags.isNotEmpty)
           pw.Text(
-            '${labels.techStack}: ${project.tags.join(', ')}',
+            '${labels.techStack}: ${tags.join(', ')}',
             style: const pw.TextStyle(fontSize: 9, color: PdfColors.grey700),
           ),
         pw.SizedBox(height: 8),
