@@ -37,7 +37,8 @@ void main() {
     expect((payload['profile'] as Map<String, dynamic>)['name'], 'Dexter');
     expect((payload['skills'] as List<dynamic>)[1], 'Rust');
     expect(
-      ((payload['projects'] as List<dynamic>)[0] as Map<String, dynamic>)['name'],
+      ((payload['projects'] as List<dynamic>)[0]
+          as Map<String, dynamic>)['name'],
       'dxtr_box',
     );
     expect(payload['generatedAt'], '2026-08-27T00:00:00.000Z');
