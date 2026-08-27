@@ -44,10 +44,8 @@ final class PortfolioDocumentMapper {
             tags: List<String>.unmodifiable(item.tags),
             links: item.urls
                 .map(
-                  (link) => PortfolioDocumentLink(
-                    label: link.title,
-                    url: link.url,
-                  ),
+                  (link) =>
+                      PortfolioDocumentLink(label: link.title, url: link.url),
                 )
                 .toList(growable: false),
             featured: true,
