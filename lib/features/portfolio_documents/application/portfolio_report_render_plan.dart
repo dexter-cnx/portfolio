@@ -40,10 +40,21 @@ final class PortfolioReportRenderPlanBuilder {
           },
         )
         .toList(growable: false);
+    final featuredProjects = projects
+        .where((project) => project['featured'] == true)
+        .toList(growable: false);
+    final openSourceProjects = projects
+        .where((project) => project['featured'] != true)
+        .toList(growable: false);
 
     return PortfolioReportRenderPlan(
       template: definition,
-      payload: <String, dynamic>{...payload, 'projects': projects},
+      payload: <String, dynamic>{
+        ...payload,
+        'projects': projects,
+        'featuredProjects': featuredProjects,
+        'openSourceProjects': openSourceProjects,
+      },
     );
   }
 }
