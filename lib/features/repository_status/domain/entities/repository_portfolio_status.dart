@@ -26,8 +26,12 @@ final class RepositoryPortfolioStatus {
   final DateTime? updatedAt;
 
   factory RepositoryPortfolioStatus.fromJson(Map<String, Object?> json) {
-    final project = Map<String, Object?>.from(json['project'] as Map? ?? const {});
-    final summary = Map<String, Object?>.from(json['summary'] as Map? ?? const {});
+    final project = Map<String, Object?>.from(
+      json['project'] as Map? ?? const {},
+    );
+    final summary = Map<String, Object?>.from(
+      json['summary'] as Map? ?? const {},
+    );
     final links = Map<String, Object?>.from(json['links'] as Map? ?? const {});
 
     return RepositoryPortfolioStatus(
@@ -42,7 +46,9 @@ final class RepositoryPortfolioStatus {
       tech: _stringList(json['tech']),
       links: RepositoryPortfolioLinks.fromJson(links),
       updatedAt: switch (json['updatedAt']) {
-        final String value when value.isNotEmpty => DateTime.tryParse(value)?.toUtc(),
+        final String value when value.isNotEmpty => DateTime.tryParse(
+          value,
+        )?.toUtc(),
         _ => null,
       },
     );
