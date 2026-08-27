@@ -9,6 +9,8 @@ void main() {
 
     expect(labels.forKey('summary'), 'Summary');
     expect(labels.forKey('projects'), 'Projects');
+    expect(labels.featuredProjects, 'Featured Projects');
+    expect(labels.openSourceProjects, 'My Open Source Projects');
     expect(labels.techStack, 'Tech Stack');
     expect(labels.generated, 'Generated from Portfolio Website');
   });
@@ -18,6 +20,8 @@ void main() {
 
     expect(labels.forKey('summary'), 'สรุป');
     expect(labels.forKey('projects'), 'ผลงาน');
+    expect(labels.featuredProjects, 'ผลงานเด่น');
+    expect(labels.openSourceProjects, 'โปรเจกต์โอเพนซอร์สของผม');
     expect(labels.techStack, 'เทคโนโลยีที่ใช้');
     expect(labels.generated, 'สร้างจากเว็บไซต์พอร์ตโฟลิโอ');
   });
