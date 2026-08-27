@@ -110,6 +110,7 @@ void main() {
         ),
       ],
       otherProjects: const [],
+      openSourceProjects: const [],
       contact: fallback.contact,
       socialLinks: fallback.socialLinks,
       nav: fallback.nav,
