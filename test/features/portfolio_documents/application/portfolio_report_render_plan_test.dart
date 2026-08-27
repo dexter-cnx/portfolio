@@ -70,50 +70,53 @@ void main() {
     );
   });
 
-  test('custom template definition preserves reordered and omitted sections', () {
-    const customDefinition = PortfolioReportTemplateDefinition(
-      id: PortfolioReportTemplateId.portfolioFull,
-      featuredProjectsOnly: false,
-      includeProjectDescriptions: true,
-      sections: <PortfolioReportSectionDefinition>[
-        PortfolioReportSectionDefinition(
-          id: PortfolioReportSectionId.projects,
-          labelKey: 'projects',
-          dataExpression: 'projects',
+  test(
+    'custom template definition preserves reordered and omitted sections',
+    () {
+      const customDefinition = PortfolioReportTemplateDefinition(
+        id: PortfolioReportTemplateId.portfolioFull,
+        featuredProjectsOnly: false,
+        includeProjectDescriptions: true,
+        sections: <PortfolioReportSectionDefinition>[
+          PortfolioReportSectionDefinition(
+            id: PortfolioReportSectionId.projects,
+            labelKey: 'projects',
+            dataExpression: 'projects',
+          ),
+          PortfolioReportSectionDefinition(
+            id: PortfolioReportSectionId.summary,
+            labelKey: 'summary',
+            dataExpression: 'summary',
+          ),
+        ],
+      );
+      const builder = PortfolioReportRenderPlanBuilder(
+        templateRegistry: PortfolioReportTemplateRegistry(
+          overrides:
+              <PortfolioReportTemplateId, PortfolioReportTemplateDefinition>{
+                PortfolioReportTemplateId.portfolioFull: customDefinition,
+              },
         ),
-        PortfolioReportSectionDefinition(
-          id: PortfolioReportSectionId.summary,
-          labelKey: 'summary',
-          dataExpression: 'summary',
+      );
+
+      final plan = builder.build(
+        data,
+        template: PortfolioReportTemplateId.portfolioFull,
+      );
+
+      expect(
+        plan.template.sections.map((section) => section.id),
+        <PortfolioReportSectionId>[
+          PortfolioReportSectionId.projects,
+          PortfolioReportSectionId.summary,
+        ],
+      );
+      expect(
+        plan.template.sections.any(
+          (section) => section.id == PortfolioReportSectionId.skills,
         ),
-      ],
-    );
-    const builder = PortfolioReportRenderPlanBuilder(
-      templateRegistry: PortfolioReportTemplateRegistry(
-        overrides:
-            <PortfolioReportTemplateId, PortfolioReportTemplateDefinition>{
-              PortfolioReportTemplateId.portfolioFull: customDefinition,
-            },
-      ),
-    );
-
-    final plan = builder.build(
-      data,
-      template: PortfolioReportTemplateId.portfolioFull,
-    );
-
-    expect(
-      plan.template.sections.map((section) => section.id),
-      <PortfolioReportSectionId>[
-        PortfolioReportSectionId.projects,
-        PortfolioReportSectionId.summary,
-      ],
-    );
-    expect(
-      plan.template.sections.any(
-        (section) => section.id == PortfolioReportSectionId.skills,
-      ),
-      isFalse,
-    );
-  });
+        isFalse,
+      );
+    },
+  );
 }
