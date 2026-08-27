@@ -3,13 +3,7 @@ import 'package:portfolio/features/portfolio_documents/domain/reporting/portfoli
 
 void main() {
   test('report template ids stay stable for report integrations', () {
-    expect(
-      PortfolioReportTemplateId.portfolioFull.value,
-      'portfolio_full',
-    );
-    expect(
-      PortfolioReportTemplateId.resumeCompact.value,
-      'resume_compact',
-    );
+    expect(PortfolioReportTemplateId.portfolioFull.value, 'portfolio_full');
+    expect(PortfolioReportTemplateId.resumeCompact.value, 'resume_compact');
   });
 }
