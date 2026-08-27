@@ -50,11 +50,19 @@ class ResumePdfGenerator {
 }
 
 final class PortfolioPdfRenderer implements PortfolioReportRenderer {
+  PortfolioPdfRenderer({
+    PortfolioReportTemplateRegistry templateRegistry =
+        const PortfolioReportTemplateRegistry(),
+  }) : _templateRegistry = templateRegistry;
+
+  final PortfolioReportTemplateRegistry _templateRegistry;
+
   @override
   Future<Uint8List> render(
     PortfolioDocumentData data, {
     required PortfolioReportTemplateId template,
   }) async {
+    final definition = _templateRegistry.definitionFor(template);
     final pdf = pw.Document();
     final isThai = data.locale == 'th';
     final font = isThai
@@ -64,9 +72,11 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
         ? await PdfGoogleFonts.notoSansThaiBold()
         : await PdfGoogleFonts.interBold();
     final labels = _labelsFor(data.locale);
-    final projects = _projectsForTemplate(data, template);
-    final includeProjectDescriptions =
-        template == PortfolioReportTemplateId.portfolioFull;
+    final projects = definition.featuredProjectsOnly
+        ? data.projects
+            .where((project) => project.featured)
+            .toList(growable: false)
+        : data.projects;
     final generatedAt = data.generatedAt.toLocal();
     final dateStr =
         '${generatedAt.day}/${generatedAt.month}/${generatedAt.year}';
@@ -117,7 +127,7 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
             (project) => _project(
               project,
               labels,
-              includeDescription: includeProjectDescriptions,
+              includeDescription: definition.includeProjectDescriptions,
             ),
           ),
           pw.SizedBox(height: 20),
@@ -149,19 +159,6 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
     );
 
     return pdf.save();
-  }
-
-  List<PortfolioDocumentProject> _projectsForTemplate(
-    PortfolioDocumentData data,
-    PortfolioReportTemplateId template,
-  ) {
-    return switch (template) {
-      PortfolioReportTemplateId.portfolioFull => data.projects,
-      PortfolioReportTemplateId.resumeCompact =>
-        data.projects
-            .where((project) => project.featured)
-            .toList(growable: false),
-    };
   }
 
   pw.Widget _header(PortfolioDocumentData data) {
