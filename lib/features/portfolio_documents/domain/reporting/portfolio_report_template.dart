@@ -93,7 +93,7 @@ final class PortfolioReportTemplateRegistry {
       PortfolioReportTemplateId.resumeCompact =>
         const PortfolioReportTemplateDefinition(
           id: PortfolioReportTemplateId.resumeCompact,
-          featuredProjectsOnly: true,
+          featuredProjectsOnly: false,
           includeProjectDescriptions: false,
           sections: _standardSections,
         ),
