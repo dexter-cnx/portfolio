@@ -79,10 +79,16 @@ final class ProjectSelectionController extends ChangeNotifier {
   }) {
     if (_disposed) return;
     final current = config.forRepository(repositoryId);
+    final repository = repositories
+        .where((item) => item.id == repositoryId)
+        .cast<GitHubProject?>()
+        .firstWhere((item) => item != null, orElse: () => null);
     final nextVisible = visible ?? current.visible;
     final nextFeatured = featured ?? current.featured;
     config = config.replace(
       current.copyWith(
+        repositoryFullName:
+            repository?.fullName ?? current.repositoryFullName,
         visible: nextVisible,
         featured: nextVisible ? nextFeatured : false,
         includeInPdf: includeInPdf,
