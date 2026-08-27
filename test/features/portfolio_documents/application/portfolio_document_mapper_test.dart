@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:portfolio/features/portfolio/models/portfolio_models.dart';
-import 'package:portfolio/features/portfolio_documents/application/portfolio_document_mapper.dart';
+import 'package:flutter_web_portfolio_starter/features/portfolio/models/portfolio_models.dart';
+import 'package:flutter_web_portfolio_starter/features/portfolio_documents/application/portfolio_document_mapper.dart';
 
 void main() {
   test('maps portfolio presentation data into normalized document data', () {
