@@ -56,7 +56,10 @@ void main() {
     expect(projects, hasLength(2));
     expect(featuredProjects, hasLength(1));
     expect(openSourceProjects, hasLength(1));
-    expect((featuredProjects.first as Map<String, dynamic>)['name'], 'featured');
+    expect(
+      (featuredProjects.first as Map<String, dynamic>)['name'],
+      'featured',
+    );
     expect((openSourceProjects.first as Map<String, dynamic>)['name'], 'other');
     expect((projects.first as Map<String, dynamic>)['description'], '');
     expect((projects.last as Map<String, dynamic>)['description'], '');

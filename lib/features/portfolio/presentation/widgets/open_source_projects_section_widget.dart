@@ -43,9 +43,9 @@ class OpenSourceProjectsSectionWidget extends StatelessWidget {
                   Text(
                     'open_source_projects_subtitle'.tr(),
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: AppTheme.textMuted,
-                    ),
+                    style: Theme.of(
+                      context,
+                    ).textTheme.bodyLarge?.copyWith(color: AppTheme.textMuted),
                   ),
                 ],
               ),

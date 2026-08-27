@@ -64,25 +64,28 @@ class AppTheme {
           color: textPrimary,
           letterSpacing: -1.0,
         ),
-        displayMedium: (isThai ? GoogleFonts.sarabun : GoogleFonts.spaceGrotesk)(
-          fontSize: 48,
-          height: 1.2,
-          fontWeight: FontWeight.w700,
-          color: textPrimary,
-        ),
-        headlineLarge: (isThai ? GoogleFonts.sarabun : GoogleFonts.spaceGrotesk)(
-          fontSize: 32,
-          height: 1.3,
-          fontWeight: FontWeight.w600,
-          color: textPrimary,
-          letterSpacing: -0.5,
-        ),
-        headlineMedium: (isThai ? GoogleFonts.sarabun : GoogleFonts.spaceGrotesk)(
-          fontSize: 24,
-          height: 1.3,
-          fontWeight: FontWeight.w600,
-          color: textPrimary,
-        ),
+        displayMedium:
+            (isThai ? GoogleFonts.sarabun : GoogleFonts.spaceGrotesk)(
+              fontSize: 48,
+              height: 1.2,
+              fontWeight: FontWeight.w700,
+              color: textPrimary,
+            ),
+        headlineLarge:
+            (isThai ? GoogleFonts.sarabun : GoogleFonts.spaceGrotesk)(
+              fontSize: 32,
+              height: 1.3,
+              fontWeight: FontWeight.w600,
+              color: textPrimary,
+              letterSpacing: -0.5,
+            ),
+        headlineMedium:
+            (isThai ? GoogleFonts.sarabun : GoogleFonts.spaceGrotesk)(
+              fontSize: 24,
+              height: 1.3,
+              fontWeight: FontWeight.w600,
+              color: textPrimary,
+            ),
         titleLarge: (isThai ? GoogleFonts.sarabun : GoogleFonts.spaceGrotesk)(
           fontSize: 20,
           fontWeight: FontWeight.w600,
@@ -116,9 +119,7 @@ class AppTheme {
           foregroundColor: accent,
           side: const BorderSide(color: accent, width: 1.2),
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(4),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
           textStyle: GoogleFonts.jetBrainsMono(
             fontSize: 14,
             fontWeight: FontWeight.w500,

@@ -5,11 +5,7 @@ class SectionHeader extends StatelessWidget {
   final String number;
   final String title;
 
-  const SectionHeader({
-    super.key,
-    required this.number,
-    required this.title,
-  });
+  const SectionHeader({super.key, required this.number, required this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -18,16 +14,16 @@ class SectionHeader extends StatelessWidget {
         Text(
           '$number. ',
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                color: AppTheme.accent,
-                fontFamily: 'JetBrains Mono',
-              ),
+            color: AppTheme.accent,
+            fontFamily: 'JetBrains Mono',
+          ),
         ),
         Text(
           title,
           style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                color: AppTheme.textPrimary,
-                fontWeight: FontWeight.bold,
-              ),
+            color: AppTheme.textPrimary,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         const SizedBox(width: 20),
         Expanded(

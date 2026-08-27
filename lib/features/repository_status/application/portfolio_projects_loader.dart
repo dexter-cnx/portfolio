@@ -35,7 +35,8 @@ final class PortfolioProjectsLoader {
 
       for (final config in configured) {
         if (!config.visible && !config.includeInPdf) continue;
-        final repository = byId[config.repositoryId] ?? _snapshotRepository(config);
+        final repository =
+            byId[config.repositoryId] ?? _snapshotRepository(config);
         if (repository == null) continue;
         final status = await _loadStatus(repository, languageCode);
         final project = _compose(repository, config, status);
