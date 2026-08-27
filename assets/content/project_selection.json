@@ -1,0 +1,155 @@
+{
+  "updatedAt": "2026-08-27T08:33:00Z",
+  "projects": [
+    {
+      "repositoryId": 1334788374,
+      "repositoryFullName": "dexter-cnx/dxtr_box",
+      "visible": true,
+      "featured": true,
+      "includeInPdf": true,
+      "sortOrder": 0,
+      "titleOverride": "",
+      "summaryOverride": ""
+    },
+    {
+      "repositoryId": 1332055663,
+      "repositoryFullName": "dexter-cnx/nixin",
+      "visible": true,
+      "featured": true,
+      "includeInPdf": true,
+      "sortOrder": 1,
+      "titleOverride": "",
+      "summaryOverride": ""
+    },
+    {
+      "repositoryId": 1322529344,
+      "repositoryFullName": "dexter-cnx/PixelCraft",
+      "visible": true,
+      "featured": true,
+      "includeInPdf": true,
+      "sortOrder": 2,
+      "titleOverride": "",
+      "summaryOverride": ""
+    },
+    {
+      "repositoryId": 1341609788,
+      "repositoryFullName": "dexter-cnx/typhoon_ocr_flutter",
+      "visible": true,
+      "featured": true,
+      "includeInPdf": true,
+      "sortOrder": 3,
+      "titleOverride": "",
+      "summaryOverride": ""
+    },
+    {
+      "repositoryId": 1202735011,
+      "repositoryFullName": "dexter-cnx/analythis",
+      "visible": true,
+      "featured": true,
+      "includeInPdf": true,
+      "sortOrder": 4,
+      "titleOverride": "",
+      "summaryOverride": ""
+    },
+    {
+      "repositoryId": 1338946844,
+      "repositoryFullName": "dexter-cnx/dxtr_card_scan",
+      "visible": true,
+      "featured": false,
+      "includeInPdf": true,
+      "sortOrder": 5,
+      "titleOverride": "",
+      "summaryOverride": ""
+    },
+    {
+      "repositoryId": 1339073982,
+      "repositoryFullName": "dexter-cnx/med_reminder",
+      "visible": true,
+      "featured": false,
+      "includeInPdf": true,
+      "sortOrder": 6,
+      "titleOverride": "",
+      "summaryOverride": ""
+    },
+    {
+      "repositoryId": 1343269625,
+      "repositoryFullName": "dexter-cnx/dxtr_cleaner",
+      "visible": true,
+      "featured": false,
+      "includeInPdf": true,
+      "sortOrder": 7,
+      "titleOverride": "",
+      "summaryOverride": ""
+    },
+    {
+      "repositoryId": 1331536790,
+      "repositoryFullName": "dexter-cnx/flutter_report_suite",
+      "visible": true,
+      "featured": false,
+      "includeInPdf": true,
+      "sortOrder": 8,
+      "titleOverride": "",
+      "summaryOverride": ""
+    },
+    {
+      "repositoryId": 1344306427,
+      "repositoryFullName": "dexter-cnx/easy-gpui-l10n",
+      "visible": true,
+      "featured": false,
+      "includeInPdf": true,
+      "sortOrder": 9,
+      "titleOverride": "",
+      "summaryOverride": ""
+    },
+    {
+      "repositoryId": 1344249221,
+      "repositoryFullName": "dexter-cnx/screen_sidekick",
+      "visible": true,
+      "featured": false,
+      "includeInPdf": true,
+      "sortOrder": 10,
+      "titleOverride": "",
+      "summaryOverride": ""
+    },
+    {
+      "repositoryId": 1209101464,
+      "repositoryFullName": "dexter-cnx/dot_matrix_animated_counter",
+      "visible": true,
+      "featured": false,
+      "includeInPdf": true,
+      "sortOrder": 11,
+      "titleOverride": "",
+      "summaryOverride": ""
+    },
+    {
+      "repositoryId": 1205415261,
+      "repositoryFullName": "dexter-cnx/glass_bar_widget",
+      "visible": true,
+      "featured": false,
+      "includeInPdf": true,
+      "sortOrder": 12,
+      "titleOverride": "",
+      "summaryOverride": ""
+    },
+    {
+      "repositoryId": 1208481621,
+      "repositoryFullName": "dexter-cnx/flutter_pokedex",
+      "visible": true,
+      "featured": false,
+      "includeInPdf": true,
+      "sortOrder": 13,
+      "titleOverride": "",
+      "summaryOverride": ""
+    },
+    {
+      "repositoryId": 1310446861,
+      "repositoryFullName": "dexter-cnx/movie_tracker",
+      "visible": true,
+      "featured": false,
+      "includeInPdf": true,
+      "sortOrder": 14,
+      "titleOverride": "",
+      "summaryOverride": ""
+    }
+  ]
+}

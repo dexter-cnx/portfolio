@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:easy_localization_loader/easy_localization_loader.dart';
+import 'package:flutter/material.dart';
+
 import 'app/app.dart';
 
 void main() async {
@@ -10,9 +10,8 @@ void main() async {
   runApp(
     EasyLocalization(
       supportedLocales: const [Locale('en'), Locale('th')],
-      path: 'assets/translations/langs.csv',
+      path: 'assets/translations/generated',
       fallbackLocale: const Locale('en'),
-      assetLoader: CsvAssetLoader(),
       child: const PortfolioApp(),
     ),
   );
