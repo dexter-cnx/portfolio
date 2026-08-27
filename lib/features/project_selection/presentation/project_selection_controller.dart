@@ -87,8 +87,7 @@ final class ProjectSelectionController extends ChangeNotifier {
     final nextFeatured = featured ?? current.featured;
     config = config.replace(
       current.copyWith(
-        repositoryFullName:
-            repository?.fullName ?? current.repositoryFullName,
+        repositoryFullName: repository?.fullName ?? current.repositoryFullName,
         visible: nextVisible,
         featured: nextVisible ? nextFeatured : false,
         includeInPdf: includeInPdf,

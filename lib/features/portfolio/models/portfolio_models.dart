@@ -40,12 +40,19 @@ class PortfolioData {
       site: Site.fromJson(json['site']),
       hero: HeroSection.fromJson(json['hero']),
       about: About.fromJson(json['about']),
-      experience: (json['experience'] as List).map((e) => Experience.fromJson(e)).toList(),
-      featuredProjects:
-          (json['featuredProjects'] as List).map((e) => FeaturedProject.fromJson(e)).toList(),
-      otherProjects: (json['otherProjects'] as List).map((e) => OtherProject.fromJson(e)).toList(),
+      experience: (json['experience'] as List)
+          .map((e) => Experience.fromJson(e))
+          .toList(),
+      featuredProjects: (json['featuredProjects'] as List)
+          .map((e) => FeaturedProject.fromJson(e))
+          .toList(),
+      otherProjects: (json['otherProjects'] as List)
+          .map((e) => OtherProject.fromJson(e))
+          .toList(),
       contact: Contact.fromJson(json['contact']),
-      socialLinks: (json['socialLinks'] as List).map((e) => SocialLink.fromJson(e)).toList(),
+      socialLinks: (json['socialLinks'] as List)
+          .map((e) => SocialLink.fromJson(e))
+          .toList(),
       nav: (json['nav'] as List).map((e) => NavItem.fromJson(e)).toList(),
     );
   }
@@ -107,11 +114,7 @@ class SiteSeo {
   });
 
   factory SiteSeo.empty() {
-    return SiteSeo(
-      title: '',
-      description: '',
-      keywords: [],
-    );
+    return SiteSeo(title: '', description: '', keywords: []);
   }
 
   factory SiteSeo.fromJson(Map<String, dynamic> json) {
@@ -192,12 +195,7 @@ class About {
   });
 
   factory About.empty() {
-    return About(
-      title: '',
-      paragraphs: [],
-      skills: [],
-      profileImage: '',
-    );
+    return About(title: '', paragraphs: [], skills: [], profileImage: '');
   }
 
   factory About.fromJson(Map<String, dynamic> json) {
@@ -286,10 +284,10 @@ class FeaturedProject {
       longDescription: json['longDescription'] ?? '',
       repoUrl: json['repoUrl'] ?? '',
       liveUrl: json['liveUrl'] ?? '',
-      images: json['images'] != null 
-          ? List<String>.from(json['images']) 
+      images: json['images'] != null
+          ? List<String>.from(json['images'])
           : (json['image'] != null ? [json['image']] : []),
-      urls: json['urls'] != null 
+      urls: json['urls'] != null
           ? (json['urls'] as List).map((e) => ProjectUrl.fromJson(e)).toList()
           : [],
       tags: List<String>.from(json['tags']),
@@ -320,8 +318,8 @@ class OtherProject {
       summary: json['summary'],
       repoUrl: json['repoUrl'] ?? '',
       liveUrl: json['liveUrl'] ?? '',
-      images: json['images'] != null 
-          ? List<String>.from(json['images']) 
+      images: json['images'] != null
+          ? List<String>.from(json['images'])
           : (json['image'] != null ? [json['image']] : []),
       tags: List<String>.from(json['tags']),
     );
@@ -346,12 +344,7 @@ class Contact {
   });
 
   factory Contact.empty() {
-    return Contact(
-      title: '',
-      body: '',
-      ctaLabel: '',
-      ctaUrl: '',
-    );
+    return Contact(title: '', body: '', ctaLabel: '', ctaUrl: '');
   }
 
   factory Contact.fromJson(Map<String, dynamic> json) {

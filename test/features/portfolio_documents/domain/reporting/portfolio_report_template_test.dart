@@ -31,17 +31,14 @@ void main() {
         'links',
       ],
     );
-    expect(
-      definition.sections.map((section) => section.labelKey),
-      <String>[
-        'summary',
-        'experience',
-        'skills',
-        'featured_projects',
-        'open_source_projects',
-        'links',
-      ],
-    );
+    expect(definition.sections.map((section) => section.labelKey), <String>[
+      'summary',
+      'experience',
+      'skills',
+      'featured_projects',
+      'open_source_projects',
+      'links',
+    ]);
   });
 
   test('shares section metadata while preserving template policies', () {

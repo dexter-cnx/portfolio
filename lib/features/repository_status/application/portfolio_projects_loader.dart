@@ -31,12 +31,12 @@ final class PortfolioProjectsLoader {
         ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
       final byId = {for (final repo in repositories) repo.id: repo};
       final openSource = <OtherProject>[];
-      final pdfFeatured = <FeaturedProject>[...fallback.featuredProjects];
       final pdfOpenSource = <OtherProject>[];
 
       for (final config in configured) {
         if (!config.visible && !config.includeInPdf) continue;
-        final repository = byId[config.repositoryId] ?? _snapshotRepository(config);
+        final repository =
+            byId[config.repositoryId] ?? _snapshotRepository(config);
         if (repository == null) continue;
         final status = await _loadStatus(repository, languageCode);
         final project = _compose(repository, config, status);
@@ -61,7 +61,7 @@ final class PortfolioProjectsLoader {
         contact: fallback.contact,
         socialLinks: fallback.socialLinks,
         nav: fallback.nav,
-        pdfFeaturedProjects: pdfFeatured,
+        pdfFeaturedProjects: const <FeaturedProject>[],
         pdfOtherProjects: pdfOpenSource,
       );
     } catch (_) {

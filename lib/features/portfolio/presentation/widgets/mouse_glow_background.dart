@@ -32,7 +32,7 @@ class _MouseGlowBackgroundState extends State<MouseGlowBackground> {
         children: [
           // Background Color
           Container(color: AppTheme.background),
-          
+
           // Glow Effect
           if (_isHovering)
             Positioned(
@@ -55,7 +55,7 @@ class _MouseGlowBackgroundState extends State<MouseGlowBackground> {
                 ),
               ),
             ),
-            
+
           // Main Content
           widget.child,
         ],

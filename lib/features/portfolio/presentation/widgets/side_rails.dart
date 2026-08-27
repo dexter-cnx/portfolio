@@ -6,31 +6,29 @@ class SocialRail extends StatelessWidget {
   final List<SocialLink> socials;
   final Function(String url) onLinkTap;
 
-  const SocialRail({
-    super.key,
-    required this.socials,
-    required this.onLinkTap,
-  });
+  const SocialRail({super.key, required this.socials, required this.onLinkTap});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        ...socials.map((link) => Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: IconButton(
-                onPressed: () => onLinkTap(link.url),
-                icon: Text(
-                  link.label.substring(0, 2).toUpperCase(),
-                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                        color: AppTheme.textMuted,
-                        fontSize: 12,
-                        fontFamily: 'JetBrains Mono',
-                      ),
+        ...socials.map(
+          (link) => Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: IconButton(
+              onPressed: () => onLinkTap(link.url),
+              icon: Text(
+                link.label.substring(0, 2).toUpperCase(),
+                style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                  color: AppTheme.textMuted,
+                  fontSize: 12,
+                  fontFamily: 'JetBrains Mono',
                 ),
-                tooltip: link.label,
               ),
-            )),
+              tooltip: link.label,
+            ),
+          ),
+        ),
         const SizedBox(height: 20),
         Container(
           width: 1,
@@ -46,11 +44,7 @@ class EmailRail extends StatelessWidget {
   final String email;
   final Function(String url) onEmailTap;
 
-  const EmailRail({
-    super.key,
-    required this.email,
-    required this.onEmailTap,
-  });
+  const EmailRail({super.key, required this.email, required this.onEmailTap});
 
   @override
   Widget build(BuildContext context) {
@@ -65,10 +59,10 @@ class EmailRail extends StatelessWidget {
               child: Text(
                 email,
                 style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                      color: AppTheme.textMuted,
-                      letterSpacing: 2,
-                      fontFamily: 'JetBrains Mono',
-                    ),
+                  color: AppTheme.textMuted,
+                  letterSpacing: 2,
+                  fontFamily: 'JetBrains Mono',
+                ),
               ),
             ),
           ),

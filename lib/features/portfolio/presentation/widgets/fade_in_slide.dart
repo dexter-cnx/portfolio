@@ -18,7 +18,8 @@ class FadeInSlide extends StatefulWidget {
   State<FadeInSlide> createState() => _FadeInSlideState();
 }
 
-class _FadeInSlideState extends State<FadeInSlide> with SingleTickerProviderStateMixin {
+class _FadeInSlideState extends State<FadeInSlide>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _opacity;
   late Animation<Offset> _position;
@@ -28,13 +29,15 @@ class _FadeInSlideState extends State<FadeInSlide> with SingleTickerProviderStat
     super.initState();
     _controller = AnimationController(vsync: this, duration: widget.duration);
 
-    _opacity = Tween<double>(begin: 0, end: 1).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeOut),
-    );
+    _opacity = Tween<double>(
+      begin: 0,
+      end: 1,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
 
-    _position = Tween<Offset>(begin: widget.offset, end: Offset.zero).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeOutQuart),
-    );
+    _position = Tween<Offset>(
+      begin: widget.offset,
+      end: Offset.zero,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOutQuart));
 
     Future.delayed(widget.delay, () {
       if (mounted) _controller.forward();
@@ -54,10 +57,7 @@ class _FadeInSlideState extends State<FadeInSlide> with SingleTickerProviderStat
       builder: (context, child) {
         return Opacity(
           opacity: _opacity.value,
-          child: Transform.translate(
-            offset: _position.value,
-            child: child,
-          ),
+          child: Transform.translate(offset: _position.value, child: child),
         );
       },
       child: widget.child,
