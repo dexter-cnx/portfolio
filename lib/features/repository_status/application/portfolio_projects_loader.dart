@@ -34,8 +34,7 @@ final class PortfolioProjectsLoader {
       final configured = selection.projects.toList()
         ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
       final byId = {for (final repo in repositories) repo.id: repo};
-      final featured = <FeaturedProject>[];
-      final other = <OtherProject>[];
+      final openSource = <OtherProject>[];
       final pdfFeatured = <FeaturedProject>[];
       final pdfOther = <OtherProject>[];
 
@@ -47,11 +46,7 @@ final class PortfolioProjectsLoader {
         final project = _compose(repository, config, status);
 
         if (config.visible) {
-          if (config.featured) {
-            featured.add(project.$1);
-          } else {
-            other.add(project.$2);
-          }
+          openSource.add(project.$2);
         }
 
         if (config.includeInPdf) {
@@ -68,11 +63,12 @@ final class PortfolioProjectsLoader {
         hero: fallback.hero,
         about: fallback.about,
         experience: fallback.experience,
-        featuredProjects: featured,
-        otherProjects: other,
+        featuredProjects: fallback.featuredProjects,
+        otherProjects: fallback.otherProjects,
         contact: fallback.contact,
         socialLinks: fallback.socialLinks,
         nav: fallback.nav,
+        openSourceProjects: openSource,
         pdfFeaturedProjects: pdfFeatured,
         pdfOtherProjects: pdfOther,
       );
