@@ -10,10 +10,10 @@ final class PortfolioDocumentMapper {
     required String locale,
     DateTime? generatedAt,
   }) {
-    final featuredProjects = data is PortfolioDataWithExportSelection
+    final openSourceFeatured = data is PortfolioDataWithExportSelection
         ? data.pdfFeaturedProjects
-        : data.featuredProjects;
-    final otherProjects = data is PortfolioDataWithExportSelection
+        : const <FeaturedProject>[];
+    final openSourceOther = data is PortfolioDataWithExportSelection
         ? data.pdfOtherProjects
         : data.otherProjects;
 
@@ -42,7 +42,7 @@ final class PortfolioDocumentMapper {
           )
           .toList(growable: false),
       projects: <PortfolioDocumentProject>[
-        ...featuredProjects.map(
+        ...data.featuredProjects.map(
           (item) => PortfolioDocumentProject(
             name: item.name,
             summary: item.summary,
@@ -59,7 +59,24 @@ final class PortfolioDocumentMapper {
             featured: true,
           ),
         ),
-        ...otherProjects.map(
+        ...openSourceFeatured.map(
+          (item) => PortfolioDocumentProject(
+            name: item.name,
+            summary: item.summary,
+            description: item.longDescription,
+            repositoryUrl: item.repoUrl,
+            liveUrl: item.liveUrl,
+            tags: List<String>.unmodifiable(item.tags),
+            links: item.urls
+                .map(
+                  (link) =>
+                      PortfolioDocumentLink(label: link.title, url: link.url),
+                )
+                .toList(growable: false),
+            featured: false,
+          ),
+        ),
+        ...openSourceOther.map(
           (item) => PortfolioDocumentProject(
             name: item.name,
             summary: item.summary,
