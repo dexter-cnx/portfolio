@@ -107,8 +107,10 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
           _header(profile),
           pw.Divider(thickness: 1, color: PdfColors.grey300),
           pw.SizedBox(height: 10),
-          for (final section in plan.template.sections)
-            ..._renderSection(section, payload, labels),
+          for (final entry in plan.template.sections.indexed) ...[
+            if (entry.$1 > 0) pw.SizedBox(height: 20),
+            ..._renderSection(entry.$2, payload, labels),
+          ],
         ],
       ),
     );
@@ -143,11 +145,7 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
       ).map(_link).toList(growable: false),
     };
 
-    return <pw.Widget>[
-      _components.sectionTitle(title),
-      ...content,
-      pw.SizedBox(height: 20),
-    ];
+    return <pw.Widget>[_components.sectionTitle(title), ...content];
   }
 
   pw.Widget _skills(List<String> skills) {
