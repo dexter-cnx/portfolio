@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../../github_projects/data/datasources/github_project_remote_data_source.dart';
 import '../../../github_projects/data/repositories/github_project_repository_impl.dart';
 import '../../../github_projects/github_projects_config.dart';
-import '../../data/repositories/in_memory_project_selection_store.dart';
+import '../../data/repositories/asset_project_selection_store.dart';
 import '../project_selection_controller.dart';
 
 class ProjectSelectionAdminPage extends StatefulWidget {
@@ -25,7 +26,7 @@ class _ProjectSelectionAdminPageState extends State<ProjectSelectionAdminPage> {
         owner: portfolioGitHubOwner,
         remoteDataSource: GitHubProjectRemoteDataSourceImpl(),
       ),
-      store: InMemoryProjectSelectionStore(),
+      store: const AssetProjectSelectionStore(),
     )..addListener(_onChanged);
     _controller.load();
   }
@@ -42,6 +43,64 @@ class _ProjectSelectionAdminPageState extends State<ProjectSelectionAdminPage> {
     if (mounted) setState(() {});
   }
 
+  Future<void> _exportJson() async {
+    final json = _controller.exportJson();
+    await Clipboard.setData(ClipboardData(text: json));
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text(
+          'Project selection JSON copied. Replace assets/content/project_selection.json and commit it.',
+        ),
+      ),
+    );
+  }
+
+  Future<void> _importJson() async {
+    final textController = TextEditingController();
+    final raw = await showDialog<String>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Import project selection JSON'),
+        content: SizedBox(
+          width: 640,
+          child: TextField(
+            controller: textController,
+            minLines: 12,
+            maxLines: 20,
+            decoration: const InputDecoration(
+              hintText: 'Paste project_selection.json here',
+              border: OutlineInputBorder(),
+            ),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Cancel'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.of(context).pop(textController.text),
+            child: const Text('Import'),
+          ),
+        ],
+      ),
+    );
+    textController.dispose();
+    if (raw == null || raw.trim().isEmpty || !mounted) return;
+
+    try {
+      _controller.importJson(raw);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('JSON imported into the editor.')),
+      );
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Invalid project selection JSON: $error')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,11 +108,18 @@ class _ProjectSelectionAdminPageState extends State<ProjectSelectionAdminPage> {
         title: const Text('Portfolio project admin'),
         actions: [
           TextButton.icon(
-            onPressed: _controller.status == ProjectSelectionStatus.saving
-                ? null
-                : _controller.save,
-            icon: const Icon(Icons.save_outlined),
-            label: const Text('Save'),
+            onPressed: _controller.status == ProjectSelectionStatus.ready
+                ? _importJson
+                : null,
+            icon: const Icon(Icons.upload_file_outlined),
+            label: const Text('Import JSON'),
+          ),
+          TextButton.icon(
+            onPressed: _controller.status == ProjectSelectionStatus.ready
+                ? _exportJson
+                : null,
+            icon: const Icon(Icons.content_copy_outlined),
+            label: const Text('Export JSON'),
           ),
         ],
       ),
@@ -61,10 +127,10 @@ class _ProjectSelectionAdminPageState extends State<ProjectSelectionAdminPage> {
         ProjectSelectionStatus.initial || ProjectSelectionStatus.loading =>
           const Center(child: CircularProgressIndicator()),
         ProjectSelectionStatus.error => _ErrorState(
-            error: _controller.error,
-            onRetry: _controller.load,
-          ),
-        _ => _buildContent(context),
+          error: _controller.error,
+          onRetry: _controller.load,
+        ),
+        ProjectSelectionStatus.ready => _buildContent(context),
       },
     );
   }
@@ -74,7 +140,28 @@ class _ProjectSelectionAdminPageState extends State<ProjectSelectionAdminPage> {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+          child: Card(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Icon(Icons.info_outline),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      'This static site cannot write bundled assets. Edit selections here, export JSON, replace assets/content/project_selection.json in the repository, then commit and deploy.',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
           child: TextField(
             onChanged: _controller.setSearch,
             decoration: const InputDecoration(
@@ -89,7 +176,7 @@ class _ProjectSelectionAdminPageState extends State<ProjectSelectionAdminPage> {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Align(
               alignment: Alignment.centerLeft,
-              child: Text('Last saved: ${updatedAt.toLocal()}'),
+              child: Text('Config updated: ${updatedAt.toLocal()}'),
             ),
           ),
         const SizedBox(height: 8),
@@ -148,6 +235,7 @@ class _ProjectSelectionAdminPageState extends State<ProjectSelectionAdminPage> {
                           ),
                           const SizedBox(height: 12),
                           TextFormField(
+                            key: ValueKey('${repo.id}-sort-${config.sortOrder}'),
                             initialValue: config.sortOrder.toString(),
                             keyboardType: TextInputType.number,
                             decoration: const InputDecoration(
@@ -161,6 +249,7 @@ class _ProjectSelectionAdminPageState extends State<ProjectSelectionAdminPage> {
                           ),
                           const SizedBox(height: 12),
                           TextFormField(
+                            key: ValueKey('${repo.id}-title-${config.titleOverride}'),
                             initialValue: config.titleOverride,
                             decoration: const InputDecoration(
                               labelText: 'Title override',
@@ -173,6 +262,7 @@ class _ProjectSelectionAdminPageState extends State<ProjectSelectionAdminPage> {
                           ),
                           const SizedBox(height: 12),
                           TextFormField(
+                            key: ValueKey('${repo.id}-summary-${config.summaryOverride}'),
                             initialValue: config.summaryOverride,
                             maxLines: 3,
                             decoration: const InputDecoration(
