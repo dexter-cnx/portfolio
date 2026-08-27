@@ -10,6 +10,7 @@ import '../../../portfolio_documents/application/portfolio_report_value_resolver
 import '../../../portfolio_documents/domain/entities/portfolio_document_data.dart';
 import '../../../portfolio_documents/domain/reporting/portfolio_report_template.dart';
 import '../../../portfolio_documents/presentation/pdf/portfolio_pdf_components.dart';
+import '../../../portfolio_documents/presentation/pdf/portfolio_pdf_labels.dart';
 import '../../models/portfolio_models.dart';
 
 class ResumePdfGenerator {
@@ -59,13 +60,16 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
     PortfolioReportValueResolver valueResolver =
         const PortfolioReportValueResolver(),
     PortfolioPdfComponents components = const PortfolioPdfComponents(),
+    PortfolioPdfLabelCatalog labelCatalog = const PortfolioPdfLabelCatalog(),
   }) : _renderPlanBuilder = renderPlanBuilder,
        _valueResolver = valueResolver,
-       _components = components;
+       _components = components,
+       _labelCatalog = labelCatalog;
 
   final PortfolioReportRenderPlanBuilder _renderPlanBuilder;
   final PortfolioReportValueResolver _valueResolver;
   final PortfolioPdfComponents _components;
+  final PortfolioPdfLabelCatalog _labelCatalog;
 
   @override
   Future<Uint8List> render(
@@ -88,7 +92,7 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
     final fontBold = isThai
         ? await PdfGoogleFonts.notoSansThaiBold()
         : await PdfGoogleFonts.interBold();
-    final labels = _labelsFor(locale);
+    final labels = _labelCatalog.forLocale(locale);
     final dateStr = generatedAt == null
         ? ''
         : '${generatedAt.day}/${generatedAt.month}/${generatedAt.year}';
@@ -121,7 +125,7 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
   List<pw.Widget> _renderSection(
     PortfolioReportSectionDefinition section,
     Map<String, dynamic> payload,
-    _ResumeLabels labels,
+    PortfolioPdfLabels labels,
   ) {
     final value = _valueResolver.resolve(section.dataExpression, payload);
     final title = labels.forKey(section.labelKey);
@@ -266,7 +270,7 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
     );
   }
 
-  pw.Widget _project(Map<String, dynamic> project, _ResumeLabels labels) {
+  pw.Widget _project(Map<String, dynamic> project, PortfolioPdfLabels labels) {
     final name = project['name']?.toString() ?? '';
     final summary = project['summary']?.toString() ?? '';
     final description = project['description']?.toString() ?? '';
@@ -300,59 +304,5 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
       padding: const pw.EdgeInsets.only(bottom: 4),
       child: _components.externalLink(label: label, url: url),
     );
-  }
-
-  _ResumeLabels _labelsFor(String locale) {
-    if (locale == 'th') {
-      return const _ResumeLabels(
-        summary: 'สรุป',
-        experience: 'ประสบการณ์การทำงาน',
-        skills: 'ทักษะทางเทคนิค',
-        projects: 'ผลงาน',
-        techStack: 'เทคโนโลยีที่ใช้',
-        generated: 'สร้างจากเว็บไซต์พอร์ตโฟลิโอ',
-        links: 'ลิงก์และโซเชียล',
-      );
-    }
-    return const _ResumeLabels(
-      summary: 'Summary',
-      experience: 'Experience',
-      skills: 'Technical Skills',
-      projects: 'Projects',
-      techStack: 'Tech Stack',
-      generated: 'Generated from Portfolio Website',
-      links: 'Links & Social',
-    );
-  }
-}
-
-final class _ResumeLabels {
-  const _ResumeLabels({
-    required this.summary,
-    required this.experience,
-    required this.skills,
-    required this.projects,
-    required this.techStack,
-    required this.generated,
-    required this.links,
-  });
-
-  final String summary;
-  final String experience;
-  final String skills;
-  final String projects;
-  final String techStack;
-  final String generated;
-  final String links;
-
-  String forKey(String key) {
-    return switch (key) {
-      'summary' => summary,
-      'experience' => experience,
-      'skills' => skills,
-      'projects' => projects,
-      'links' => links,
-      _ => key,
-    };
   }
 }
