@@ -11,13 +11,7 @@ enum PortfolioReportTemplateId {
   final String value;
 }
 
-enum PortfolioReportSectionId {
-  summary,
-  experience,
-  skills,
-  projects,
-  links,
-}
+enum PortfolioReportSectionId { summary, experience, skills, projects, links }
 
 final class PortfolioReportSectionDefinition {
   const PortfolioReportSectionDefinition({
