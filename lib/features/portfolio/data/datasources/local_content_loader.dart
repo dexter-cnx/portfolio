@@ -54,7 +54,7 @@ class LocalContentLoader {
       contact: fallback.contact,
       socialLinks: fallback.socialLinks,
       nav: fallback.nav,
-      pdfFeaturedProjects: fallback.featuredProjects,
+      pdfFeaturedProjects: const <FeaturedProject>[],
       pdfOtherProjects: pdfProjects,
     );
   }
