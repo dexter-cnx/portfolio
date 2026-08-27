@@ -24,6 +24,13 @@ void main() {
     expect(resolver.resolve('{{ profile.name }}', data), 'Dexter');
   });
 
+  test('rejects malformed placeholder delimiters', () {
+    expect(resolver.resolve('{{ profile.name', data), '');
+    expect(resolver.resolve('profile.name }}', data), '');
+    expect(resolver.resolve('}} profile.name {{', data), '');
+    expect(resolver.resolve('{{ {{ profile.name }} }}', data), '');
+  });
+
   test('returns empty string for missing paths', () {
     expect(resolver.resolve('profile.email', data), '');
     expect(resolver.resolve('skills.9', data), '');
