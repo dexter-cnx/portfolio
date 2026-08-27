@@ -442,19 +442,17 @@ class _ExportPdfButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isThai = context.locale.languageCode == 'th';
-
     return PopupMenuButton<PortfolioReportTemplateId>(
       onSelected: onSelected,
-      tooltip: isThai ? 'เลือกเอกสาร PDF' : 'Choose PDF export',
+      tooltip: 'pdf_export_tooltip'.tr(),
       itemBuilder: (context) => [
         PopupMenuItem(
           value: PortfolioReportTemplateId.resumeCompact,
-          child: Text(isThai ? 'Resume PDF แบบย่อ' : 'Resume PDF'),
+          child: Text('pdf_export_resume'.tr()),
         ),
         PopupMenuItem(
           value: PortfolioReportTemplateId.portfolioFull,
-          child: Text(isThai ? 'Portfolio PDF แบบเต็ม' : 'Full Portfolio PDF'),
+          child: Text('pdf_export_portfolio'.tr()),
         ),
       ],
       child: OutlinedButton.icon(
