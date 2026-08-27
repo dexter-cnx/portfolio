@@ -8,9 +8,9 @@ final class GitHubProjectRepositoryImpl implements GitHubProjectRepository {
     required GitHubProjectRemoteDataSource remoteDataSource,
     this.cacheTtl = const Duration(minutes: 15),
     DateTime Function()? now,
-  })  : _owner = owner,
-        _remoteDataSource = remoteDataSource,
-        _now = now ?? DateTime.now;
+  }) : _owner = owner,
+       _remoteDataSource = remoteDataSource,
+       _now = now ?? DateTime.now;
 
   final String _owner;
   final GitHubProjectRemoteDataSource _remoteDataSource;
@@ -25,9 +25,12 @@ final class GitHubProjectRepositoryImpl implements GitHubProjectRepository {
   }) async {
     final cacheKey = '${query.perPage}:${query.maxPages}';
     final cached = _cache[cacheKey];
+    final now = _now();
+    final cacheAge = cached == null ? null : now.difference(cached.cachedAt);
     final isFresh = cached != null &&
-        _now().difference(cached.cachedAt) >= Duration.zero &&
-        _now().difference(cached.cachedAt) < cacheTtl;
+        cacheAge != null &&
+        cacheAge >= Duration.zero &&
+        cacheAge < cacheTtl;
 
     late final List<GitHubProject> allProjects;
     if (!forceRefresh && isFresh) {
@@ -38,9 +41,11 @@ final class GitHubProjectRepositoryImpl implements GitHubProjectRepository {
         perPage: query.perPage,
         maxPages: query.maxPages,
       );
-      allProjects = models.map((model) => model.toEntity()).toList(growable: false);
+      allProjects = models
+          .map((model) => model.toEntity())
+          .toList(growable: false);
       _cache[cacheKey] = _CacheEntry(
-        cachedAt: _now(),
+        cachedAt: now,
         projects: allProjects,
       );
     }
@@ -52,13 +57,27 @@ final class GitHubProjectRepositoryImpl implements GitHubProjectRepository {
     }).toList(growable: true);
 
     filtered.sort((left, right) {
+      if (query.sort == GitHubProjectSort.pushedAt) {
+        return _compareNullableDate(
+          left.pushedAt,
+          right.pushedAt,
+          descending: query.descending,
+        );
+      }
+      if (query.sort == GitHubProjectSort.updatedAt) {
+        return _compareNullableDate(
+          left.updatedAt,
+          right.updatedAt,
+          descending: query.descending,
+        );
+      }
+
       final result = switch (query.sort) {
-        GitHubProjectSort.pushedAt => _compareDate(left.pushedAt, right.pushedAt),
-        GitHubProjectSort.updatedAt => _compareDate(left.updatedAt, right.updatedAt),
+        GitHubProjectSort.pushedAt || GitHubProjectSort.updatedAt => 0,
         GitHubProjectSort.stars => left.stars.compareTo(right.stars),
         GitHubProjectSort.name => left.name.toLowerCase().compareTo(
-              right.name.toLowerCase(),
-            ),
+          right.name.toLowerCase(),
+        ),
       };
       return query.descending ? -result : result;
     });
@@ -69,11 +88,16 @@ final class GitHubProjectRepositoryImpl implements GitHubProjectRepository {
   @override
   void clearCache() => _cache.clear();
 
-  static int _compareDate(DateTime? left, DateTime? right) {
+  static int _compareNullableDate(
+    DateTime? left,
+    DateTime? right, {
+    required bool descending,
+  }) {
     if (left == null && right == null) return 0;
-    if (left == null) return -1;
-    if (right == null) return 1;
-    return left.compareTo(right);
+    if (left == null) return 1;
+    if (right == null) return -1;
+    final result = left.compareTo(right);
+    return descending ? -result : result;
   }
 }
 
