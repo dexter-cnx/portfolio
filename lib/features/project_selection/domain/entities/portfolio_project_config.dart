@@ -1,6 +1,7 @@
 final class PortfolioProjectConfig {
   const PortfolioProjectConfig({
     required this.repositoryId,
+    this.repositoryFullName = '',
     this.visible = false,
     this.featured = false,
     this.includeInPdf = false,
@@ -10,6 +11,7 @@ final class PortfolioProjectConfig {
   });
 
   final int repositoryId;
+  final String repositoryFullName;
   final bool visible;
   final bool featured;
   final bool includeInPdf;
@@ -18,6 +20,7 @@ final class PortfolioProjectConfig {
   final String summaryOverride;
 
   PortfolioProjectConfig copyWith({
+    String? repositoryFullName,
     bool? visible,
     bool? featured,
     bool? includeInPdf,
@@ -27,6 +30,7 @@ final class PortfolioProjectConfig {
   }) {
     return PortfolioProjectConfig(
       repositoryId: repositoryId,
+      repositoryFullName: repositoryFullName ?? this.repositoryFullName,
       visible: visible ?? this.visible,
       featured: featured ?? this.featured,
       includeInPdf: includeInPdf ?? this.includeInPdf,
@@ -38,6 +42,7 @@ final class PortfolioProjectConfig {
 
   Map<String, Object?> toJson() => <String, Object?>{
     'repositoryId': repositoryId,
+    if (repositoryFullName.isNotEmpty) 'repositoryFullName': repositoryFullName,
     'visible': visible,
     'featured': featured,
     'includeInPdf': includeInPdf,
@@ -53,6 +58,7 @@ final class PortfolioProjectConfig {
     }
     return PortfolioProjectConfig(
       repositoryId: repositoryId.toInt(),
+      repositoryFullName: json['repositoryFullName'] as String? ?? '',
       visible: json['visible'] as bool? ?? false,
       featured: json['featured'] as bool? ?? false,
       includeInPdf: json['includeInPdf'] as bool? ?? false,
