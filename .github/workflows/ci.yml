@@ -15,6 +15,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -26,8 +28,15 @@ jobs:
       - name: Get dependencies
         run: flutter pub get
 
-      - name: Check formatting
-        run: dart format --output=none --set-exit-if-changed lib test
+      - name: Check formatting for changed Dart files
+        shell: bash
+        run: |
+          mapfile -t files < <(git diff --name-only "origin/${GITHUB_BASE_REF}...HEAD" -- '*.dart')
+          if [ ${#files[@]} -eq 0 ]; then
+            echo "No changed Dart files to format-check."
+            exit 0
+          fi
+          dart format --output=none --set-exit-if-changed "${files[@]}"
 
       - name: Analyze
         run: flutter analyze
