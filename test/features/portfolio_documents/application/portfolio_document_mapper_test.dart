@@ -89,9 +89,9 @@ void main() {
   });
 
   test(
-    'keeps portfolio featured projects and dedicated open source export projects',
+    'keeps portfolio featured projects separate from open source exports',
     () {
-      const includedUrl = 'https://github.com/dexter-cnx/dxtr_box';
+      const openSourceUrl = 'https://github.com/dexter-cnx/dxtr_box';
       const portfolioFeaturedUrl = 'https://github.com/dexter-cnx/analythis';
       final fallback = PortfolioData.empty();
       final data = PortfolioDataWithExportSelection(
@@ -116,19 +116,17 @@ void main() {
         contact: fallback.contact,
         socialLinks: fallback.socialLinks,
         nav: fallback.nav,
-        pdfFeaturedProjects: [
-          FeaturedProject(
+        pdfFeaturedProjects: const [],
+        pdfOtherProjects: [
+          OtherProject(
             name: 'dxtr_box',
             summary: 'Open source PDF project',
-            longDescription: '',
-            repoUrl: includedUrl,
+            repoUrl: openSourceUrl,
             liveUrl: '',
             images: const [],
-            urls: const [],
             tags: const [],
           ),
         ],
-        pdfOtherProjects: const [],
       );
 
       final document = const PortfolioDocumentMapper().map(
@@ -140,7 +138,7 @@ void main() {
       expect(document.projects, hasLength(2));
       expect(document.projects.first.repositoryUrl, portfolioFeaturedUrl);
       expect(document.projects.first.featured, isTrue);
-      expect(document.projects.last.repositoryUrl, includedUrl);
+      expect(document.projects.last.repositoryUrl, openSourceUrl);
       expect(document.projects.last.featured, isFalse);
     },
   );
