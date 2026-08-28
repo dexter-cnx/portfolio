@@ -1,35 +1,41 @@
 # AGENTS.md
 
-This repository is a Flutter Web portfolio project.
+This repository is a Flutter Web engineering portfolio project.
 
 ## Primary goal
 
 Build a polished portfolio website with:
 - Flutter Web
 - JSON-driven content
-- strong visual inspiration from Brittany Chiang v4 style language
-- implementation adapted to Flutter widgets and responsive layout
+- a premium technical-editorial visual system
+- first-class GitHub/open-source project presentation
+- engineering case studies
+- admin-driven project selection and overrides
+- printable Resume / Engineering Portfolio PDF output
 - minimal but clean architecture
 
 ## Architecture rules
 
-- Keep the app lightweight. This is a content-driven portfolio, not a large CRUD app.
+- Keep the app lightweight. This is a content-driven portfolio, not a large generic CMS.
 - Use feature-first structure.
-- Keep content in `assets/content/portfolio_content.json`.
-- Do not hardcode user-facing content in widgets unless it is a fallback.
+- Keep user-facing portfolio data JSON-driven; do not hardcode content in presentation widgets except explicit fallbacks.
 - Presentation widgets should focus on layout and rendering only.
 - Theme tokens belong in `lib/app/theme/`.
 - Reusable section widgets should be extracted once duplication is visible.
 - Avoid unnecessary abstraction, repositories, and use cases unless they clearly improve maintainability.
+- GitHub-synced data and portfolio-owned override data must remain separate.
+- GitHub sync must never silently overwrite portfolio-owned descriptions, featured state, ordering, case studies, images, or PDF visibility.
 
 ## Visual rules
 
-- Primary source: Follow the "The Kinetic Blueprint" system in `design/DESIGN.md`.
-- Reference Brittany Chiang's visual system for general composition, but prioritize `design/DESIGN.md` tokens.
-- Preserve a dark, elegant, technical mood.
-- Use high contrast text, muted body copy, and one accent color.
+- Primary source: follow `design/DESIGN.md` (Technical Editorial system).
+- Preserve a warm, editorial, technically precise mood.
+- Use warm neutral backgrounds, near-black text, restrained blue interaction accents, subtle borders, and minimal shadows.
+- Use Geist-style sans typography for narrative content and JetBrains Mono-style treatment for technical metadata.
 - Prefer generous spacing and restrained motion.
+- Do not use glassmorphism, neon/hacker visuals, giant gradients, decorative code backgrounds, skill progress bars, or colorful logo walls.
 - Desktop should feel premium and airy; mobile should become a clean stacked layout.
+- PDF output should feel like a print transformation of the same product.
 
 ## Responsiveness
 
@@ -44,26 +50,44 @@ Target these breakpoints:
 - Provide semantic labels for external links and icons.
 - Keep color contrast high.
 - Avoid relying on hover as the only interaction state.
+- Do not rely on color alone for project lifecycle/status.
 
 ## Content model
 
-Content is loaded from JSON and should support:
+Content should support:
 - site metadata
 - hero
-- about
+- engineering snapshot
+- about / engineering approach
 - skills
-- experience
+- experience / selected companies
 - featured projects
-- other projects
+- broader project catalog
+- open-source packages/crates
+- project case studies
 - contact
 - social links
+- PDF / Resume visibility and ordering
 
-## Preferred workflow in Anti Gravity
+## Public information architecture
 
-1. Read `design/DESIGN.md` to understand design tokens and system details.
-2. Read `docs/project_plan.md`
-2. Read the current JSON schema
-3. Implement one section at a time
-4. Keep commits small and reviewable
-5. After each section, do a coherence pass for spacing, typography, and responsive behavior
+Public screens should converge on:
+- Home
+- Projects
+- Project Case Study
+- Open Source
+- Experience
+- About
+- Contact
 
+Home should remain concise and route visitors deeper rather than duplicate every section.
+
+## Preferred workflow
+
+1. Read `design/DESIGN.md`.
+2. Read `docs/project_plan.md` and the current implementation handoff.
+3. Read the current JSON schema and project-selection data.
+4. Implement one coherent slice at a time.
+5. Keep commits small and reviewable.
+6. Run format/analyze/tests before push when tooling is available.
+7. After each slice, do a coherence pass for spacing, typography, responsive behavior, status terminology, and print compatibility.
