@@ -1,24 +1,14 @@
-import 'dart:ui';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../app/theme/app_theme.dart';
 import '../../../portfolio_documents/domain/reporting/portfolio_report_template.dart';
 import '../../data/datasources/local_content_loader.dart';
 import '../../models/portfolio_data_with_export_selection.dart';
 import '../../models/portfolio_models.dart';
-import '../widgets/about_section_widget.dart';
-import '../widgets/contact_section_widget.dart';
-import '../widgets/experience_section_widget.dart';
-import '../widgets/hero_section_widget.dart';
-import '../widgets/mouse_glow_background.dart';
-import '../widgets/open_source_projects_section_widget.dart';
-import '../widgets/projects_section_widget.dart';
-import '../widgets/responsive_layout.dart';
+import '../widgets/public_portfolio_shell.dart';
 import '../widgets/resume_pdf_generator.dart';
-import '../widgets/side_rails.dart';
+import 'project_detail_page.dart';
 
 class PortfolioHomePage extends StatefulWidget {
   final Function(String) onLocaleChanged;
@@ -30,436 +20,567 @@ class PortfolioHomePage extends StatefulWidget {
 }
 
 class _PortfolioHomePageState extends State<PortfolioHomePage> {
-  final _loader = LocalContentLoader();
-  late Future<PortfolioData> _contentFuture;
-  final _scrollController = ScrollController();
-  String? _lastLocale;
-
-  final _heroKey = GlobalKey();
-  final _aboutKey = GlobalKey();
-  final _experienceKey = GlobalKey();
-  final _projectsKey = GlobalKey();
-  final _contactKey = GlobalKey();
+  final _loader = const LocalContentLoader();
+  late Future<PortfolioData> _future;
+  String? _locale;
 
   @override
   void initState() {
     super.initState();
-    _contentFuture = Future.value(PortfolioData.empty());
+    _future = Future.value(PortfolioData.empty());
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final currentLocale = context.locale.languageCode;
-    if (_lastLocale != currentLocale) {
-      _lastLocale = currentLocale;
-      _loadData();
+    final locale = context.locale.languageCode;
+    if (_locale != locale) {
+      _locale = locale;
+      _future = _loader.loadPortfolioData(locale);
     }
   }
-
-  void _loadData() {
-    setState(() {
-      _contentFuture = _loader.loadPortfolioData(context.locale.languageCode);
-    });
-  }
-
-  void _toggleLanguage() {
-    final newLocale = context.locale.languageCode == 'en' ? 'th' : 'en';
-    widget.onLocaleChanged(newLocale);
-  }
-
-  Future<void> _launchURL(String url) async {
-    if (url.startsWith('#')) {
-      final key = _getKeyForId(url.substring(1));
-      if (key != null) _scrollToSection(key);
-      return;
-    }
-
-    final uri = Uri.parse(url);
-    final mode = (uri.scheme == 'http' || uri.scheme == 'https')
-        ? LaunchMode.platformDefault
-        : LaunchMode.externalApplication;
-
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri, mode: mode);
-    }
-  }
-
-  void _scrollToSection(GlobalKey key) {
-    Scrollable.ensureVisible(
-      key.currentContext!,
-      duration: const Duration(milliseconds: 700),
-      curve: Curves.easeInOut,
-    );
-  }
-
-  GlobalKey? _getKeyForId(String id) => switch (id) {
-    'about' => _aboutKey,
-    'experience' => _experienceKey,
-    'projects' => _projectsKey,
-    'contact' => _contactKey,
-    _ => null,
-  };
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<PortfolioData>(
-      future: _contentFuture,
+      future: _future,
       builder: (context, snapshot) {
-        if (!snapshot.hasData || snapshot.data!.nav.isEmpty) {
-          return const Scaffold(
-            body: Center(
-              child: CircularProgressIndicator(color: AppTheme.accent),
-            ),
-          );
+        if (!snapshot.hasData || snapshot.data!.site.ownerName.isEmpty) {
+          return const Scaffold(body: Center(child: CircularProgressIndicator()));
         }
-
         final data = snapshot.data!;
-        final openSourceProjects = data is PortfolioDataWithExportSelection
+        final openSource = data is PortfolioDataWithExportSelection
             ? data.openSourceProjects
             : const <OtherProject>[];
 
-        return Scaffold(
-          backgroundColor: Colors.transparent,
-          extendBodyBehindAppBar: true,
-          appBar: _GlassNavBar(
-            ownerName: data.site.ownerName,
-            nav: data.nav,
-            onNavTap: (id) {
-              final key = _getKeyForId(id);
-              if (key != null) _scrollToSection(key);
-            },
-            onLanguageToggle: _toggleLanguage,
-            onExportTap: () {
-              ResumePdfGenerator.generateAndDownload(
-                data,
-                context.locale.languageCode,
-                template: PortfolioReportTemplateId.resumeCompact,
-              );
-            },
-          ),
-          body: MouseGlowBackground(
-            child: Stack(
-              children: [
-                SingleChildScrollView(
-                  controller: _scrollController,
-                  child: Column(
-                    children: [
-                      HeroSectionWidget(
-                        key: _heroKey,
-                        hero: data.hero,
-                        onCtaTap: _launchURL,
-                      ),
-                      AboutSectionWidget(key: _aboutKey, about: data.about),
-                      ExperienceSectionWidget(
-                        key: _experienceKey,
-                        experience: data.experience,
-                      ),
-                      ProjectsSectionWidget(
-                        key: _projectsKey,
-                        featured: data.featuredProjects,
-                        other: data.otherProjects,
-                        onLinkTap: _launchURL,
-                      ),
-                      OpenSourceProjectsSectionWidget(
-                        projects: openSourceProjects,
-                        onLinkTap: _launchURL,
-                      ),
-                      ContactSectionWidget(
-                        key: _contactKey,
-                        contact: data.contact,
-                        socialLinks: data.socialLinks,
-                        onCtaTap: _launchURL,
-                      ),
-                    ],
+        return PublicPortfolioShell(
+          site: data.site,
+          activeRoute: '/',
+          onPdfTap: () => _generatePdf(data, PortfolioReportTemplateId.portfolioFull),
+          child: SingleChildScrollView(
+            child: PublicPageContainer(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _Hero(data: data, onLocaleChanged: widget.onLocaleChanged),
+                  const SizedBox(height: 72),
+                  _FeaturedWork(
+                    projects: data.featuredProjects.take(3).toList(growable: false),
                   ),
-                ),
-                if (ResponsiveLayout.isDesktop(context))
-                  Positioned(
-                    left: 40,
-                    bottom: 0,
-                    child: SocialRail(
-                      socials: data.socialLinks,
-                      onLinkTap: _launchURL,
-                    ),
+                  const SizedBox(height: 72),
+                  _CatalogBridge(),
+                  const SizedBox(height: 72),
+                  _OpenSourcePreview(projects: openSource.take(5).toList(growable: false)),
+                  const SizedBox(height: 72),
+                  _EngineeringApproach(skills: data.about.skills),
+                  const SizedBox(height: 72),
+                  _SelectedExperience(experience: data.experience.take(3).toList(growable: false)),
+                  const SizedBox(height: 72),
+                  _PdfCallout(
+                    onResume: () => _generatePdf(data, PortfolioReportTemplateId.resumeCompact),
+                    onPortfolio: () => _generatePdf(data, PortfolioReportTemplateId.portfolioFull),
                   ),
-                if (ResponsiveLayout.isDesktop(context))
-                  Positioned(
-                    right: 40,
-                    bottom: 0,
-                    child: EmailRail(
-                      email: data.site.email,
-                      onEmailTap: _launchURL,
-                    ),
-                  ),
-              ],
+                  const SizedBox(height: 72),
+                  _ContactFooter(data: data),
+                ],
+              ),
             ),
           ),
         );
       },
     );
   }
+
+  void _generatePdf(PortfolioData data, PortfolioReportTemplateId template) {
+    ResumePdfGenerator.generateAndDownload(
+      data,
+      context.locale.languageCode,
+      template: template,
+    );
+  }
 }
 
-class _GlassNavBar extends StatefulWidget implements PreferredSizeWidget {
-  final String ownerName;
-  final List<NavItem> nav;
-  final Function(String id) onNavTap;
-  final VoidCallback onLanguageToggle;
-  final VoidCallback onExportTap;
+class _Hero extends StatelessWidget {
+  final PortfolioData data;
+  final Function(String) onLocaleChanged;
 
-  const _GlassNavBar({
-    required this.ownerName,
-    required this.nav,
-    required this.onNavTap,
-    required this.onLanguageToggle,
-    required this.onExportTap,
-  });
-
-  @override
-  State<_GlassNavBar> createState() => _GlassNavBarState();
-
-  @override
-  Size get preferredSize => const Size.fromHeight(72);
-}
-
-class _GlassNavBarState extends State<_GlassNavBar> {
-  bool _menuOpen = false;
+  const _Hero({required this.data, required this.onLocaleChanged});
 
   @override
   Widget build(BuildContext context) {
-    final isMobile = ResponsiveLayout.isMobile(context);
-
+    final hero = data.hero;
+    final thai = context.locale.languageCode == 'th';
     return Column(
-      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        ClipRect(
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-            child: Container(
-              height: 72,
-              padding: EdgeInsets.symmetric(horizontal: isMobile ? 16 : 48),
+        Wrap(
+          spacing: 12,
+          runSpacing: 8,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children: [
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
               decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: AppTheme.glassNavOpacity),
-                border: Border(
-                  bottom: BorderSide(
-                    color: Colors.white.withValues(alpha: 0.08),
-                    width: 1,
-                  ),
-                ),
+                color: Colors.white,
+                border: Border.all(color: AppTheme.outline),
+                borderRadius: BorderRadius.circular(999),
               ),
               child: Row(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  InkWell(
-                    onTap: () => widget.onNavTap('hero'),
-                    borderRadius: BorderRadius.circular(4),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 4,
-                        vertical: 8,
-                      ),
-                      child: Text(
-                        widget.ownerName.isNotEmpty
-                            ? widget.ownerName
-                            : 'Dexter CNX',
-                        style: Theme.of(context).textTheme.headlineMedium
-                            ?.copyWith(
-                              color: AppTheme.accent,
-                              fontFamily: 'JetBrains Mono',
-                              fontSize: 18,
-                            ),
-                      ),
-                    ),
+                  Container(
+                    width: 7,
+                    height: 7,
+                    decoration: const BoxDecoration(color: AppTheme.success, shape: BoxShape.circle),
                   ),
-                  const Spacer(),
-                  if (!isMobile)
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        ...widget.nav.asMap().entries.map(
-                          (entry) => Padding(
-                            padding: const EdgeInsets.only(left: 28),
-                            child: _NavLink(
-                              number: '0${entry.key + 1}',
-                              label: entry.value.label,
-                              onTap: () => widget.onNavTap(entry.value.id),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 28),
-                        _LangToggle(onTap: widget.onLanguageToggle),
-                        const SizedBox(width: 16),
-                        _ExportPdfButton(onTap: widget.onExportTap),
-                      ],
-                    )
-                  else ...[
-                    _LangToggle(onTap: widget.onLanguageToggle),
-                    const SizedBox(width: 8),
-                    IconButton(
-                      icon: AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 200),
-                        child: Icon(
-                          _menuOpen ? Icons.close : Icons.menu,
-                          key: ValueKey(_menuOpen),
-                          color: AppTheme.accent,
-                        ),
-                      ),
-                      onPressed: () => setState(() => _menuOpen = !_menuOpen),
-                    ),
-                  ],
+                  const SizedBox(width: 8),
+                  Text(data.site.location, style: Theme.of(context).textTheme.labelMedium),
                 ],
               ),
             ),
-          ),
-        ),
-        if (isMobile && _menuOpen)
-          ClipRect(
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-              child: Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.white.withValues(
-                    alpha: AppTheme.glassNavOpacity + 0.04,
-                  ),
-                  border: Border(
-                    bottom: BorderSide(
-                      color: Colors.white.withValues(alpha: 0.08),
-                    ),
-                  ),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ...widget.nav.asMap().entries.map(
-                      (entry) => ListTile(
-                        onTap: () {
-                          setState(() => _menuOpen = false);
-                          widget.onNavTap(entry.value.id);
-                        },
-                        leading: Text(
-                          '0${entry.key + 1}.',
-                          style: Theme.of(context).textTheme.labelLarge
-                              ?.copyWith(color: AppTheme.accent),
-                        ),
-                        title: Text(
-                          entry.value.label,
-                          style: Theme.of(context).textTheme.bodyMedium
-                              ?.copyWith(color: AppTheme.textPrimary),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 12,
-                      ),
-                      child: _ExportPdfButton(onTap: widget.onExportTap),
-                    ),
-                    const SizedBox(height: 8),
-                  ],
-                ),
-              ),
+            TextButton(
+              onPressed: () => onLocaleChanged(thai ? 'en' : 'th'),
+              child: Text(thai ? 'EN' : 'TH'),
             ),
-          ),
+          ],
+        ),
+        const SizedBox(height: 20),
+        Text(data.site.role.isEmpty ? hero.subheadline : data.site.role, style: Theme.of(context).textTheme.displayLarge),
+        const SizedBox(height: 10),
+        Text(
+          hero.subheadline,
+          style: Theme.of(context).textTheme.labelLarge?.copyWith(color: AppTheme.metaText),
+        ),
+        const SizedBox(height: 20),
+        ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 720),
+          child: Text(hero.description, style: Theme.of(context).textTheme.bodyLarge),
+        ),
+        const SizedBox(height: 20),
+        Wrap(
+          spacing: 16,
+          runSpacing: 8,
+          children: [
+            Text('20+ Years Software', style: Theme.of(context).textTheme.labelMedium),
+            Text('Mobile Engineering', style: Theme.of(context).textTheme.labelMedium),
+            Text('Flutter / Dart', style: Theme.of(context).textTheme.labelMedium),
+            Text('Open Source', style: Theme.of(context).textTheme.labelMedium),
+          ],
+        ),
+        const SizedBox(height: 30),
+        Wrap(
+          spacing: 12,
+          runSpacing: 10,
+          children: [
+            FilledButton(
+              onPressed: () => Navigator.of(context).pushNamed('/projects'),
+              child: const Text('View Projects'),
+            ),
+            OutlinedButton(
+              onPressed: () => launchPortfolioUrl(data.site.resumeUrl),
+              child: const Text('Resume'),
+            ),
+            TextButton(
+              onPressed: () {
+                final github = data.socialLinks.where((item) => item.label.toLowerCase().contains('github')).firstOrNull;
+                if (github != null) launchPortfolioUrl(github.url);
+              },
+              child: const Text('GitHub ↗'),
+            ),
+          ],
+        ),
       ],
     );
   }
 }
 
-class _NavLink extends StatefulWidget {
-  final String number;
-  final String label;
-  final VoidCallback onTap;
+class _FeaturedWork extends StatelessWidget {
+  final List<FeaturedProject> projects;
 
-  const _NavLink({
-    required this.number,
-    required this.label,
-    required this.onTap,
-  });
-
-  @override
-  State<_NavLink> createState() => _NavLinkState();
-}
-
-class _NavLinkState extends State<_NavLink> {
-  bool _hovered = false;
+  const _FeaturedWork({required this.projects});
 
   @override
   Widget build(BuildContext context) {
-    return MouseRegion(
-      onEnter: (_) => setState(() => _hovered = true),
-      onExit: (_) => setState(() => _hovered = false),
-      cursor: SystemMouseCursors.click,
-      child: GestureDetector(
-        onTap: widget.onTap,
-        child: AnimatedDefaultTextStyle(
-          duration: const Duration(milliseconds: 180),
-          style: TextStyle(
-            fontFamily: 'JetBrains Mono',
-            fontSize: 13,
-            color: _hovered ? AppTheme.accent : AppTheme.textMuted,
-          ),
-          child: RichText(
-            text: TextSpan(
-              children: [
-                TextSpan(
-                  text: '${widget.number}. ',
-                  style: TextStyle(
-                    color: AppTheme.accent.withValues(alpha: 0.8),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _HomeSectionHeader(
+          title: 'Featured Work',
+          actionLabel: 'Explore All Projects →',
+          onAction: () => Navigator.of(context).pushNamed('/projects'),
+        ),
+        const SizedBox(height: 24),
+        ...projects.map(
+          (project) => Padding(
+            padding: const EdgeInsets.only(bottom: 20),
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(color: AppTheme.outline),
+                borderRadius: BorderRadius.circular(AppTheme.cardRadius),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(child: Text(project.name, style: Theme.of(context).textTheme.titleLarge)),
+                      PortfolioTagWrap(tags: project.tags.take(3).toList(growable: false)),
+                    ],
                   ),
-                ),
-                TextSpan(
-                  text: widget.label,
-                  style: TextStyle(
-                    color: _hovered ? AppTheme.accent : AppTheme.textPrimary,
+                  const SizedBox(height: 12),
+                  Text(project.summary, style: Theme.of(context).textTheme.bodyMedium),
+                  if (project.longDescription.isNotEmpty) ...[
+                    const SizedBox(height: 12),
+                    Text(project.longDescription, maxLines: 2, overflow: TextOverflow.ellipsis, style: Theme.of(context).textTheme.bodySmall),
+                  ],
+                  const SizedBox(height: 18),
+                  Wrap(
+                    spacing: 10,
+                    runSpacing: 8,
+                    children: [
+                      OutlinedButton(
+                        onPressed: () => Navigator.of(context).push(
+                          MaterialPageRoute<void>(builder: (_) => ProjectDetailPage(project: project)),
+                        ),
+                        child: const Text('View Case Study'),
+                      ),
+                      if (project.repoUrl.isNotEmpty)
+                        TextButton(
+                          onPressed: () => launchPortfolioUrl(project.repoUrl),
+                          child: const Text('GitHub →'),
+                        ),
+                    ],
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
+      ],
+    );
+  }
+}
+
+class _CatalogBridge extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(28),
+      decoration: BoxDecoration(
+        color: AppTheme.surfaceLow,
+        border: Border.all(color: AppTheme.outline),
+        borderRadius: BorderRadius.circular(AppTheme.cardRadius),
+      ),
+      child: Column(
+        children: [
+          Text('Complete Portfolio Catalog', style: Theme.of(context).textTheme.titleLarge),
+          const SizedBox(height: 10),
+          Text('Browse the full archive across applications, packages, tools, and technologies.', textAlign: TextAlign.center, style: Theme.of(context).textTheme.bodyMedium),
+          const SizedBox(height: 14),
+          Text('Flutter Apps  ·  Packages  ·  Developer Tools  ·  Open Source', style: Theme.of(context).textTheme.labelMedium),
+          const SizedBox(height: 18),
+          FilledButton(onPressed: () => Navigator.of(context).pushNamed('/projects'), child: const Text('Explore All Projects')),
+        ],
       ),
     );
   }
 }
 
-class _LangToggle extends StatelessWidget {
-  final VoidCallback onTap;
+class _OpenSourcePreview extends StatelessWidget {
+  final List<OtherProject> projects;
 
-  const _LangToggle({required this.onTap});
+  const _OpenSourcePreview({required this.projects});
 
   @override
   Widget build(BuildContext context) {
-    return TextButton(
-      onPressed: onTap,
-      child: Text(
-        context.locale.languageCode == 'en' ? 'TH' : 'EN',
-        style: Theme.of(context).textTheme.labelLarge?.copyWith(
-          color: AppTheme.accent,
-          fontFamily: 'JetBrains Mono',
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _HomeSectionHeader(
+          title: 'Open Source',
+          actionLabel: 'View All →',
+          onAction: () => Navigator.of(context).pushNamed('/open-source'),
         ),
+        const SizedBox(height: 24),
+        LayoutBuilder(
+          builder: (context, constraints) {
+            final columns = constraints.maxWidth >= 820 ? 3 : constraints.maxWidth >= 540 ? 2 : 1;
+            final gap = 14.0;
+            final width = (constraints.maxWidth - gap * (columns - 1)) / columns;
+            return Wrap(
+              spacing: gap,
+              runSpacing: gap,
+              children: projects
+                  .map(
+                    (project) => SizedBox(
+                      width: width,
+                      child: Container(
+                        padding: const EdgeInsets.all(18),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(color: AppTheme.outline),
+                          borderRadius: BorderRadius.circular(AppTheme.cardRadius),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(project.name, style: Theme.of(context).textTheme.titleLarge),
+                            const SizedBox(height: 8),
+                            Text(project.summary, maxLines: 3, overflow: TextOverflow.ellipsis, style: Theme.of(context).textTheme.bodySmall),
+                            const SizedBox(height: 14),
+                            PortfolioTagWrap(tags: project.tags.take(2).toList(growable: false)),
+                          ],
+                        ),
+                      ),
+                    ),
+                  )
+                  .toList(growable: false),
+            );
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class _EngineeringApproach extends StatelessWidget {
+  final List<String> skills;
+
+  const _EngineeringApproach({required this.skills});
+
+  @override
+  Widget build(BuildContext context) {
+    final skillLine = skills.take(8).join(' · ');
+    const items = <(String, String)>[
+      ('Mobile-first architecture', 'Build product flows around practical mobile constraints, platform behavior, and maintainable boundaries.'),
+      ('Native integration when useful', 'Keep Flutter productive while using platform or systems code where performance and capability justify it.'),
+      ('Local and predictable state', 'Favor explicit state and data ownership so user-facing behavior stays understandable and testable.'),
+      ('Production delivery', 'Treat CI, testing, store delivery, reliability, and maintainability as part of implementation rather than afterthoughts.'),
+    ];
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const _HomeSectionHeader(title: 'Engineering Approach'),
+        const SizedBox(height: 10),
+        if (skillLine.isNotEmpty)
+          Text(skillLine, style: Theme.of(context).textTheme.labelMedium),
+        const SizedBox(height: 24),
+        LayoutBuilder(
+          builder: (context, constraints) {
+            final columns = constraints.maxWidth >= 700 ? 2 : 1;
+            final gap = 14.0;
+            final width = (constraints.maxWidth - gap * (columns - 1)) / columns;
+            return Wrap(
+              spacing: gap,
+              runSpacing: gap,
+              children: items
+                  .map(
+                    (item) => SizedBox(
+                      width: width,
+                      child: Container(
+                        padding: const EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(color: AppTheme.outline),
+                          borderRadius: BorderRadius.circular(AppTheme.cardRadius),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(item.$1, style: Theme.of(context).textTheme.titleLarge),
+                            const SizedBox(height: 8),
+                            Text(item.$2, style: Theme.of(context).textTheme.bodySmall),
+                          ],
+                        ),
+                      ),
+                    ),
+                  )
+                  .toList(growable: false),
+            );
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class _SelectedExperience extends StatelessWidget {
+  final List<Experience> experience;
+
+  const _SelectedExperience({required this.experience});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _HomeSectionHeader(
+          title: 'Selected Experience',
+          subtitle: 'Companies and products across a long-running mobile software career.',
+          actionLabel: 'View Full Experience →',
+          onAction: () => Navigator.of(context).pushNamed('/experience'),
+        ),
+        const SizedBox(height: 20),
+        ...experience.map(
+          (item) => Container(
+            padding: const EdgeInsets.symmetric(vertical: 20),
+            decoration: const BoxDecoration(border: Border(bottom: BorderSide(color: AppTheme.outline))),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                final wide = constraints.maxWidth >= 700;
+                final company = Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(item.company, style: Theme.of(context).textTheme.titleLarge),
+                    const SizedBox(height: 4),
+                    Text('${item.title} · ${item.period}', style: Theme.of(context).textTheme.labelMedium),
+                  ],
+                );
+                final detail = Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(item.summary, style: Theme.of(context).textTheme.bodySmall),
+                    if (item.tech.isNotEmpty) ...[
+                      const SizedBox(height: 10),
+                      PortfolioTagWrap(tags: item.tech.take(4).toList(growable: false)),
+                    ],
+                  ],
+                );
+                return wide
+                    ? Row(crossAxisAlignment: CrossAxisAlignment.start, children: [SizedBox(width: 320, child: company), const SizedBox(width: 28), Expanded(child: detail)])
+                    : Column(crossAxisAlignment: CrossAxisAlignment.start, children: [company, const SizedBox(height: 12), detail]);
+              },
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _PdfCallout extends StatelessWidget {
+  final VoidCallback onResume;
+  final VoidCallback onPortfolio;
+
+  const _PdfCallout({required this.onResume, required this.onPortfolio});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: AppTheme.surfaceLow,
+        border: Border.all(color: AppTheme.outline),
+        borderRadius: BorderRadius.circular(AppTheme.cardRadius),
+      ),
+      child: Wrap(
+        spacing: 20,
+        runSpacing: 16,
+        alignment: WrapAlignment.spaceBetween,
+        crossAxisAlignment: WrapCrossAlignment.center,
+        children: [
+          SizedBox(
+            width: 560,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Prefer a physical copy?', style: Theme.of(context).textTheme.titleLarge),
+                const SizedBox(height: 6),
+                Text('Download a concise resume or the fuller engineering portfolio generated from the same structured portfolio data.', style: Theme.of(context).textTheme.bodySmall),
+              ],
+            ),
+          ),
+          Wrap(
+            spacing: 10,
+            children: [
+              FilledButton(onPressed: onResume, child: const Text('Download Resume')),
+              OutlinedButton(onPressed: onPortfolio, child: const Text('Portfolio PDF')),
+            ],
+          ),
+        ],
       ),
     );
   }
 }
 
-class _ExportPdfButton extends StatelessWidget {
-  final VoidCallback onTap;
+class _ContactFooter extends StatelessWidget {
+  final PortfolioData data;
 
-  const _ExportPdfButton({required this.onTap});
+  const _ContactFooter({required this.data});
 
   @override
   Widget build(BuildContext context) {
-    return OutlinedButton.icon(
-      onPressed: onTap,
-      icon: const Icon(Icons.picture_as_pdf_outlined, size: 18),
-      label: Text('btn_resume'.tr()),
-      style: OutlinedButton.styleFrom(
-        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
-        foregroundColor: AppTheme.accent,
-        side: const BorderSide(color: AppTheme.accent),
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Divider(height: 1, color: AppTheme.outline),
+        const SizedBox(height: 28),
+        Text(data.contact.title, style: Theme.of(context).textTheme.headlineMedium),
+        const SizedBox(height: 10),
+        ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 720),
+          child: Text(data.contact.body, style: Theme.of(context).textTheme.bodyMedium),
+        ),
+        const SizedBox(height: 20),
+        Wrap(
+          spacing: 12,
+          runSpacing: 8,
+          children: [
+            FilledButton(
+              onPressed: () => launchPortfolioUrl(data.contact.ctaUrl),
+              child: Text(data.contact.ctaLabel),
+            ),
+            ...data.socialLinks.map(
+              (item) => TextButton(onPressed: () => launchPortfolioUrl(item.url), child: Text(item.label)),
+            ),
+          ],
+        ),
+        const SizedBox(height: 32),
+        Text('© ${DateTime.now().year} ${data.site.ownerName} · Built with Flutter.', style: Theme.of(context).textTheme.labelMedium),
+      ],
+    );
+  }
+}
+
+class _HomeSectionHeader extends StatelessWidget {
+  final String title;
+  final String? subtitle;
+  final String? actionLabel;
+  final VoidCallback? onAction;
+
+  const _HomeSectionHeader({
+    required this.title,
+    this.subtitle,
+    this.actionLabel,
+    this.onAction,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Expanded(child: Text(title, style: Theme.of(context).textTheme.headlineMedium)),
+            if (actionLabel != null)
+              TextButton(onPressed: onAction, child: Text(actionLabel!)),
+          ],
+        ),
+        if (subtitle != null) ...[
+          const SizedBox(height: 6),
+          Text(subtitle!, style: Theme.of(context).textTheme.bodySmall),
+        ],
+        const SizedBox(height: 14),
+        const Divider(height: 1, color: AppTheme.outline),
+      ],
     );
   }
 }
