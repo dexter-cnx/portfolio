@@ -15,7 +15,7 @@ class PortfolioApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       scrollBehavior: AppScrollBehavior(),
       title: 'Portfolio',
-      theme: AppTheme.dark(context.locale.languageCode),
+      theme: AppTheme.light(context.locale.languageCode),
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,
