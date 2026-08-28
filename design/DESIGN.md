@@ -1,111 +1,261 @@
-# Design System: The Kinetic Blueprint
+# Design System: Technical Editorial
 
-## 1. Color Palette
+## 1. Direction
 
-The palette is built on deep obsidian and emerald light, focusing on ink-like depth rather than flat blacks.
+The portfolio uses a premium technical-editorial visual system for a senior engineer. The design prioritizes clarity, real engineering evidence, structured metadata, and print readiness over decoration.
 
-| Token | Hex Code | Description |
-| :--- | :--- | :--- |
-| **Primary** | `#ffffff` / `#64ffda` | Pure white text with Emerald accent for CTAs. |
-| **Secondary** | `#9cd1c0` | Muted emerald for secondary elements. |
-| **Success** | `#5ffbd6` | Primary Container color used for success states and highlights. |
-| **Error** | `#ffb4ab` | Soft red for validation and error states. |
-| **Background** | `#0c1324` | Deep obsidian "Surface" color. |
-| **Surface (Low)** | `#151b2d` | Used for large sectioning areas. |
-| **Surface (Container)** | `#191f31` | Used for cards and interactive components. |
-| **Text (Primary)** | `#dce1fb` | High-contrast "On Background" text. |
-| **Text (Muted)** | `#bacac3` | Lower contrast "On Surface Variant" for body copy. |
+Principles:
+- clarity over clutter
+- strong editorial hierarchy
+- technical metadata as supporting information
+- subtle borders and tonal surfaces instead of heavy shadows
+- one restrained interaction accent
+- web and A4/PDF output should feel like the same product
 
----
+## 2. Color Tokens
 
-## 2. Typography Scale
+| Token | Value | Usage |
+| --- | --- | --- |
+| `background` | `#F9F9F8` | Warm paper page background |
+| `surface` | `#FFFFFF` | Primary cards and elevated content |
+| `surface_low` | `#F3F4F3` | Secondary surfaces |
+| `surface_container` | `#EEEEED` | Code, metadata, utility panels |
+| `surface_high` | `#E8E8E7` | Selected / hover-neutral states |
+| `text_primary` | `#1A1C1C` | Headings and primary content |
+| `text_secondary` | `#444748` | Body and secondary content |
+| `meta_text` | `#6B7280` | Dates, versions, repository metadata |
+| `border` | `#E5E7EB` | Structural containment |
+| `primary` | `#000000` | Primary CTA |
+| `on_primary` | `#FFFFFF` | Primary CTA text |
+| `secondary` | `#0061A3` | Engineering / interaction accent |
+| `rust_accent` | `#E98329` | Rust-specific technical accent only |
+| `error` | `#BA1A1A` | Validation and error states |
 
-Editorial feel with a high-contrast typographic scale.
+Avoid gradients, neon effects, glassmorphism, and section-specific accent palettes.
 
-### Font Families
-- **Headings**: `Space Grotesk` (Conveys modern engineering precision).
-- **Body**: `Inter` (Optimized for legibility).
-- **Technical/Accents**: `JetBrains Mono` (For metadata, tags, and code).
-- **Thai Complement**: `Noto Sans Thai` or `Sarabun` (Recommended for Flutter implementation).
+## 3. Typography
 
-### Scale Details
-- **Display Large/Medium**: Used for Hero sections (Space Grotesk).
-- **Headline Small**: Used for project titles with tight letter spacing.
-- **Body Medium (0.875rem)**: Standard description text (Inter).
-- **Label Small/Medium**: Technical callouts and metadata (JetBrains Mono).
+Preferred families:
+- Primary UI/editorial: `Geist`
+- Technical metadata/code: `JetBrains Mono`
+- Thai fallback: `Noto Sans Thai` or `Sarabun`
 
----
+Scale:
 
-## 3. Spacing, Radius & Elevation
+| Style | Size | Weight | Line height |
+| --- | ---: | ---: | ---: |
+| Display / Hero | 48 | 700 | 1.1 |
+| H1 / Section lead | 32 | 600 | 1.2 |
+| H3 / Card title | 20 | 600 | 1.4 |
+| Body large | 18 | 400 | 1.6 |
+| Body | 16 | 400 | 1.6 |
+| Metadata | 14 | 500 | 1.0 |
+| Code | 13 | 400 | 1.5 |
+| Mobile display | 32 | 700 | 1.2 |
 
-### Spacing
-- **Base Scale**: 3 (Multiplier).
-- **Mental Boundaries**: Use `12` (4rem) and `16` (5.5rem) tokens instead of dividers.
-- **Component Padding**: `6` (2rem) for cards to ensure technical content "breathes".
+Use monospace sparingly for versions, package names, repository identifiers, languages, technical labels, and concise code.
 
-### Radius (Shape)
-- **Standard UI**: `ROUND_FOUR` (Sharp, technical aesthetic).
-- **Buttons**: `0.125rem` (Sharp edges).
-- **Technical Tags (Chips)**: `Full` (Pill-shaped) to contrast against sharp cards.
+## 4. Layout and Spacing
 
-### Elevation & Depth
-- **Philosophy**: Ambient lighting, no pure black shadows.
-- **Hierarchy**:
-    - **Base**: `surface` (#0c1324)
-    - **Section**: `surface_container_low` (#151b2d)
-    - **Card/Component**: `surface_container` (#191f31)
-- **Floating Effects**: Highly diffused shadows (`0 20px 40px rgba(0, 0, 0, 0.3)`).
+- desktop content max width: `1120px`
+- desktop gutter: `24px`
+- mobile side margin: `20px`
+- large section gap: `80px`
+- default stack gap: `12px`
+- base spacing rhythm: `8px`
 
----
+Desktop uses a structured 12-column mental model. Featured work may span full width; standard projects normally use two columns. Long-form case study content must use a narrower readable measure.
 
-## 4. Component Library
+Breakpoints:
+- mobile: `< 768`
+- tablet: `768–1199`
+- desktop: `>= 1200`
 
-### Button Styles
-- **Primary**: Emerald gradient fill (`primary_container` to `secondary`) with `on_primary` text. Sharp edges.
-- **Secondary**: "Ghost Border" (outline-variant at 15-20% opacity) with primary text.
-- **Tertiary/Link**: High-contrast text with a 2px underline that expands on hover.
+## 5. Shape and Depth
 
-### Cards
-- **Backgroud**: `surface_container`.
-- **Border**: None (Shadow/Tonal shift only).
-- **Interaction**: Hover shifts background to `surface_container_high` + `0.5rem` upward translation.
+Radius scale:
+- small: `4px`
+- default: `8px`
+- medium: `12px`
+- large: `16px`
+- pills: fully rounded, reserved for filters/status chips
 
-### Inputs & UI Elements
-- **Input Fields**: Bottom-border only (`outline_variant`). Focus transitions to Emerald glow (#5ffbd6).
-- **Chips**: `surface_container_highest` background with JetBrains Mono text.
-- **Navigation**: Sidebar with `surface_container_lowest` background and generous vertical spacing (token 8).
+Depth is created with whitespace, low-contrast borders, and tonal surface shifts. Avoid large floating shadows.
 
----
+## 6. Core Components
 
-## 5. Layout Rules
+### Buttons
+- Primary: near-black fill, white text
+- Secondary: transparent/white surface with 1px neutral border
+- Tertiary: text link with consistent underline/arrow treatment
+- Motion: restrained ~150ms opacity/background/position feedback
 
-### POS & Complex Layouts
-- **Tablet Landscape (1280x800+)**: Optimized for split-screen interaction.
-- **Split Layout**:
-    - **Left (Product Grid)**: Flexible grid for browsing portfolio items or components.
-    - **Right (Sidebar/Cart)**: Sticky sidebar for metadata, contact info, or quick actions.
-- **Mobile**: Clean stacked layout with focus on single-column readability.
+### Project cards
+Standard flow:
+1. project type / status metadata
+2. project name
+3. concise portfolio-owned description
+4. engineering highlights or stack
+5. repository/package metadata
+6. actions
 
----
+Variants are `featured`, `standard`, and `compact`; they share one visual foundation and only change density.
 
-## 6. Flutter Specific Design Rules
+### Technology metadata
+Prefer text such as `Flutter · Dart · Rust · FFI` or compact neutral chips. Do not create colorful framework-logo walls.
 
-- **Material 3**: Fully utilize M3 color schemes and token systems.
-- **Responsive Framework**: Use `LayoutBuilder` to respect breakpoints (Mobile < 768, Tablet 768-1199, Desktop >= 1200).
-- **Large Touch Targets**: Ensure all interactive elements have a minimum size of 48x48 dp for accessibility.
-- **Performance**: Use `const` constructors and optimized widget trees for 60/120fps animations.
+Rust-specific items may use a 2px `rust_accent` edge/sliver, but Rust must not create a separate visual theme.
 
----
+### Status
+Use a single restrained lifecycle system:
+- Active
+- Stable
+- Published
+- In Development
+- Maintenance
+- Experimental
+- Archived
 
-## 7. Project Screens
+Status must not rely on color alone.
 
-### [Portfolio Home (Desktop)](https://lh3.googleusercontent.com/aida/ADBb0uhPUHEcNPIgflegVS964SKQNgsRQhc4LfuARpZKq7GgRMFU_ajFWBqoMhQb_MkzSpGzuIgh9EcmpyxSoKoZsLAxaZAiHmd5CN6LohVZ-zzwQwXV-JT6r219Nqs5VEvoGF117ALfmku8rdXoTn3rsDjE2m_U29I5D8jtfDLqX1DwU5vZhI0v7WyKETVsXmq8dI1X6V7vo4T28QSLJBo9TAKTWkSFSca43fZLvElibaqLyyMa0k6xuaS7M4-_)
-- **Description**: A premium, high-contrast engineering portfolio featuring asymmetrical layouts and emerald accents. Emphasizes technical depth and clean editorial typography.
+### Data tables
+Use horizontal dividers only where possible. Values may use monospace. Avoid dense vertical borders.
 
-### [Portfolio Home (Mobile)](https://lh3.googleusercontent.com/aida/ADBb0ujI3YnB-FK6z1h475Esa_CSZOuWbU-Wi_JxtY6L-EY9QLlNqTmcxCAgVD2jOv36RlvYquqrcZNSmIgDvSiEoOUPyoWDFurnVee7j5_3MqaQGdvMtl4kBSzRWDhmYo5zOsqsRU0UuTvCF0InKhtvfQBi5mBxvmKok93THXAVT8wEyps3fP5KD5T0EBo1Aed9SUcPHU9BdBGz2bljWgb9wKkoc8Wzt98wSEwCkYwx8yluICwS-iWS4YkUjJVz)
-- **Description**: Responsive adaptation of the desktop experience, maintaining the premium feel in a vertically stacked format.
+### Navigation
+Public navigation is a compact top bar. Use the same navigation on all public screens with a clear active state and a restrained Resume/PDF action.
 
-### Other Strategic Screens:
-- **Flutter Design Tokens**: Centralized repository of technical constants.
-- **Flutter Web Portfolio Strategy**: Documenting the interaction architecture for web-specific constraints.
-- **Portfolio Refinement Guide**: Rules for maintaining the "Kinetic Blueprint" aesthetic.
+## 7. Public Information Architecture
+
+The public portfolio should support:
+- Home
+- Projects
+- Project Case Study
+- Open Source
+- Experience
+- About
+- Contact
+
+Home is a concise discovery/routing page, not a duplicate of all other screens.
+
+Recommended Home hierarchy:
+1. identity / hero
+2. engineering snapshot
+3. featured work
+4. projects bridge
+5. open source
+6. engineering approach
+7. selected companies / experience
+8. Resume / Portfolio PDF CTA
+9. contact
+
+Company / product names in experience must remain directly scannable.
+
+## 8. Projects and Case Studies
+
+Projects are engineering case studies rather than generic portfolio tiles.
+
+Project pages may contain:
+- Overview
+- Problem
+- Solution
+- Why It Matters
+- Engineering Highlights
+- Architecture
+- Technical Stack
+- Engineering Decisions
+- Challenges & Solutions
+- Performance (only with evidence)
+- Features
+- Development Timeline
+- Code Examples
+- Related Projects
+
+Do not put every section in a bordered card. Use typography and whitespace first.
+
+## 9. Open Source
+
+Open-source/package items should show the information most useful to an engineer:
+- package/repository name
+- registry/platform
+- version when useful
+- concise description
+- primary use case
+- technical stack
+- GitHub / pub.dev / crates.io links
+
+Repository statistics remain secondary to engineering content.
+
+## 10. Admin
+
+Admin shares typography, borders, accent, radius, buttons, status components, and metadata treatment with the public site, but uses tighter spacing and greater information density.
+
+Admin must clearly distinguish:
+
+### GitHub-synced data
+- repository name
+- stars
+- forks
+- primary language
+- topics
+- license
+- GitHub description
+- latest update/release
+
+### Portfolio-owned data
+- display name
+- custom description
+- project type
+- lifecycle status
+- featured state
+- display order
+- engineering highlights
+- case study content
+- custom image
+- relationships
+- public visibility
+- PDF visibility
+
+GitHub sync must never silently overwrite portfolio-owned data.
+
+## 11. PDF / Resume
+
+PDF output is a print transformation of the same portfolio data, not a separate content silo.
+
+Data hierarchy:
+`Full website case study -> condensed engineering portfolio PDF -> compact resume summary`
+
+Print rules:
+- A4 portrait
+- warm-white/white background
+- strong contrast
+- visible URLs where useful
+- predictable page breaks
+- no hover-dependent content
+- keep headings with their first content block
+- keep project title + intro together
+- keep diagrams/code blocks intact where possible
+
+## 12. Accessibility
+
+- keyboard navigation required
+- visible focus states
+- minimum practical touch targets
+- strong text contrast
+- logical heading order
+- do not communicate lifecycle/status using color only
+- external actions need meaningful semantics
+
+## 13. Anti-patterns
+
+Do not introduce:
+- glassmorphism
+- neon/hacker visuals
+- excessive gradients
+- large decorative code backgrounds
+- giant metric cards
+- skill percentages/progress bars
+- colorful technology logo walls
+- heavy dashboard charting without a real data need
+- excessive card nesting
+
+The portfolio should communicate seniority through information quality, engineering evidence, and disciplined visual hierarchy.
