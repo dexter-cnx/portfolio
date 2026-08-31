@@ -1,31 +1,17 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
-/// Reusable glassmorphism container.
+import '../../app/theme/app_theme.dart';
+
+/// Transitional compatibility surface for the Technical Editorial redesign.
 ///
-/// Renders a BackdropFilter blur behind a semi-transparent white overlay
-/// with a subtle border — the classic "frosted glass" look.
-///
-/// Usage:
-/// ```dart
-/// GlassContainer(
-///   padding: EdgeInsets.all(24),
-///   child: Text('Hello glass'),
-/// )
-/// ```
+/// The original portfolio used frosted-glass containers. Public components still
+/// reference this widget while they are migrated, so it now renders as a flat,
+/// print-friendly editorial surface with a quiet outline and no backdrop blur.
 class GlassContainer extends StatelessWidget {
   final Widget child;
-
-  /// Blur strength. 12 is a good default; push to 20+ for heavy glass.
   final double blur;
-
-  /// White overlay opacity. Keep below 0.12 for a subtle look.
   final double backgroundOpacity;
-
-  /// Border opacity. ~0.15 works well against dark backgrounds.
   final double borderOpacity;
-
   final double borderRadius;
   final EdgeInsetsGeometry? padding;
   final EdgeInsetsGeometry? margin;
@@ -37,10 +23,10 @@ class GlassContainer extends StatelessWidget {
   const GlassContainer({
     super.key,
     required this.child,
-    this.blur = 12,
-    this.backgroundOpacity = 0.06,
-    this.borderOpacity = 0.15,
-    this.borderRadius = 16,
+    this.blur = 0,
+    this.backgroundOpacity = 1,
+    this.borderOpacity = 1,
+    this.borderRadius = AppTheme.cardRadius,
     this.padding,
     this.margin,
     this.width,
@@ -49,14 +35,13 @@ class GlassContainer extends StatelessWidget {
     this.tintColor,
   });
 
-  /// A more prominent variant with stronger blur — good for modals/cards.
   const GlassContainer.heavy({
     super.key,
     required this.child,
-    this.blur = 24,
-    this.backgroundOpacity = 0.10,
-    this.borderOpacity = 0.20,
-    this.borderRadius = 20,
+    this.blur = 0,
+    this.backgroundOpacity = 1,
+    this.borderOpacity = 1,
+    this.borderRadius = AppTheme.cardRadius,
     this.padding,
     this.margin,
     this.width,
@@ -65,13 +50,12 @@ class GlassContainer extends StatelessWidget {
     this.tintColor,
   });
 
-  /// A very subtle variant — useful as a nav bar background.
   const GlassContainer.light({
     super.key,
     required this.child,
-    this.blur = 20,
-    this.backgroundOpacity = 0.03,
-    this.borderOpacity = 0.08,
+    this.blur = 0,
+    this.backgroundOpacity = 1,
+    this.borderOpacity = 1,
     this.borderRadius = 0,
     this.padding,
     this.margin,
@@ -83,29 +67,19 @@ class GlassContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = tintColor ?? Colors.white;
+    final background = tintColor ?? Colors.white;
 
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(borderRadius),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: blur, sigmaY: blur),
-        child: Container(
-          width: width,
-          height: height,
-          padding: padding,
-          margin: margin,
-          decoration: BoxDecoration(
-            color: color.withValues(alpha: backgroundOpacity),
-            borderRadius: BorderRadius.circular(borderRadius),
-            border: Border.all(
-              color: color.withValues(alpha: borderOpacity),
-              width: 1,
-            ),
-            boxShadow: boxShadow,
-          ),
-          child: child,
-        ),
+    return Container(
+      width: width,
+      height: height,
+      padding: padding,
+      margin: margin,
+      decoration: BoxDecoration(
+        color: background,
+        borderRadius: BorderRadius.circular(borderRadius),
+        border: Border.all(color: AppTheme.outline),
       ),
+      child: child,
     );
   }
 }
