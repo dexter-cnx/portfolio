@@ -21,16 +21,16 @@ class SectionHeader extends StatelessWidget {
       children: [
         Text(
           number,
-          style: Theme.of(context).textTheme.labelLarge?.copyWith(
-            color: AppTheme.metaText,
-          ),
+          style: Theme.of(
+            context,
+          ).textTheme.labelLarge?.copyWith(color: AppTheme.metaText),
         ),
         const SizedBox(height: 10),
         Text(
           title,
-          style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-            color: AppTheme.textPrimary,
-          ),
+          style: Theme.of(
+            context,
+          ).textTheme.headlineLarge?.copyWith(color: AppTheme.textPrimary),
         ),
         if (description != null && description!.trim().isNotEmpty) ...[
           const SizedBox(height: 12),

@@ -17,7 +17,9 @@ class OpenSourcePage extends StatelessWidget {
       future: loader.loadPortfolioData(context.locale.languageCode),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return const Scaffold(body: Center(child: CircularProgressIndicator()));
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
         }
         final data = snapshot.data!;
         final projects = data is PortfolioDataWithExportSelection
@@ -31,9 +33,15 @@ class OpenSourcePage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('OPEN SOURCE', style: Theme.of(context).textTheme.labelLarge),
+                  Text(
+                    'OPEN SOURCE',
+                    style: Theme.of(context).textTheme.labelLarge,
+                  ),
                   const SizedBox(height: 12),
-                  Text('Packages, libraries, and developer tools.', style: Theme.of(context).textTheme.headlineLarge),
+                  Text(
+                    'Packages, libraries, and developer tools.',
+                    style: Theme.of(context).textTheme.headlineLarge,
+                  ),
                   const SizedBox(height: 16),
                   Text(
                     'Reusable engineering work published for other developers. Registry and repository links stay explicit so the implementation can be inspected directly.',
@@ -44,9 +52,15 @@ class OpenSourcePage extends StatelessWidget {
                   const SizedBox(height: 28),
                   LayoutBuilder(
                     builder: (context, constraints) {
-                      final columns = constraints.maxWidth >= 850 ? 3 : constraints.maxWidth >= 560 ? 2 : 1;
+                      final columns = constraints.maxWidth >= 850
+                          ? 3
+                          : constraints.maxWidth >= 560
+                          ? 2
+                          : 1;
                       final gap = 16.0;
-                      final width = (constraints.maxWidth - gap * (columns - 1)) / columns;
+                      final width =
+                          (constraints.maxWidth - gap * (columns - 1)) /
+                          columns;
                       if (projects.isEmpty) {
                         return Container(
                           width: double.infinity,
@@ -54,9 +68,14 @@ class OpenSourcePage extends StatelessWidget {
                           decoration: BoxDecoration(
                             color: AppTheme.surfaceLow,
                             border: Border.all(color: AppTheme.outline),
-                            borderRadius: BorderRadius.circular(AppTheme.cardRadius),
+                            borderRadius: BorderRadius.circular(
+                              AppTheme.cardRadius,
+                            ),
                           ),
-                          child: Text('No public packages are selected yet.', style: Theme.of(context).textTheme.bodyMedium),
+                          child: Text(
+                            'No public packages are selected yet.',
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
                         );
                       }
                       return Wrap(
@@ -104,7 +123,12 @@ class _OpenSourceCard extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(child: Text(project.name, style: Theme.of(context).textTheme.titleLarge)),
+              Expanded(
+                child: Text(
+                  project.name,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+              ),
               if (registry != null)
                 Text(registry, style: Theme.of(context).textTheme.labelMedium),
             ],

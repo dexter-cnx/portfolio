@@ -18,7 +18,9 @@ class ProjectDetailPage extends StatelessWidget {
       future: loader.loadPortfolioData(context.locale.languageCode),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return const Scaffold(body: Center(child: CircularProgressIndicator()));
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
         }
         final data = snapshot.data!;
         return PublicPortfolioShell(
@@ -30,11 +32,22 @@ class ProjectDetailPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('ENGINEERING CASE STUDY', style: Theme.of(context).textTheme.labelLarge?.copyWith(color: AppTheme.metaText)),
+                  Text(
+                    'ENGINEERING CASE STUDY',
+                    style: Theme.of(
+                      context,
+                    ).textTheme.labelLarge?.copyWith(color: AppTheme.metaText),
+                  ),
                   const SizedBox(height: 14),
-                  Text(project.name, style: Theme.of(context).textTheme.displayMedium),
+                  Text(
+                    project.name,
+                    style: Theme.of(context).textTheme.displayMedium,
+                  ),
                   const SizedBox(height: 16),
-                  Text(project.summary, style: Theme.of(context).textTheme.bodyLarge),
+                  Text(
+                    project.summary,
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
                   const SizedBox(height: 24),
                   PortfolioTagWrap(tags: project.tags),
                   const SizedBox(height: 24),
@@ -55,7 +68,9 @@ class ProjectDetailPage extends StatelessWidget {
                       ...project.urls.map(
                         (item) => TextButton(
                           onPressed: () => launchPortfolioUrl(item.url),
-                          child: Text(item.title.isEmpty ? 'Open link' : item.title),
+                          child: Text(
+                            item.title.isEmpty ? 'Open link' : item.title,
+                          ),
                         ),
                       ),
                     ],
@@ -65,8 +80,13 @@ class ProjectDetailPage extends StatelessWidget {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(AppTheme.cardRadius),
                       child: Container(
-                        decoration: BoxDecoration(border: Border.all(color: AppTheme.outline)),
-                        child: Image.asset(project.images.first, fit: BoxFit.cover),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: AppTheme.outline),
+                        ),
+                        child: Image.asset(
+                          project.images.first,
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                   ],
@@ -75,7 +95,9 @@ class ProjectDetailPage extends StatelessWidget {
                     label: 'OVERVIEW',
                     title: 'What this project is',
                     child: Text(
-                      project.longDescription.isEmpty ? project.summary : project.longDescription,
+                      project.longDescription.isEmpty
+                          ? project.summary
+                          : project.longDescription,
                       style: Theme.of(context).textTheme.bodyLarge,
                     ),
                   ),
@@ -120,9 +142,14 @@ class ProjectDetailPage extends StatelessWidget {
                       crossAxisAlignment: WrapCrossAlignment.center,
                       runSpacing: 16,
                       children: [
-                        Text('Explore more engineering work.', style: Theme.of(context).textTheme.titleLarge),
+                        Text(
+                          'Explore more engineering work.',
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
                         FilledButton(
-                          onPressed: () => Navigator.of(context).pushReplacementNamed('/projects'),
+                          onPressed: () => Navigator.of(
+                            context,
+                          ).pushReplacementNamed('/projects'),
                           child: const Text('Back to Projects'),
                         ),
                       ],
@@ -143,14 +170,23 @@ class _CaseStudySection extends StatelessWidget {
   final String title;
   final Widget child;
 
-  const _CaseStudySection({required this.label, required this.title, required this.child});
+  const _CaseStudySection({
+    required this.label,
+    required this.title,
+    required this.child,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: Theme.of(context).textTheme.labelLarge?.copyWith(color: AppTheme.metaText)),
+        Text(
+          label,
+          style: Theme.of(
+            context,
+          ).textTheme.labelLarge?.copyWith(color: AppTheme.metaText),
+        ),
         const SizedBox(height: 8),
         Text(title, style: Theme.of(context).textTheme.headlineMedium),
         const SizedBox(height: 16),
@@ -171,7 +207,10 @@ class _EngineeringHighlights extends StatelessWidget {
   Widget build(BuildContext context) {
     final items = tags.isEmpty
         ? const ['Production delivery', 'Cross-platform implementation']
-        : tags.take(4).map((tag) => '$tag implementation').toList(growable: false);
+        : tags
+              .take(4)
+              .map((tag) => '$tag implementation')
+              .toList(growable: false);
     return Wrap(
       spacing: 16,
       runSpacing: 16,
@@ -186,7 +225,12 @@ class _EngineeringHighlights extends StatelessWidget {
                   border: Border.all(color: AppTheme.outline),
                   borderRadius: BorderRadius.circular(AppTheme.cardRadius),
                 ),
-                child: Text(item, style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppTheme.textPrimary)),
+                child: Text(
+                  item,
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodyMedium?.copyWith(color: AppTheme.textPrimary),
+                ),
               ),
             ),
           )
@@ -200,7 +244,12 @@ class _ArchitectureDiagram extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const layers = ['Presentation / Client', 'Application & Domain', 'Platform / Service Boundary', 'Data & External Services'];
+    const layers = [
+      'Presentation / Client',
+      'Application & Domain',
+      'Platform / Service Boundary',
+      'Data & External Services',
+    ];
     return Column(
       children: [
         for (var index = 0; index < layers.length; index++) ...[
@@ -212,12 +261,20 @@ class _ArchitectureDiagram extends StatelessWidget {
               border: Border.all(color: AppTheme.outline),
               borderRadius: BorderRadius.circular(AppTheme.cardRadius),
             ),
-            child: Text(layers[index], textAlign: TextAlign.center, style: Theme.of(context).textTheme.labelLarge),
+            child: Text(
+              layers[index],
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.labelLarge,
+            ),
           ),
           if (index != layers.length - 1)
             const Padding(
               padding: EdgeInsets.symmetric(vertical: 8),
-              child: Icon(Icons.arrow_downward, size: 18, color: AppTheme.metaText),
+              child: Icon(
+                Icons.arrow_downward,
+                size: 18,
+                color: AppTheme.metaText,
+              ),
             ),
         ],
       ],
@@ -238,14 +295,26 @@ class _StackTable extends StatelessWidget {
         for (var index = 0; index < stack.length; index++)
           Container(
             padding: const EdgeInsets.symmetric(vertical: 14),
-            decoration: const BoxDecoration(border: Border(bottom: BorderSide(color: AppTheme.outline))),
+            decoration: const BoxDecoration(
+              border: Border(bottom: BorderSide(color: AppTheme.outline)),
+            ),
             child: Row(
               children: [
                 SizedBox(
                   width: 130,
-                  child: Text(index == 0 ? 'Primary' : 'Supporting', style: Theme.of(context).textTheme.labelMedium),
+                  child: Text(
+                    index == 0 ? 'Primary' : 'Supporting',
+                    style: Theme.of(context).textTheme.labelMedium,
+                  ),
                 ),
-                Expanded(child: Text(stack[index], style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppTheme.textPrimary))),
+                Expanded(
+                  child: Text(
+                    stack[index],
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: AppTheme.textPrimary,
+                    ),
+                  ),
+                ),
               ],
             ),
           ),

@@ -141,30 +141,32 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
           style: const pw.TextStyle(fontSize: 10.5, lineSpacing: 1.35),
         ),
       ],
-      PortfolioReportSectionId.experience => _maps(value)
-          .map(
-            (item) => _experience(
-              item,
-              prominent: template == PortfolioReportTemplateId.resumeCompact,
-            ),
-          )
-          .toList(growable: false),
+      PortfolioReportSectionId.experience =>
+        _maps(value)
+            .map(
+              (item) => _experience(
+                item,
+                prominent: template == PortfolioReportTemplateId.resumeCompact,
+              ),
+            )
+            .toList(growable: false),
       PortfolioReportSectionId.skills => <pw.Widget>[_skills(_strings(value))],
-      PortfolioReportSectionId.projects => _maps(value)
-          .map(
-            (project) => _project(
-              project,
-              labels,
-              prominent:
-                  isFeatured &&
-                  template == PortfolioReportTemplateId.portfolioFull,
-              compact: isOpenSource,
-            ),
-          )
-          .toList(growable: false),
-      PortfolioReportSectionId.links => _maps(value)
-          .map(_link)
-          .toList(growable: false),
+      PortfolioReportSectionId.projects =>
+        _maps(value)
+            .map(
+              (project) => _project(
+                project,
+                labels,
+                prominent:
+                    isFeatured &&
+                    template == PortfolioReportTemplateId.portfolioFull,
+                compact: isOpenSource,
+              ),
+            )
+            .toList(growable: false),
+      PortfolioReportSectionId.links => _maps(
+        value,
+      ).map(_link).toList(growable: false),
     };
 
     return <pw.Widget>[_components.sectionTitle(title), ...content];
@@ -274,10 +276,7 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
     );
   }
 
-  pw.Widget _experience(
-    Map<String, dynamic> item, {
-    required bool prominent,
-  }) {
+  pw.Widget _experience(Map<String, dynamic> item, {required bool prominent}) {
     final company = item['company']?.toString() ?? '';
     final title = item['title']?.toString() ?? '';
     final period = item['period']?.toString() ?? '';
@@ -325,10 +324,7 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
           ),
           pw.Text(
             title,
-            style: pw.TextStyle(
-              fontSize: 10.5,
-              fontStyle: pw.FontStyle.italic,
-            ),
+            style: pw.TextStyle(fontSize: 10.5, fontStyle: pw.FontStyle.italic),
           ),
           if (summary.isNotEmpty) ...[
             pw.SizedBox(height: 4),
@@ -402,10 +398,7 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
             pw.SizedBox(height: 3),
             pw.Text(
               description,
-              style: const pw.TextStyle(
-                fontSize: 9,
-                color: PdfColors.grey700,
-              ),
+              style: const pw.TextStyle(fontSize: 9, color: PdfColors.grey700),
             ),
           ],
           if (tags.isNotEmpty) ...[
@@ -418,7 +411,8 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
               ),
             ),
           ],
-          if (prominent && (repositoryUrl.isNotEmpty || liveUrl.isNotEmpty)) ...[
+          if (prominent &&
+              (repositoryUrl.isNotEmpty || liveUrl.isNotEmpty)) ...[
             pw.SizedBox(height: 4),
             if (repositoryUrl.isNotEmpty)
               _components.externalLink(label: 'GitHub', url: repositoryUrl),

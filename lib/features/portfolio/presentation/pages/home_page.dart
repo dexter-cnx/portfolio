@@ -172,9 +172,9 @@ class _Hero extends StatelessWidget {
         const SizedBox(height: 20),
         Text(
           data.site.ownerName,
-          style: Theme.of(context).textTheme.labelLarge?.copyWith(
-            color: AppTheme.metaText,
-          ),
+          style: Theme.of(
+            context,
+          ).textTheme.labelLarge?.copyWith(color: AppTheme.metaText),
         ),
         const SizedBox(height: 8),
         Text(
@@ -184,9 +184,9 @@ class _Hero extends StatelessWidget {
         const SizedBox(height: 10),
         Text(
           hero.subheadline,
-          style: Theme.of(context).textTheme.labelLarge?.copyWith(
-            color: AppTheme.metaText,
-          ),
+          style: Theme.of(
+            context,
+          ).textTheme.labelLarge?.copyWith(color: AppTheme.metaText),
         ),
         const SizedBox(height: 20),
         ConstrainedBox(
@@ -213,10 +213,7 @@ class _Hero extends StatelessWidget {
               'Flutter / Dart',
               style: Theme.of(context).textTheme.labelMedium,
             ),
-            Text(
-              'Open Source',
-              style: Theme.of(context).textTheme.labelMedium,
-            ),
+            Text('Open Source', style: Theme.of(context).textTheme.labelMedium),
           ],
         ),
         const SizedBox(height: 30),
@@ -236,8 +233,7 @@ class _Hero extends StatelessWidget {
               onPressed: () {
                 final github = data.socialLinks
                     .where(
-                      (item) =>
-                          item.label.toLowerCase().contains('github'),
+                      (item) => item.label.toLowerCase().contains('github'),
                     )
                     .firstOrNull;
                 if (github != null) launchPortfolioUrl(github.url);
@@ -281,10 +277,7 @@ class _Hero extends StatelessWidget {
               ),
             ),
           const SizedBox(height: 16),
-          Text(
-            'CONTACT',
-            style: Theme.of(context).textTheme.labelMedium,
-          ),
+          Text('CONTACT', style: Theme.of(context).textTheme.labelMedium),
           const SizedBox(height: 10),
           Text(data.site.email, style: Theme.of(context).textTheme.bodySmall),
           if ((data.contact.phone ?? '').isNotEmpty) ...[
@@ -387,8 +380,7 @@ class _FeaturedWork extends StatelessWidget {
                       OutlinedButton(
                         onPressed: () => Navigator.of(context).push(
                           MaterialPageRoute<void>(
-                            builder: (_) =>
-                                ProjectDetailPage(project: project),
+                            builder: (_) => ProjectDetailPage(project: project),
                           ),
                         ),
                         child: const Text('View Case Study'),
@@ -676,11 +668,7 @@ class _SelectedExperience extends StatelessWidget {
                       )
                     : Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          company,
-                          const SizedBox(height: 12),
-                          detail,
-                        ],
+                        children: [company, const SizedBox(height: 12), detail],
                       );
               },
             ),

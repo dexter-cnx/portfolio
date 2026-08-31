@@ -16,7 +16,9 @@ class ExperiencePage extends StatelessWidget {
       future: loader.loadPortfolioData(context.locale.languageCode),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return const Scaffold(body: Center(child: CircularProgressIndicator()));
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
         }
         final data = snapshot.data!;
         return PublicPortfolioShell(
@@ -28,9 +30,15 @@ class ExperiencePage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('EXPERIENCE', style: Theme.of(context).textTheme.labelLarge),
+                  Text(
+                    'EXPERIENCE',
+                    style: Theme.of(context).textTheme.labelLarge,
+                  ),
                   const SizedBox(height: 12),
-                  Text('Engineering across multiple generations of mobile software.', style: Theme.of(context).textTheme.headlineLarge),
+                  Text(
+                    'Engineering across multiple generations of mobile software.',
+                    style: Theme.of(context).textTheme.headlineLarge,
+                  ),
                   const SizedBox(height: 16),
                   Text(
                     'Selected companies and products, with company names kept directly scannable and technical impact separated from general responsibilities.',
@@ -64,7 +72,12 @@ class _ExperienceEntry extends StatelessWidget {
       children: [
         Text(experience.company, style: Theme.of(context).textTheme.titleLarge),
         const SizedBox(height: 6),
-        Text(experience.title, style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppTheme.textPrimary)),
+        Text(
+          experience.title,
+          style: Theme.of(
+            context,
+          ).textTheme.bodyMedium?.copyWith(color: AppTheme.textPrimary),
+        ),
         const SizedBox(height: 4),
         Text(experience.period, style: Theme.of(context).textTheme.labelMedium),
       ],
@@ -74,7 +87,10 @@ class _ExperienceEntry extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (experience.summary.isNotEmpty)
-          Text(experience.summary, style: Theme.of(context).textTheme.bodyMedium),
+          Text(
+            experience.summary,
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
         if (experience.highlights.isNotEmpty) ...[
           const SizedBox(height: 12),
           ...experience.highlights.map(
@@ -89,11 +105,19 @@ class _ExperienceEntry extends StatelessWidget {
                       width: 4,
                       height: 4,
                       child: DecoratedBox(
-                        decoration: BoxDecoration(color: AppTheme.metaText, shape: BoxShape.circle),
+                        decoration: BoxDecoration(
+                          color: AppTheme.metaText,
+                          shape: BoxShape.circle,
+                        ),
                       ),
                     ),
                   ),
-                  Expanded(child: Text(item, style: Theme.of(context).textTheme.bodySmall)),
+                  Expanded(
+                    child: Text(
+                      item,
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  ),
                 ],
               ),
             ),

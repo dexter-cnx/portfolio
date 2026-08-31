@@ -204,11 +204,10 @@ class _ProjectsPageState extends State<ProjectsPage> {
     );
   }
 
-  Iterable<FeaturedProject> _filteredFeatured(
-    List<FeaturedProject> projects,
-  ) => projects.where(
-    (project) => _matches(project.name, project.summary, project.tags),
-  );
+  Iterable<FeaturedProject> _filteredFeatured(List<FeaturedProject> projects) =>
+      projects.where(
+        (project) => _matches(project.name, project.summary, project.tags),
+      );
 
   Iterable<OtherProject> _filteredOther(List<OtherProject> projects) =>
       projects.where(

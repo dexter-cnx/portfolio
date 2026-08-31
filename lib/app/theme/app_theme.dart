@@ -32,11 +32,7 @@ class AppTheme {
   static const LinearGradient backgroundGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [
-      Color(0xFFEFF6FB),
-      Color(0xFFF8F7F4),
-      Color(0xFFFBF5EF),
-    ],
+    colors: [Color(0xFFEFF6FB), Color(0xFFF8F7F4), Color(0xFFFBF5EF)],
     stops: [0, 0.52, 1],
   );
 
@@ -184,10 +180,7 @@ class AppTheme {
         checkmarkColor: Colors.white,
         side: const BorderSide(color: outline),
         shape: const StadiumBorder(),
-        labelStyle: GoogleFonts.jetBrainsMono(
-          fontSize: 12,
-          color: textMuted,
-        ),
+        labelStyle: GoogleFonts.jetBrainsMono(fontSize: 12, color: textMuted),
         secondaryLabelStyle: GoogleFonts.jetBrainsMono(
           fontSize: 12,
           color: Colors.white,
