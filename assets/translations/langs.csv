@@ -109,6 +109,7 @@ contact_eyebrow,"04. What's Next?","04. อะไรต่อไป?"
 contact_title,Get In Touch,ติดต่อ
 contact_body,"I’m open to interesting product work, collaborations, and Flutter engineering opportunities.","ฉันเปิดรับงานผลิตภัณฑ์ที่น่าสนใจ การทำงานร่วมกัน และโอกาสใหม่ๆ ในด้านวิศวกรรม Flutter"
 contact_btn,Say Hello,ทักทายกันหน่อย
+contact_tel,Tel,โทร
 footer_built_by,Built by Dexter-CNX with Flutter,"สร้างโดย Dexter-CNX ด้วย Flutter"
 project_type,Flutter Project,โปรเจกต์ Flutter
 admin_title,Portfolio project admin,จัดการโปรเจกต์พอร์ตโฟลิโอ
