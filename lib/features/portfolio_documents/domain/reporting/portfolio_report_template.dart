@@ -48,11 +48,16 @@ final class PortfolioReportTemplateRegistry {
   final Map<PortfolioReportTemplateId, PortfolioReportTemplateDefinition>
   overrides;
 
-  static const _standardSections = <PortfolioReportSectionDefinition>[
+  static const _portfolioSections = <PortfolioReportSectionDefinition>[
     PortfolioReportSectionDefinition(
       id: PortfolioReportSectionId.summary,
       labelKey: 'summary',
       dataExpression: 'summary',
+    ),
+    PortfolioReportSectionDefinition(
+      id: PortfolioReportSectionId.projects,
+      labelKey: 'featured_projects',
+      dataExpression: 'featuredProjects',
     ),
     PortfolioReportSectionDefinition(
       id: PortfolioReportSectionId.experience,
@@ -66,13 +71,36 @@ final class PortfolioReportTemplateRegistry {
     ),
     PortfolioReportSectionDefinition(
       id: PortfolioReportSectionId.projects,
+      labelKey: 'open_source_projects',
+      dataExpression: 'openSourceProjects',
+    ),
+    PortfolioReportSectionDefinition(
+      id: PortfolioReportSectionId.links,
+      labelKey: 'links',
+      dataExpression: 'links',
+    ),
+  ];
+
+  static const _resumeSections = <PortfolioReportSectionDefinition>[
+    PortfolioReportSectionDefinition(
+      id: PortfolioReportSectionId.summary,
+      labelKey: 'summary',
+      dataExpression: 'summary',
+    ),
+    PortfolioReportSectionDefinition(
+      id: PortfolioReportSectionId.experience,
+      labelKey: 'experience',
+      dataExpression: 'experience',
+    ),
+    PortfolioReportSectionDefinition(
+      id: PortfolioReportSectionId.projects,
       labelKey: 'featured_projects',
       dataExpression: 'featuredProjects',
     ),
     PortfolioReportSectionDefinition(
-      id: PortfolioReportSectionId.projects,
-      labelKey: 'open_source_projects',
-      dataExpression: 'openSourceProjects',
+      id: PortfolioReportSectionId.skills,
+      labelKey: 'skills',
+      dataExpression: 'skills',
     ),
     PortfolioReportSectionDefinition(
       id: PortfolioReportSectionId.links,
@@ -93,14 +121,14 @@ final class PortfolioReportTemplateRegistry {
           id: PortfolioReportTemplateId.portfolioFull,
           featuredProjectsOnly: false,
           includeProjectDescriptions: true,
-          sections: _standardSections,
+          sections: _portfolioSections,
         ),
       PortfolioReportTemplateId.resumeCompact =>
         const PortfolioReportTemplateDefinition(
           id: PortfolioReportTemplateId.resumeCompact,
-          featuredProjectsOnly: false,
+          featuredProjectsOnly: true,
           includeProjectDescriptions: false,
-          sections: _standardSections,
+          sections: _resumeSections,
         ),
     };
   }
