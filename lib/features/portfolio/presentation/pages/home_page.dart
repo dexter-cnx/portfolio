@@ -202,18 +202,21 @@ class _Hero extends StatelessWidget {
           runSpacing: 8,
           children: [
             Text(
-              '20+ Years Software',
+              'hero_years_software'.tr(),
               style: Theme.of(context).textTheme.labelMedium,
             ),
             Text(
-              'Mobile Engineering',
+              'hero_mobile_engineering'.tr(),
               style: Theme.of(context).textTheme.labelMedium,
             ),
             Text(
               'Flutter / Dart',
               style: Theme.of(context).textTheme.labelMedium,
             ),
-            Text('Open Source', style: Theme.of(context).textTheme.labelMedium),
+            Text(
+              'hero_open_source'.tr(),
+              style: Theme.of(context).textTheme.labelMedium,
+            ),
           ],
         ),
         const SizedBox(height: 30),
@@ -223,11 +226,11 @@ class _Hero extends StatelessWidget {
           children: [
             FilledButton(
               onPressed: () => Navigator.of(context).pushNamed('/projects'),
-              child: const Text('View Projects'),
+              child: Text('btn_view_projects'.tr()),
             ),
             OutlinedButton(
               onPressed: () => launchPortfolioUrl(data.site.resumeUrl),
-              child: const Text('Resume'),
+              child: Text('btn_resume'.tr()),
             ),
             TextButton(
               onPressed: () {
@@ -277,13 +280,16 @@ class _Hero extends StatelessWidget {
               ),
             ),
           const SizedBox(height: 16),
-          Text('CONTACT', style: Theme.of(context).textTheme.labelMedium),
+          Text(
+            'home_contact_label'.tr(),
+            style: Theme.of(context).textTheme.labelMedium,
+          ),
           const SizedBox(height: 10),
           Text(data.site.email, style: Theme.of(context).textTheme.bodySmall),
           if ((data.contact.phone ?? '').isNotEmpty) ...[
             const SizedBox(height: 6),
             Text(
-              'Tel: ${data.contact.phone}',
+              '${'contact_tel'.tr()}: ${data.contact.phone}',
               style: Theme.of(context).textTheme.bodySmall,
             ),
           ],
@@ -325,8 +331,8 @@ class _FeaturedWork extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _HomeSectionHeader(
-          title: 'Featured Work',
-          actionLabel: 'Explore All Projects →',
+          title: 'home_featured_work'.tr(),
+          actionLabel: '${'btn_explore_projects'.tr()} →',
           onAction: () => Navigator.of(context).pushNamed('/projects'),
         ),
         const SizedBox(height: 24),
@@ -383,7 +389,7 @@ class _FeaturedWork extends StatelessWidget {
                             builder: (_) => ProjectDetailPage(project: project),
                           ),
                         ),
-                        child: const Text('View Case Study'),
+                        child: Text('btn_view_case_study'.tr()),
                       ),
                       if (project.repoUrl.isNotEmpty)
                         TextButton(
@@ -418,24 +424,24 @@ class _CatalogBridge extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            'Complete Portfolio Catalog',
+            'home_catalog_title'.tr(),
             style: Theme.of(context).textTheme.titleLarge,
           ),
           const SizedBox(height: 10),
           Text(
-            'Browse the full archive across applications, packages, tools, and technologies.',
+            'home_catalog_body'.tr(),
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyMedium,
           ),
           const SizedBox(height: 14),
           Text(
-            'Flutter Apps  ·  Packages  ·  Developer Tools  ·  Open Source',
+            'home_catalog_types'.tr(),
             style: Theme.of(context).textTheme.labelMedium,
           ),
           const SizedBox(height: 18),
           FilledButton(
             onPressed: () => Navigator.of(context).pushNamed('/projects'),
-            child: const Text('Explore All Projects'),
+            child: Text('btn_explore_projects'.tr()),
           ),
         ],
       ),
@@ -454,8 +460,8 @@ class _OpenSourcePreview extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _HomeSectionHeader(
-          title: 'Open Source',
-          actionLabel: 'View All →',
+          title: 'nav_open_source'.tr(),
+          actionLabel: '${'btn_view_all'.tr()} →',
           onAction: () => Navigator.of(context).pushNamed('/open-source'),
         ),
         const SizedBox(height: 24),
@@ -527,28 +533,16 @@ class _EngineeringApproach extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final skillLine = skills.take(8).join(' · ');
-    const items = <(String, String)>[
-      (
-        'Mobile-first architecture',
-        'Build product flows around practical mobile constraints, platform behavior, and maintainable boundaries.',
-      ),
-      (
-        'Native integration when useful',
-        'Keep Flutter productive while using platform or systems code where performance and capability justify it.',
-      ),
-      (
-        'Local and predictable state',
-        'Favor explicit state and data ownership so user-facing behavior stays understandable and testable.',
-      ),
-      (
-        'Production delivery',
-        'Treat CI, testing, store delivery, reliability, and maintainability as part of implementation rather than afterthoughts.',
-      ),
+    final items = <(String, String)>[
+      ('home_mobile_first_title'.tr(), 'home_mobile_first_body'.tr()),
+      ('home_native_title'.tr(), 'home_native_body'.tr()),
+      ('home_state_title'.tr(), 'home_state_body'.tr()),
+      ('home_delivery_title'.tr(), 'home_delivery_body'.tr()),
     ];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const _HomeSectionHeader(title: 'Engineering Approach'),
+        _HomeSectionHeader(title: 'home_engineering_approach'.tr()),
         const SizedBox(height: 10),
         if (skillLine.isNotEmpty)
           Text(skillLine, style: Theme.of(context).textTheme.labelMedium),
@@ -612,10 +606,9 @@ class _SelectedExperience extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _HomeSectionHeader(
-          title: 'Selected Experience',
-          subtitle:
-              'Companies and products across a long-running mobile software career.',
-          actionLabel: 'View Full Experience →',
+          title: 'home_selected_experience'.tr(),
+          subtitle: 'home_selected_experience_body'.tr(),
+          actionLabel: '${'home_view_full_experience'.tr()} →',
           onAction: () => Navigator.of(context).pushNamed('/experience'),
         ),
         const SizedBox(height: 20),
@@ -707,12 +700,12 @@ class _PdfCallout extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Prefer a physical copy?',
+                  'home_pdf_title'.tr(),
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  'Resume emphasizes professional experience. Engineering Portfolio emphasizes featured projects and case-study context.',
+                  'home_pdf_body'.tr(),
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
               ],
@@ -723,11 +716,11 @@ class _PdfCallout extends StatelessWidget {
             children: [
               FilledButton(
                 onPressed: onResume,
-                child: const Text('Download Resume'),
+                child: Text('btn_download_resume'.tr()),
               ),
               OutlinedButton(
                 onPressed: onPortfolio,
-                child: const Text('Portfolio PDF'),
+                child: Text('btn_portfolio_pdf'.tr()),
               ),
             ],
           ),
@@ -772,7 +765,7 @@ class _ContactFooter extends StatelessWidget {
             ),
             if ((data.contact.phone ?? '').isNotEmpty)
               Text(
-                'Tel: ${data.contact.phone}',
+                '${'contact_tel'.tr()}: ${data.contact.phone}',
                 style: Theme.of(context).textTheme.labelMedium,
               ),
             if ((data.contact.lineId ?? '').isNotEmpty)
@@ -801,7 +794,7 @@ class _ContactFooter extends StatelessWidget {
         ),
         const SizedBox(height: 32),
         Text(
-          '© ${DateTime.now().year} ${data.site.ownerName} · Built with Flutter.',
+          '© ${DateTime.now().year} ${data.site.ownerName} ·${'home_built_with'.tr()}',
           style: Theme.of(context).textTheme.labelMedium,
         ),
       ],
