@@ -31,17 +31,17 @@ class ExperiencePage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'EXPERIENCE',
+                    'experience_eyebrow'.tr(),
                     style: Theme.of(context).textTheme.labelLarge,
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    'Engineering across multiple generations of mobile software.',
+                    'experience_headline'.tr(),
                     style: Theme.of(context).textTheme.headlineLarge,
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    'Selected companies and products, with company names kept directly scannable and technical impact separated from general responsibilities.',
+                    'experience_intro'.tr(),
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   const SizedBox(height: 40),
@@ -131,7 +131,7 @@ class _ExperienceEntry extends StatelessWidget {
           const SizedBox(height: 12),
           TextButton(
             onPressed: () => launchPortfolioUrl(experience.url),
-            child: const Text('Company / Product →'),
+            child: Text('${'experience_company_product'.tr()} →'),
           ),
         ],
       ],
