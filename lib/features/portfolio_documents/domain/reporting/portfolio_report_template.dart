@@ -103,6 +103,11 @@ final class PortfolioReportTemplateRegistry {
       dataExpression: 'skills',
     ),
     PortfolioReportSectionDefinition(
+      id: PortfolioReportSectionId.projects,
+      labelKey: 'open_source_projects',
+      dataExpression: 'openSourceProjects',
+    ),
+    PortfolioReportSectionDefinition(
       id: PortfolioReportSectionId.links,
       labelKey: 'links',
       dataExpression: 'links',
@@ -126,7 +131,7 @@ final class PortfolioReportTemplateRegistry {
       PortfolioReportTemplateId.resumeCompact =>
         const PortfolioReportTemplateDefinition(
           id: PortfolioReportTemplateId.resumeCompact,
-          featuredProjectsOnly: true,
+          featuredProjectsOnly: false,
           includeProjectDescriptions: false,
           sections: _resumeSections,
         ),
