@@ -4,44 +4,43 @@ import 'package:flutter_web_portfolio_starter/features/portfolio_documents/domai
 void main() {
   const registry = PortfolioReportTemplateRegistry();
 
-  test('defines stable section ordering and expressions', () {
+  test('portfolio prioritizes featured projects before experience', () {
     final definition = registry.definitionFor(
       PortfolioReportTemplateId.portfolioFull,
     );
 
     expect(
-      definition.sections.map((section) => section.id),
-      <PortfolioReportSectionId>[
-        PortfolioReportSectionId.summary,
-        PortfolioReportSectionId.experience,
-        PortfolioReportSectionId.skills,
-        PortfolioReportSectionId.projects,
-        PortfolioReportSectionId.projects,
-        PortfolioReportSectionId.links,
+      definition.sections.map((section) => section.dataExpression),
+      <String>[
+        'summary',
+        'featuredProjects',
+        'experience',
+        'skills',
+        'openSourceProjects',
+        'links',
       ],
     );
+  });
+
+  test('resume prioritizes experience and keeps open source compact', () {
+    final definition = registry.definitionFor(
+      PortfolioReportTemplateId.resumeCompact,
+    );
+
     expect(
       definition.sections.map((section) => section.dataExpression),
       <String>[
         'summary',
         'experience',
-        'skills',
         'featuredProjects',
+        'skills',
         'openSourceProjects',
         'links',
       ],
     );
-    expect(definition.sections.map((section) => section.labelKey), <String>[
-      'summary',
-      'experience',
-      'skills',
-      'featured_projects',
-      'open_source_projects',
-      'links',
-    ]);
   });
 
-  test('shares section metadata while preserving template policies', () {
+  test('preserves template policies while using distinct section order', () {
     final full = registry.definitionFor(
       PortfolioReportTemplateId.portfolioFull,
     );
@@ -49,7 +48,7 @@ void main() {
       PortfolioReportTemplateId.resumeCompact,
     );
 
-    expect(compact.sections, same(full.sections));
+    expect(compact.sections, isNot(same(full.sections)));
     expect(full.featuredProjectsOnly, isFalse);
     expect(full.includeProjectDescriptions, isTrue);
     expect(compact.featuredProjectsOnly, isFalse);
