@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../app/theme/app_theme.dart';
 import '../../data/datasources/local_content_loader.dart';
+import '../../models/portfolio_data_with_export_selection.dart';
 import '../../models/portfolio_models.dart';
 import '../widgets/public_portfolio_shell.dart';
 import 'project_detail_page.dart';
@@ -38,7 +39,14 @@ class _ProjectsPageState extends State<ProjectsPage> {
             body: Center(child: CircularProgressIndicator()),
           );
         }
+
         final data = snapshot.data!;
+        final catalog = _catalogProjects(data);
+        final featured = _filteredFeatured(
+          data.featuredProjects,
+        ).toList(growable: false);
+        final projects = _filteredOther(catalog).toList(growable: false);
+
         return PublicPortfolioShell(
           site: data.site,
           activeRoute: '/projects',
@@ -47,34 +55,44 @@ class _ProjectsPageState extends State<ProjectsPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('PROJECTS', style: Theme.of(context).textTheme.labelLarge),
-                  const SizedBox(height: 12),
                   Text(
-                    'Engineering work across applications, libraries, developer tools, and open source.',
-                    style: Theme.of(context).textTheme.headlineLarge,
+                    'PROJECTS',
+                    style: Theme.of(context).textTheme.labelLarge,
+                  ),
+                  const SizedBox(height: 12),
+                  ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 900),
+                    child: Text(
+                      'Engineering work across applications, libraries, developer tools, and open source.',
+                      style: Theme.of(context).textTheme.headlineLarge,
+                    ),
                   ),
                   const SizedBox(height: 16),
-                  Text(
-                    'Browse selected work by technology or search for a project directly. Technical context stays primary; repository metadata remains secondary.',
-                    style: Theme.of(context).textTheme.bodyLarge,
+                  ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 860),
+                    child: Text(
+                      'Browse selected work by technology or search for a project directly. Technical context stays primary; repository metadata remains secondary.',
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
                   ),
                   const SizedBox(height: 40),
                   _buildControls(),
                   const SizedBox(height: 48),
-                  if (data.featuredProjects.isNotEmpty) ...[
-                    _SectionTitle(
+                  if (featured.isNotEmpty) ...[
+                    const _SectionTitle(
                       eyebrow: 'FEATURED',
                       title: 'Selected engineering work',
                     ),
                     const SizedBox(height: 24),
-                    ..._filteredFeatured(data.featuredProjects).map(
+                    ...featured.map(
                       (project) => Padding(
                         padding: const EdgeInsets.only(bottom: 20),
                         child: _FeaturedProjectRow(
                           project: project,
                           onOpen: () => Navigator.of(context).push(
                             MaterialPageRoute<void>(
-                              builder: (_) => ProjectDetailPage(project: project),
+                              builder: (_) =>
+                                  ProjectDetailPage(project: project),
                             ),
                           ),
                         ),
@@ -82,34 +100,39 @@ class _ProjectsPageState extends State<ProjectsPage> {
                     ),
                   ],
                   const SizedBox(height: 48),
-                  _SectionTitle(
+                  const _SectionTitle(
                     eyebrow: 'CATALOG',
                     title: 'More projects',
                   ),
                   const SizedBox(height: 24),
-                  LayoutBuilder(
-                    builder: (context, constraints) {
-                      final columns = constraints.maxWidth >= 900 ? 3 : constraints.maxWidth >= 620 ? 2 : 1;
-                      final gap = 16.0;
-                      final width = (constraints.maxWidth - gap * (columns - 1)) / columns;
-                      final projects = _filteredOther(data.otherProjects);
-                      if (projects.isEmpty && _filteredFeatured(data.featuredProjects).isEmpty) {
-                        return _EmptyProjects(onReset: _resetFilters);
-                      }
-                      return Wrap(
-                        spacing: gap,
-                        runSpacing: gap,
-                        children: projects
-                            .map(
-                              (project) => SizedBox(
-                                width: width,
-                                child: _ProjectCard(project: project),
-                              ),
-                            )
-                            .toList(growable: false),
-                      );
-                    },
-                  ),
+                  if (projects.isEmpty && featured.isEmpty)
+                    _EmptyProjects(onReset: _resetFilters)
+                  else
+                    LayoutBuilder(
+                      builder: (context, constraints) {
+                        final columns = constraints.maxWidth >= 900
+                            ? 3
+                            : constraints.maxWidth >= 620
+                            ? 2
+                            : 1;
+                        const gap = 16.0;
+                        final width =
+                            (constraints.maxWidth - gap * (columns - 1)) /
+                            columns;
+                        return Wrap(
+                          spacing: gap,
+                          runSpacing: gap,
+                          children: projects
+                              .map(
+                                (project) => SizedBox(
+                                  width: width,
+                                  child: _ProjectCard(project: project),
+                                ),
+                              )
+                              .toList(growable: false),
+                        );
+                      },
+                    ),
                 ],
               ),
             ),
@@ -119,13 +142,27 @@ class _ProjectsPageState extends State<ProjectsPage> {
     );
   }
 
+  List<OtherProject> _catalogProjects(PortfolioData data) {
+    final merged = <OtherProject>[...data.otherProjects];
+    if (data is PortfolioDataWithExportSelection) {
+      final knownRepos = merged.map((project) => project.repoUrl).toSet();
+      for (final project in data.openSourceProjects) {
+        if (project.repoUrl.isEmpty || knownRepos.add(project.repoUrl)) {
+          merged.add(project);
+        }
+      }
+    }
+    return merged;
+  }
+
   Widget _buildControls() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         TextField(
           controller: _searchController,
-          onChanged: (value) => setState(() => _query = value.trim().toLowerCase()),
+          onChanged: (value) =>
+              setState(() => _query = value.trim().toLowerCase()),
           decoration: const InputDecoration(
             hintText: 'Search projects…',
             prefixIcon: Icon(Icons.search),
@@ -146,8 +183,18 @@ class _ProjectsPageState extends State<ProjectsPage> {
           children: _filters
               .map(
                 (filter) => ChoiceChip(
-                  label: Text(filter),
+                  label: Text(
+                    filter,
+                    style: TextStyle(
+                      color: _filter == filter
+                          ? Colors.white
+                          : AppTheme.textMuted,
+                    ),
+                  ),
                   selected: _filter == filter,
+                  selectedColor: AppTheme.accent,
+                  checkmarkColor: Colors.white,
+                  backgroundColor: Colors.white,
                   onSelected: (_) => setState(() => _filter = filter),
                 ),
               )
@@ -157,22 +204,41 @@ class _ProjectsPageState extends State<ProjectsPage> {
     );
   }
 
-  Iterable<FeaturedProject> _filteredFeatured(List<FeaturedProject> projects) =>
-      projects.where((project) => _matches(project.name, project.summary, project.tags));
+  Iterable<FeaturedProject> _filteredFeatured(
+    List<FeaturedProject> projects,
+  ) => projects.where(
+    (project) => _matches(project.name, project.summary, project.tags),
+  );
 
   Iterable<OtherProject> _filteredOther(List<OtherProject> projects) =>
-      projects.where((project) => _matches(project.name, project.summary, project.tags));
+      projects.where(
+        (project) => _matches(project.name, project.summary, project.tags),
+      );
 
   bool _matches(String name, String summary, List<String> tags) {
     final haystack = '$name $summary ${tags.join(' ')}'.toLowerCase();
     if (_query.isNotEmpty && !haystack.contains(_query)) return false;
     if (_filter == 'All') return true;
-    final tagsLower = tags.map((e) => e.toLowerCase()).toList(growable: false);
+
+    final tagsLower = tags.map((tag) => tag.toLowerCase()).toList();
     return switch (_filter) {
-      'Flutter' => tagsLower.any((tag) => tag.contains('flutter') || tag.contains('dart')),
+      'Flutter' => tagsLower.any(
+        (tag) => tag.contains('flutter') || tag.contains('dart'),
+      ),
       'Rust' => tagsLower.any((tag) => tag.contains('rust')),
-      'Packages' => haystack.contains('package') || haystack.contains('library') || haystack.contains('crate'),
-      'Tools' => haystack.contains('tool') || haystack.contains('cli') || haystack.contains('developer'),
+      'Packages' =>
+        haystack.contains('package') ||
+            haystack.contains('library') ||
+            haystack.contains('crate') ||
+            haystack.contains('pub.dev') ||
+            name.contains('_flutter') ||
+            name.contains('_l10n') ||
+            name.contains('report_suite'),
+      'Tools' =>
+        haystack.contains('tool') ||
+            haystack.contains('cli') ||
+            haystack.contains('developer') ||
+            tagsLower.any((tag) => tag == 'gpui'),
       _ => true,
     };
   }
@@ -197,7 +263,12 @@ class _SectionTitle extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(eyebrow, style: Theme.of(context).textTheme.labelLarge?.copyWith(color: AppTheme.metaText)),
+        Text(
+          eyebrow,
+          style: Theme.of(
+            context,
+          ).textTheme.labelLarge?.copyWith(color: AppTheme.metaText),
+        ),
         const SizedBox(height: 8),
         Text(title, style: Theme.of(context).textTheme.headlineMedium),
         const SizedBox(height: 16),
@@ -218,7 +289,7 @@ class _FeaturedProjectRow extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Colors.white.withValues(alpha: 0.94),
         border: Border.all(color: AppTheme.outline),
         borderRadius: BorderRadius.circular(AppTheme.cardRadius),
       ),
@@ -228,7 +299,12 @@ class _FeaturedProjectRow extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(child: Text(project.name, style: Theme.of(context).textTheme.titleLarge)),
+              Expanded(
+                child: Text(
+                  project.name,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+              ),
               Text('FEATURED', style: Theme.of(context).textTheme.labelMedium),
             ],
           ),
@@ -250,7 +326,10 @@ class _FeaturedProjectRow extends StatelessWidget {
             spacing: 12,
             runSpacing: 8,
             children: [
-              FilledButton(onPressed: onOpen, child: const Text('View Case Study')),
+              FilledButton(
+                onPressed: onOpen,
+                child: const Text('View Case Study'),
+              ),
               if (project.repoUrl.isNotEmpty)
                 OutlinedButton(
                   onPressed: () => launchPortfolioUrl(project.repoUrl),
@@ -279,7 +358,7 @@ class _ProjectCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Colors.white.withValues(alpha: 0.94),
         border: Border.all(color: AppTheme.outline),
         borderRadius: BorderRadius.circular(AppTheme.cardRadius),
       ),
@@ -330,9 +409,15 @@ class _EmptyProjects extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Text('No matching projects', style: Theme.of(context).textTheme.titleLarge),
+          Text(
+            'No matching projects',
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
           const SizedBox(height: 8),
-          Text('Try a different technology filter or clear the search.', style: Theme.of(context).textTheme.bodyMedium),
+          Text(
+            'Try a different technology filter or clear the search.',
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
           const SizedBox(height: 16),
           TextButton(onPressed: onReset, child: const Text('Reset filters')),
         ],
