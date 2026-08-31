@@ -56,14 +56,14 @@ class _ProjectsPageState extends State<ProjectsPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'PROJECTS',
+                    'projects_eyebrow'.tr(),
                     style: Theme.of(context).textTheme.labelLarge,
                   ),
                   const SizedBox(height: 12),
                   ConstrainedBox(
                     constraints: const BoxConstraints(maxWidth: 900),
                     child: Text(
-                      'Engineering work across applications, libraries, developer tools, and open source.',
+                      'projects_headline'.tr(),
                       style: Theme.of(context).textTheme.headlineLarge,
                     ),
                   ),
@@ -71,7 +71,7 @@ class _ProjectsPageState extends State<ProjectsPage> {
                   ConstrainedBox(
                     constraints: const BoxConstraints(maxWidth: 860),
                     child: Text(
-                      'Browse selected work by technology or search for a project directly. Technical context stays primary; repository metadata remains secondary.',
+                      'projects_intro'.tr(),
                       style: Theme.of(context).textTheme.bodyLarge,
                     ),
                   ),
@@ -79,9 +79,9 @@ class _ProjectsPageState extends State<ProjectsPage> {
                   _buildControls(),
                   const SizedBox(height: 48),
                   if (featured.isNotEmpty) ...[
-                    const _SectionTitle(
-                      eyebrow: 'FEATURED',
-                      title: 'Selected engineering work',
+                    _SectionTitle(
+                      eyebrow: 'projects_featured'.tr(),
+                      title: 'projects_featured_title'.tr(),
                     ),
                     const SizedBox(height: 24),
                     ...featured.map(
@@ -100,9 +100,9 @@ class _ProjectsPageState extends State<ProjectsPage> {
                     ),
                   ],
                   const SizedBox(height: 48),
-                  const _SectionTitle(
-                    eyebrow: 'CATALOG',
-                    title: 'More projects',
+                  _SectionTitle(
+                    eyebrow: 'projects_catalog'.tr(),
+                    title: 'projects_more'.tr(),
                   ),
                   const SizedBox(height: 24),
                   if (projects.isEmpty && featured.isEmpty)
@@ -163,15 +163,15 @@ class _ProjectsPageState extends State<ProjectsPage> {
           controller: _searchController,
           onChanged: (value) =>
               setState(() => _query = value.trim().toLowerCase()),
-          decoration: const InputDecoration(
-            hintText: 'Search projects…',
-            prefixIcon: Icon(Icons.search),
+          decoration: InputDecoration(
+            hintText: 'projects_search'.tr(),
+            prefixIcon: const Icon(Icons.search),
             filled: true,
             fillColor: Colors.white,
-            border: OutlineInputBorder(
+            border: const OutlineInputBorder(
               borderSide: BorderSide(color: AppTheme.outline),
             ),
-            enabledBorder: OutlineInputBorder(
+            enabledBorder: const OutlineInputBorder(
               borderSide: BorderSide(color: AppTheme.outline),
             ),
           ),
@@ -184,7 +184,7 @@ class _ProjectsPageState extends State<ProjectsPage> {
               .map(
                 (filter) => ChoiceChip(
                   label: Text(
-                    filter,
+                    _filterLabel(filter),
                     style: TextStyle(
                       color: _filter == filter
                           ? Colors.white
@@ -203,6 +203,15 @@ class _ProjectsPageState extends State<ProjectsPage> {
       ],
     );
   }
+
+  String _filterLabel(String filter) => switch (filter) {
+    'All' => 'projects_filter_all'.tr(),
+    'Flutter' => 'projects_filter_flutter'.tr(),
+    'Rust' => 'projects_filter_rust'.tr(),
+    'Packages' => 'projects_filter_packages'.tr(),
+    'Tools' => 'projects_filter_tools'.tr(),
+    _ => filter,
+  };
 
   Iterable<FeaturedProject> _filteredFeatured(List<FeaturedProject> projects) =>
       projects.where(
@@ -304,7 +313,10 @@ class _FeaturedProjectRow extends StatelessWidget {
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
               ),
-              Text('FEATURED', style: Theme.of(context).textTheme.labelMedium),
+              Text(
+                'projects_featured'.tr(),
+                style: Theme.of(context).textTheme.labelMedium,
+              ),
             ],
           ),
           const SizedBox(height: 12),
@@ -327,7 +339,7 @@ class _FeaturedProjectRow extends StatelessWidget {
             children: [
               FilledButton(
                 onPressed: onOpen,
-                child: const Text('View Case Study'),
+                child: Text('btn_view_case_study'.tr()),
               ),
               if (project.repoUrl.isNotEmpty)
                 OutlinedButton(
@@ -337,7 +349,7 @@ class _FeaturedProjectRow extends StatelessWidget {
               if (project.liveUrl.isNotEmpty)
                 TextButton(
                   onPressed: () => launchPortfolioUrl(project.liveUrl),
-                  child: const Text('Live / Product'),
+                  child: Text('projects_live_product'.tr()),
                 ),
             ],
           ),
@@ -381,7 +393,7 @@ class _ProjectCard extends StatelessWidget {
               if (project.liveUrl.isNotEmpty)
                 TextButton(
                   onPressed: () => launchPortfolioUrl(project.liveUrl),
-                  child: const Text('Open →'),
+                  child: Text('${'btn_open'.tr()} →'),
                 ),
             ],
           ),
@@ -409,16 +421,16 @@ class _EmptyProjects extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            'No matching projects',
+            'projects_no_match'.tr(),
             style: Theme.of(context).textTheme.titleLarge,
           ),
           const SizedBox(height: 8),
           Text(
-            'Try a different technology filter or clear the search.',
+            'projects_no_match_hint'.tr(),
             style: Theme.of(context).textTheme.bodyMedium,
           ),
           const SizedBox(height: 16),
-          TextButton(onPressed: onReset, child: const Text('Reset filters')),
+          TextButton(onPressed: onReset, child: Text('btn_reset_filters'.tr())),
         ],
       ),
     );

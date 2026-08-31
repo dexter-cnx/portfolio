@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -19,10 +20,10 @@ class PublicPortfolioShell extends StatelessWidget {
   });
 
   static const _destinations = <(String, String)>[
-    ('/', 'Home'),
-    ('/projects', 'Projects'),
-    ('/open-source', 'Open Source'),
-    ('/experience', 'Experience'),
+    ('/', 'nav_home'),
+    ('/projects', 'nav_projects'),
+    ('/open-source', 'nav_open_source'),
+    ('/experience', 'nav_experience'),
   ];
 
   @override
@@ -57,7 +58,7 @@ class PublicPortfolioShell extends StatelessWidget {
           if (MediaQuery.sizeOf(context).width >= 760)
             ..._destinations.map(
               (item) => _NavLink(
-                label: item.$2,
+                label: item.$2.tr(),
                 selected: activeRoute == item.$1,
                 onTap: () {
                   if (activeRoute != item.$1) {
@@ -82,7 +83,7 @@ class PublicPortfolioShell extends StatelessWidget {
             ),
           if (MediaQuery.sizeOf(context).width < 760)
             PopupMenuButton<String>(
-              tooltip: 'Navigation',
+              tooltip: 'nav_navigation'.tr(),
               icon: const Icon(Icons.menu),
               onSelected: (route) {
                 if (route != activeRoute) {
@@ -93,7 +94,7 @@ class PublicPortfolioShell extends StatelessWidget {
                   .map(
                     (item) => PopupMenuItem<String>(
                       value: item.$1,
-                      child: Text(item.$2),
+                      child: Text(item.$2.tr()),
                     ),
                   )
                   .toList(growable: false),
