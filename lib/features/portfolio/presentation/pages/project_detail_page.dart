@@ -33,7 +33,7 @@ class ProjectDetailPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'ENGINEERING CASE STUDY',
+                    'case_eyebrow'.tr(),
                     style: Theme.of(
                       context,
                     ).textTheme.labelLarge?.copyWith(color: AppTheme.metaText),
@@ -58,18 +58,18 @@ class ProjectDetailPage extends StatelessWidget {
                       if (project.repoUrl.isNotEmpty)
                         FilledButton(
                           onPressed: () => launchPortfolioUrl(project.repoUrl),
-                          child: const Text('View Source'),
+                          child: Text('btn_view_source'.tr()),
                         ),
                       if (project.liveUrl.isNotEmpty)
                         OutlinedButton(
                           onPressed: () => launchPortfolioUrl(project.liveUrl),
-                          child: const Text('View Product'),
+                          child: Text('btn_view_product'.tr()),
                         ),
                       ...project.urls.map(
                         (item) => TextButton(
                           onPressed: () => launchPortfolioUrl(item.url),
                           child: Text(
-                            item.title.isEmpty ? 'Open link' : item.title,
+                            item.title.isEmpty ? 'btn_open_link'.tr() : item.title,
                           ),
                         ),
                       ),
@@ -92,8 +92,8 @@ class ProjectDetailPage extends StatelessWidget {
                   ],
                   const SizedBox(height: 56),
                   _CaseStudySection(
-                    label: 'OVERVIEW',
-                    title: 'What this project is',
+                    label: 'case_overview'.tr(),
+                    title: 'case_overview_title'.tr(),
                     child: Text(
                       project.longDescription.isEmpty
                           ? project.summary
@@ -103,28 +103,28 @@ class ProjectDetailPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 48),
                   _CaseStudySection(
-                    label: 'ENGINEERING APPROACH',
-                    title: 'Technical foundation',
+                    label: 'case_engineering'.tr(),
+                    title: 'case_engineering_title'.tr(),
                     child: _EngineeringHighlights(tags: project.tags),
                   ),
                   const SizedBox(height: 48),
                   _CaseStudySection(
-                    label: 'ARCHITECTURE',
-                    title: 'Responsibility-driven layers',
+                    label: 'case_architecture'.tr(),
+                    title: 'case_architecture_title'.tr(),
                     child: const _ArchitectureDiagram(),
                   ),
                   const SizedBox(height: 48),
                   _CaseStudySection(
-                    label: 'TECHNICAL STACK',
-                    title: 'Technologies by responsibility',
+                    label: 'case_stack'.tr(),
+                    title: 'case_stack_title'.tr(),
                     child: _StackTable(tags: project.tags),
                   ),
                   const SizedBox(height: 48),
                   _CaseStudySection(
-                    label: 'TRADE-OFFS',
-                    title: 'Engineering decisions',
+                    label: 'case_tradeoffs'.tr(),
+                    title: 'case_tradeoffs_title'.tr(),
                     child: Text(
-                      'This portfolio only presents decisions supported by the project data. Detailed problem, decision, trade-off, performance, and evidence fields can be added through the structured case-study model without inventing claims.',
+                      'case_tradeoffs_body'.tr(),
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                   ),
@@ -143,14 +143,14 @@ class ProjectDetailPage extends StatelessWidget {
                       runSpacing: 16,
                       children: [
                         Text(
-                          'Explore more engineering work.',
+                          'case_more'.tr(),
                           style: Theme.of(context).textTheme.titleLarge,
                         ),
                         FilledButton(
                           onPressed: () => Navigator.of(
                             context,
                           ).pushReplacementNamed('/projects'),
-                          child: const Text('Back to Projects'),
+                          child: Text('btn_back_projects'.tr()),
                         ),
                       ],
                     ),
@@ -206,10 +206,10 @@ class _EngineeringHighlights extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final items = tags.isEmpty
-        ? const ['Production delivery', 'Cross-platform implementation']
+        ? ['case_production_delivery'.tr(), 'case_cross_platform'.tr()]
         : tags
               .take(4)
-              .map((tag) => '$tag implementation')
+              .map((tag) => '$tag ${'case_implementation'.tr()}')
               .toList(growable: false);
     return Wrap(
       spacing: 16,
@@ -244,11 +244,11 @@ class _ArchitectureDiagram extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const layers = [
-      'Presentation / Client',
-      'Application & Domain',
-      'Platform / Service Boundary',
-      'Data & External Services',
+    final layers = [
+      'case_layer_presentation'.tr(),
+      'case_layer_application'.tr(),
+      'case_layer_platform'.tr(),
+      'case_layer_data'.tr(),
     ];
     return Column(
       children: [
@@ -289,7 +289,7 @@ class _StackTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final stack = tags.isEmpty ? const ['Project-specific stack'] : tags;
+    final stack = tags.isEmpty ? ['case_project_stack'.tr()] : tags;
     return Column(
       children: [
         for (var index = 0; index < stack.length; index++)
@@ -303,7 +303,7 @@ class _StackTable extends StatelessWidget {
                 SizedBox(
                   width: 130,
                   child: Text(
-                    index == 0 ? 'Primary' : 'Supporting',
+                    index == 0 ? 'case_primary'.tr() : 'case_supporting'.tr(),
                     style: Theme.of(context).textTheme.labelMedium,
                   ),
                 ),
