@@ -430,10 +430,7 @@ class _EmptyProjects extends StatelessWidget {
             style: Theme.of(context).textTheme.bodyMedium,
           ),
           const SizedBox(height: 16),
-          TextButton(
-            onPressed: onReset,
-            child: Text('btn_reset_filters'.tr()),
-          ),
+          TextButton(onPressed: onReset, child: Text('btn_reset_filters'.tr())),
         ],
       ),
     );

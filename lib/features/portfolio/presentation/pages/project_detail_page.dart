@@ -69,7 +69,9 @@ class ProjectDetailPage extends StatelessWidget {
                         (item) => TextButton(
                           onPressed: () => launchPortfolioUrl(item.url),
                           child: Text(
-                            item.title.isEmpty ? 'btn_open_link'.tr() : item.title,
+                            item.title.isEmpty
+                                ? 'btn_open_link'.tr()
+                                : item.title,
                           ),
                         ),
                       ),
