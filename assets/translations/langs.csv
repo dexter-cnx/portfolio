@@ -1,9 +1,24 @@
 key,en,th
+nav_home,Home,หน้าแรก
 nav_about,About,เกี่ยวกับ
 nav_experience,Experience,ประสบการณ์
 nav_projects,Projects,ผลงาน
+nav_open_source,Open Source,โอเพนซอร์ส
 nav_contact,Contact,ติดต่อ
+nav_navigation,Navigation,เมนูนำทาง
 btn_resume,Resume,เรซูเม่
+btn_view_projects,View Projects,ดูผลงาน
+btn_view_case_study,View Case Study,ดูกรณีศึกษา
+btn_explore_projects,Explore All Projects,ดูผลงานทั้งหมด
+btn_view_all,View All,ดูทั้งหมด
+btn_download_resume,Download Resume,ดาวน์โหลดเรซูเม่
+btn_portfolio_pdf,Portfolio PDF,Portfolio PDF
+btn_view_source,View Source,ดูซอร์สโค้ด
+btn_view_product,View Product,ดูผลิตภัณฑ์
+btn_open_link,Open link,เปิดลิงก์
+btn_back_projects,Back to Projects,กลับไปหน้าผลงาน
+btn_open,Open,เปิด
+btn_reset_filters,Reset filters,ล้างตัวกรอง
 pdf_export_tooltip,Choose PDF export,เลือกเอกสาร PDF
 pdf_export_resume,Resume PDF,Resume PDF แบบย่อ
 pdf_export_portfolio,Full Portfolio PDF,Portfolio PDF แบบเต็ม
@@ -13,13 +28,83 @@ hero_subheadline,"I build clean, useful digital products.","ฉันสร้�
 hero_description,"Replace this with your strongest one-paragraph introduction.","แทนที่ข้อความนี้ด้วยการแนะนำตัวของคุณเอง"
 hero_btn_contact,Get In Touch,ติดต่อ
 hero_btn_projects,View Projects,ผลงาน
+hero_years_software,20+ Years Software,ประสบการณ์ซอฟต์แวร์กว่า 20 ปี
+hero_mobile_engineering,Mobile Engineering,วิศวกรรมซอฟต์แวร์มือถือ
+hero_open_source,Open Source,โอเพนซอร์ส
+home_contact_label,CONTACT,ติดต่อ
+home_featured_work,Featured Work,ผลงานเด่น
+home_catalog_title,Complete Portfolio Catalog,รวมผลงานทั้งหมด
+home_catalog_body,"Browse the full archive across applications, packages, tools, and technologies.","ดูผลงานทั้งหมดทั้งแอปพลิเคชัน แพ็กเกจ เครื่องมือนักพัฒนา และเทคโนโลยีต่าง ๆ"
+home_catalog_types,"Flutter Apps  ·  Packages  ·  Developer Tools  ·  Open Source","แอป Flutter  ·  แพ็กเกจ  ·  เครื่องมือนักพัฒนา  ·  โอเพนซอร์ส"
+home_engineering_approach,Engineering Approach,แนวทางด้านวิศวกรรม
+home_mobile_first_title,Mobile-first architecture,สถาปัตยกรรมที่ให้ความสำคัญกับมือถือ
+home_mobile_first_body,"Build product flows around practical mobile constraints, platform behavior, and maintainable boundaries.","ออกแบบโฟลว์ผลิตภัณฑ์โดยคำนึงถึงข้อจำกัดจริงของมือถือ พฤติกรรมของแพลตฟอร์ม และขอบเขตที่ดูแลรักษาได้"
+home_native_title,Native integration when useful,ใช้ Native integration เมื่อเหมาะสม
+home_native_body,"Keep Flutter productive while using platform or systems code where performance and capability justify it.","คงประสิทธิภาพการพัฒนาด้วย Flutter พร้อมใช้โค้ดระดับแพลตฟอร์มหรือระบบเมื่อจำเป็นต่อความสามารถและประสิทธิภาพ"
+home_state_title,Local and predictable state,สถานะที่ชัดเจนและคาดเดาได้
+home_state_body,"Favor explicit state and data ownership so user-facing behavior stays understandable and testable.","ให้ความสำคัญกับการกำหนดเจ้าของ state และข้อมูลอย่างชัดเจน เพื่อให้พฤติกรรมที่ผู้ใช้เห็นเข้าใจและทดสอบได้"
+home_delivery_title,Production delivery,การส่งมอบระดับ Production
+home_delivery_body,"Treat CI, testing, store delivery, reliability, and maintainability as part of implementation rather than afterthoughts.","มอง CI การทดสอบ การส่งขึ้นสโตร์ ความเสถียร และการดูแลรักษาเป็นส่วนหนึ่งของงานพัฒนา ไม่ใช่งานที่ค่อยมาทำภายหลัง"
+home_selected_experience,Selected Experience,ประสบการณ์ที่คัดเลือก
+home_selected_experience_body,"Companies and products across a long-running mobile software career.","บริษัทและผลิตภัณฑ์จากเส้นทางการทำงานด้านซอฟต์แวร์มือถือระยะยาว"
+home_view_full_experience,View Full Experience,ดูประสบการณ์ทั้งหมด
+home_pdf_title,Prefer a physical copy?,ต้องการเอกสารสำหรับพิมพ์หรือไม่?
+home_pdf_body,"Resume emphasizes professional experience. Engineering Portfolio emphasizes featured projects and case-study context.","Resume เน้นประสบการณ์การทำงาน ส่วน Engineering Portfolio เน้นผลงานเด่นและบริบทเชิงกรณีศึกษา"
+home_built_with, Built with Flutter., สร้างด้วย Flutter.
 about_title,About Me,แนะนำตัว
 about_skills_header,"Here are a few technologies I've been working with recently:","นี่คือเทคโนโลยีบางส่วนที่ฉันใช้ทำงานล่าสุด:"
 exp_title,Where I've Worked,"ประสบการณ์การทำงาน"
 projects_title,Some Things I've Built,"บางส่วนของผลงานที่ผ่านมา"
 projects_others_title,Other Noteworthy Projects,"ผลงานอื่นๆ ที่น่าสนใจ"
+projects_eyebrow,PROJECTS,ผลงาน
+projects_headline,"Engineering work across applications, libraries, developer tools, and open source.","ผลงานด้านวิศวกรรมทั้งแอปพลิเคชัน ไลบรารี เครื่องมือนักพัฒนา และโอเพนซอร์ส"
+projects_intro,"Browse selected work by technology or search for a project directly. Technical context stays primary; repository metadata remains secondary.","เลือกดูผลงานตามเทคโนโลยีหรือค้นหาโปรเจกต์ได้โดยตรง โดยเน้นบริบททางเทคนิคเป็นหลักและให้ข้อมูล repository เป็นข้อมูลประกอบ"
+projects_search,Search projects…,ค้นหาผลงาน…
+projects_filter_all,All,ทั้งหมด
+projects_filter_flutter,Flutter,Flutter
+projects_filter_rust,Rust,Rust
+projects_filter_packages,Packages,แพ็กเกจ
+projects_filter_tools,Tools,เครื่องมือ
+projects_featured,FEATURED,ผลงานเด่น
+projects_featured_title,Selected engineering work,ผลงานวิศวกรรมที่คัดเลือก
+projects_catalog,CATALOG,รายการทั้งหมด
+projects_more,More projects,ผลงานเพิ่มเติม
+projects_live_product,Live / Product,เว็บไซต์ / ผลิตภัณฑ์
+projects_no_match,No matching projects,ไม่พบผลงานที่ตรงกับเงื่อนไข
+projects_no_match_hint,Try a different technology filter or clear the search.,ลองเลือกเทคโนโลยีอื่นหรือล้างคำค้นหา
 open_source_projects_title,My Open Source Projects,โปรเจกต์โอเพนซอร์สของผม
 open_source_projects_subtitle,"Selected public projects from GitHub.","โปรเจกต์สาธารณะที่คัดเลือกจาก GitHub"
+open_source_eyebrow,OPEN SOURCE,โอเพนซอร์ส
+open_source_headline,"Packages, libraries, and developer tools.","แพ็กเกจ ไลบรารี และเครื่องมือสำหรับนักพัฒนา"
+open_source_intro,"Reusable engineering work published for other developers. Registry and repository links stay explicit so the implementation can be inspected directly.","ผลงานวิศวกรรมที่เผยแพร่ให้ผู้พัฒนาคนอื่นนำไปใช้ซ้ำ พร้อมลิงก์ registry และ repository เพื่อให้ตรวจสอบ implementation ได้โดยตรง"
+open_source_empty,No public packages are selected yet.,ยังไม่ได้เลือกแพ็กเกจสาธารณะมาแสดง
+experience_eyebrow,EXPERIENCE,ประสบการณ์
+experience_headline,Engineering across multiple generations of mobile software.,งานวิศวกรรมซอฟต์แวร์มือถือผ่านหลายยุคของเทคโนโลยี
+experience_intro,"Selected companies and products, with company names kept directly scannable and technical impact separated from general responsibilities.","คัดเลือกบริษัทและผลิตภัณฑ์สำคัญ โดยแยกผลกระทบเชิงเทคนิคออกจากหน้าที่ทั่วไปเพื่อให้อ่านประสบการณ์ได้ชัดเจน"
+experience_company_product,Company / Product,บริษัท / ผลิตภัณฑ์
+case_eyebrow,ENGINEERING CASE STUDY,กรณีศึกษาด้านวิศวกรรม
+case_overview,OVERVIEW,ภาพรวม
+case_overview_title,What this project is,โปรเจกต์นี้คืออะไร
+case_engineering,ENGINEERING APPROACH,แนวทางด้านวิศวกรรม
+case_engineering_title,Technical foundation,พื้นฐานทางเทคนิค
+case_architecture,ARCHITECTURE,สถาปัตยกรรม
+case_architecture_title,Responsibility-driven layers,การแบ่งเลเยอร์ตามความรับผิดชอบ
+case_stack,TECHNICAL STACK,เทคโนโลยีที่ใช้
+case_stack_title,Technologies by responsibility,เทคโนโลยีตามหน้าที่รับผิดชอบ
+case_tradeoffs,TRADE-OFFS,ข้อแลกเปลี่ยนในการออกแบบ
+case_tradeoffs_title,Engineering decisions,การตัดสินใจด้านวิศวกรรม
+case_tradeoffs_body,"This portfolio only presents decisions supported by the project data. Detailed problem, decision, trade-off, performance, and evidence fields can be added through the structured case-study model without inventing claims.","Portfolio นี้จะแสดงเฉพาะการตัดสินใจที่มีข้อมูลของโปรเจกต์รองรับ โดยสามารถเพิ่มรายละเอียดปัญหา การตัดสินใจ ข้อแลกเปลี่ยน ประสิทธิภาพ และหลักฐานผ่านโมเดลกรณีศึกษาแบบมีโครงสร้างได้โดยไม่สร้างข้อมูลที่ไม่มีหลักฐาน"
+case_more,Explore more engineering work.,ดูผลงานวิศวกรรมเพิ่มเติม
+case_production_delivery,Production delivery,การส่งมอบระดับ Production
+case_cross_platform,Cross-platform implementation,การพัฒนาข้ามแพลตฟอร์ม
+case_implementation,implementation,การพัฒนา
+case_layer_presentation,Presentation / Client,ส่วนแสดงผล / Client
+case_layer_application,Application & Domain,Application และ Domain
+case_layer_platform,Platform / Service Boundary,ขอบเขต Platform / Service
+case_layer_data,Data & External Services,ข้อมูลและบริการภายนอก
+case_project_stack,Project-specific stack,เทคโนโลยีเฉพาะโปรเจกต์
+case_primary,Primary,หลัก
+case_supporting,Supporting,เสริม
 contact_eyebrow,"04. What's Next?","04. อะไรต่อไป?"
 contact_title,Get In Touch,ติดต่อ
 contact_body,"I’m open to interesting product work, collaborations, and Flutter engineering opportunities.","ฉันเปิดรับงานผลิตภัณฑ์ที่น่าสนใจ การทำงานร่วมกัน และโอกาสใหม่ๆ ในด้านวิศวกรรม Flutter"
