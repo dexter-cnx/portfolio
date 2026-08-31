@@ -2,21 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
-  // Technical Editorial palette from the latest Stitch reference.
-  static const Color background = Color(0xFFF9F9F8);
-  static const Color surfaceLow = Color(0xFFF3F4F3);
-  static const Color surfaceContainer = Color(0xFFEEEEED);
-  static const Color surfaceContainerHigh = Color(0xFFE8E8E7);
-  static const Color surfaceHighest = Color(0xFFE2E2E2);
-  static const Color primary = Color(0xFF000000);
-  static const Color accent = Color(0xFF0061A3);
+  static const Color background = Color(0xFFF8F7F4);
+  static const Color surfaceLow = Color(0xFFF1F3F4);
+  static const Color surfaceContainer = Color(0xFFE9EDF0);
+  static const Color surfaceContainerHigh = Color(0xFFE2E7EA);
+  static const Color surfaceHighest = Color(0xFFD9E0E4);
+  static const Color primary = Color(0xFF111827);
+  static const Color accent = Color(0xFF006FB9);
   static const Color success = Color(0xFF15803D);
   static const Color error = Color(0xFFBA1A1A);
-  static const Color textPrimary = Color(0xFF1A1C1C);
-  static const Color textMuted = Color(0xFF444748);
+  static const Color textPrimary = Color(0xFF171A1C);
+  static const Color textMuted = Color(0xFF4B5256);
   static const Color metaText = Color(0xFF6B7280);
-  static const Color outline = Color(0xFFE5E7EB);
-  static const Color rustAccent = Color(0xFFE98329);
+  static const Color outline = Color(0xFFD8DEE3);
+  static const Color rustAccent = Color(0xFFD96A1B);
 
   static const double contentMaxWidth = 1120;
   static const double desktopGutter = 24;
@@ -24,9 +23,6 @@ class AppTheme {
   static const double sectionGap = 80;
   static const double cardRadius = 8;
 
-  // Compatibility tokens kept while older widgets are migrated away from
-  // glass/glow assumptions. Their values intentionally render as flat editorial
-  // surfaces so existing components remain readable during the redesign.
   static const double glassOpacity = 0.92;
   static const double glassNavOpacity = 0.96;
   static const double glassBorderOpacity = 1;
@@ -34,9 +30,14 @@ class AppTheme {
   static Color accentGlow(double opacity) => accent.withValues(alpha: opacity);
 
   static const LinearGradient backgroundGradient = LinearGradient(
-    begin: Alignment.topCenter,
-    end: Alignment.bottomCenter,
-    colors: [background, background],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [
+      Color(0xFFEFF6FB),
+      Color(0xFFF8F7F4),
+      Color(0xFFFBF5EF),
+    ],
+    stops: [0, 0.52, 1],
   );
 
   static ThemeData light([String locale = 'en']) {
@@ -178,18 +179,24 @@ class AppTheme {
         ),
       ),
       chipTheme: ChipThemeData(
-        backgroundColor: surfaceLow,
+        backgroundColor: Colors.white,
+        selectedColor: accent,
+        checkmarkColor: Colors.white,
         side: const BorderSide(color: outline),
         shape: const StadiumBorder(),
         labelStyle: GoogleFonts.jetBrainsMono(
           fontSize: 12,
           color: textMuted,
         ),
+        secondaryLabelStyle: GoogleFonts.jetBrainsMono(
+          fontSize: 12,
+          color: Colors.white,
+          fontWeight: FontWeight.w600,
+        ),
       ),
       progressIndicatorTheme: const ProgressIndicatorThemeData(color: accent),
     );
   }
 
-  /// Transitional alias so callers can move to [light] incrementally.
   static ThemeData dark([String locale = 'en']) => light(locale);
 }
