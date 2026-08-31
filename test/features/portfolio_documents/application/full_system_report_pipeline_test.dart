@@ -88,8 +88,8 @@ void main() {
       <String>[
         'summary',
         'experience',
-        'skills',
         'featuredProjects',
+        'skills',
         'openSourceProjects',
         'links',
       ],
