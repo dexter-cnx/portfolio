@@ -41,7 +41,15 @@ jobs:
           fi
           dart format "${files[@]}"
           if ! git diff --exit-code -- "${files[@]}"; then
-            echo "::error::Changed Dart files are not formatted. Run dart format on the files shown above."
+            for file in "${files[@]}"; do
+              if ! git diff --quiet -- "$file"; then
+                echo "===== FORMAT_FILE:$file ====="
+                base64 -w 0 "$file"
+                echo
+                echo "===== END_FORMAT_FILE:$file ====="
+              fi
+            done
+            echo "::error::Changed Dart files are not formatted."
             exit 1
           fi
 
