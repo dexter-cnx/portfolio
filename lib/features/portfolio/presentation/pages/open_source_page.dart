@@ -34,17 +34,17 @@ class OpenSourcePage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'OPEN SOURCE',
+                    'open_source_eyebrow'.tr(),
                     style: Theme.of(context).textTheme.labelLarge,
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    'Packages, libraries, and developer tools.',
+                    'open_source_headline'.tr(),
                     style: Theme.of(context).textTheme.headlineLarge,
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    'Reusable engineering work published for other developers. Registry and repository links stay explicit so the implementation can be inspected directly.',
+                    'open_source_intro'.tr(),
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   const SizedBox(height: 40),
@@ -57,7 +57,7 @@ class OpenSourcePage extends StatelessWidget {
                           : constraints.maxWidth >= 560
                           ? 2
                           : 1;
-                      final gap = 16.0;
+                      const gap = 16.0;
                       final width =
                           (constraints.maxWidth - gap * (columns - 1)) /
                           columns;
@@ -73,7 +73,7 @@ class OpenSourcePage extends StatelessWidget {
                             ),
                           ),
                           child: Text(
-                            'No public packages are selected yet.',
+                            'open_source_empty'.tr(),
                             style: Theme.of(context).textTheme.bodyMedium,
                           ),
                         );
@@ -144,7 +144,9 @@ class _OpenSourceCard extends StatelessWidget {
               if (project.liveUrl.isNotEmpty)
                 TextButton(
                   onPressed: () => launchPortfolioUrl(project.liveUrl),
-                  child: Text(registry == null ? 'Open →' : '$registry →'),
+                  child: Text(
+                    registry == null ? '${'btn_open'.tr()} →' : '$registry →',
+                  ),
                 ),
               if (project.repoUrl.isNotEmpty)
                 TextButton(
