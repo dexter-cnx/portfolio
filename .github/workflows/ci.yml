@@ -6,18 +6,17 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   validate:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout PR head
+      - name: Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          ref: ${{ github.head_ref }}
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -32,23 +31,18 @@ jobs:
       - name: Prepare static assets
         run: make prepare
 
-      - name: Apply formatting
+      - name: Check formatting for changed Dart files
         shell: bash
         run: |
           mapfile -t files < <(git diff --name-only "origin/${GITHUB_BASE_REF}...HEAD" -- '*.dart')
           if [ ${#files[@]} -eq 0 ]; then
-            echo "No changed Dart files to format."
+            echo "No changed Dart files to format-check."
             exit 0
           fi
           dart format "${files[@]}"
-          if ! git diff --quiet -- "${files[@]}"; then
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add "${files[@]}"
-            git commit -m "style: dart format Thai localization"
-            git push origin "HEAD:${GITHUB_HEAD_REF}"
-            echo "Formatting committed; strict CI will be restored next."
-            exit 0
+          if ! git diff --exit-code -- "${files[@]}"; then
+            echo "::error::Changed Dart files are not formatted. Run dart format on the files shown above."
+            exit 1
           fi
 
       - name: Analyze
