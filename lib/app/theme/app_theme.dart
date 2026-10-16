@@ -37,10 +37,14 @@ class AppTheme {
     stops: [0, 0.52, 1],
   );
 
-  static ThemeData light([String locale = 'en']) => themed(locale, Brightness.light);
+  static ThemeData light([String locale = 'en']) =>
+      themed(locale, Brightness.light);
 
   static ThemeData themed(String locale, Brightness brightness) {
-    final scheme = ColorScheme.fromSeed(seedColor: PortfolioThemeController.instance.seed, brightness: brightness);
+    final scheme = ColorScheme.fromSeed(
+      seedColor: PortfolioThemeController.instance.seed,
+      brightness: brightness,
+    );
     final isThai = locale == 'th';
     final headingFont = isThai ? GoogleFonts.sarabun : GoogleFonts.geist;
     final bodyFont = isThai ? GoogleFonts.sarabun : GoogleFonts.geist;
@@ -182,5 +186,6 @@ class AppTheme {
     );
   }
 
-  static ThemeData dark([String locale = 'en']) => themed(locale, Brightness.dark);
+  static ThemeData dark([String locale = 'en']) =>
+      themed(locale, Brightness.dark);
 }

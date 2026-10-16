@@ -32,7 +32,9 @@ class PublicPortfolioShell extends StatelessWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.surface.withValues(alpha: 0.94),
+        backgroundColor: Theme.of(
+          context,
+        ).colorScheme.surface.withValues(alpha: 0.94),
         surfaceTintColor: Colors.transparent,
         elevation: 0,
         scrolledUnderElevation: 0,
@@ -40,7 +42,10 @@ class PublicPortfolioShell extends StatelessWidget {
         titleSpacing: 24,
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(1),
-          child: Divider(height: 1, color: Theme.of(context).colorScheme.outlineVariant),
+          child: Divider(
+            height: 1,
+            color: Theme.of(context).colorScheme.outlineVariant,
+          ),
         ),
         title: InkWell(
           onTap: () =>
@@ -127,7 +132,9 @@ class _NavLink extends StatelessWidget {
     return TextButton(
       onPressed: onTap,
       style: TextButton.styleFrom(
-        foregroundColor: selected ? Theme.of(context).colorScheme.onSurface : Theme.of(context).colorScheme.onSurfaceVariant,
+        foregroundColor: selected
+            ? Theme.of(context).colorScheme.onSurface
+            : Theme.of(context).colorScheme.onSurfaceVariant,
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 24),
         shape: const RoundedRectangleBorder(),
       ),
@@ -136,7 +143,9 @@ class _NavLink extends StatelessWidget {
         decoration: BoxDecoration(
           border: Border(
             bottom: BorderSide(
-              color: selected ? Theme.of(context).colorScheme.onSurface : Colors.transparent,
+              color: selected
+                  ? Theme.of(context).colorScheme.onSurface
+                  : Colors.transparent,
               width: 2,
             ),
           ),
@@ -198,7 +207,9 @@ class PortfolioTagWrap extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.surfaceContainerLow,
                 borderRadius: BorderRadius.circular(999),
-                border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
+                border: Border.all(
+                  color: Theme.of(context).colorScheme.outlineVariant,
+                ),
               ),
               child: Text(
                 tag,
@@ -236,7 +247,10 @@ class _ThemeSelector extends StatelessWidget {
     final controller = PortfolioThemeController.instance;
     return PopupMenuButton<String>(
       tooltip: 'Color theme / สีธีม',
-      icon: Icon(Icons.palette_outlined, color: Theme.of(context).colorScheme.primary),
+      icon: Icon(
+        Icons.palette_outlined,
+        color: Theme.of(context).colorScheme.primary,
+      ),
       onSelected: (value) {
         if (value == 'mode') {
           controller.setDark(!controller.dark);
@@ -263,11 +277,17 @@ class _ThemeSelector extends StatelessWidget {
         const PopupMenuDivider(),
         PopupMenuItem<String>(
           value: 'mode',
-          child: Row(children: [
-            Icon(controller.dark ? Icons.light_mode_outlined : Icons.dark_mode_outlined),
-            const SizedBox(width: 12),
-            Text(controller.dark ? 'Light mode' : 'Dark mode'),
-          ]),
+          child: Row(
+            children: [
+              Icon(
+                controller.dark
+                    ? Icons.light_mode_outlined
+                    : Icons.dark_mode_outlined,
+              ),
+              const SizedBox(width: 12),
+              Text(controller.dark ? 'Light mode' : 'Dark mode'),
+            ],
+          ),
         ),
       ],
     );

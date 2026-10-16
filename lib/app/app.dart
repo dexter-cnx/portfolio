@@ -25,7 +25,9 @@ class _PortfolioAppState extends State<PortfolioApp> {
     PortfolioThemeController.instance.load();
   }
 
-  void _refresh() { if (mounted) setState(() {}); }
+  void _refresh() {
+    if (mounted) setState(() {});
+  }
 
   @override
   void dispose() {
@@ -41,7 +43,9 @@ class _PortfolioAppState extends State<PortfolioApp> {
       title: 'Portfolio',
       theme: AppTheme.light(context.locale.languageCode),
       darkTheme: AppTheme.dark(context.locale.languageCode),
-      themeMode: PortfolioThemeController.instance.dark ? ThemeMode.dark : ThemeMode.light,
+      themeMode: PortfolioThemeController.instance.dark
+          ? ThemeMode.dark
+          : ThemeMode.light,
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,
