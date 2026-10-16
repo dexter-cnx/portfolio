@@ -270,7 +270,7 @@ class _Hero extends StatelessWidget {
                   errorBuilder: (_, __, ___) => Container(
                     color: Theme.of(context).colorScheme.surfaceContainerLow,
                     alignment: Alignment.center,
-                    child: const Icon(
+                    child: Icon(
                       Icons.person_outline,
                       size: 72,
                       color: Theme.of(context).colorScheme.onSurfaceVariant,
@@ -615,7 +615,7 @@ class _SelectedExperience extends StatelessWidget {
         ...experience.map(
           (item) => Container(
             padding: const EdgeInsets.symmetric(vertical: 20),
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               border: Border(bottom: BorderSide(color: Theme.of(context).colorScheme.outlineVariant)),
             ),
             child: LayoutBuilder(
@@ -740,7 +740,7 @@ class _ContactFooter extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Divider(height: 1, color: Theme.of(context).colorScheme.outlineVariant),
+        Divider(height: 1, color: Theme.of(context).colorScheme.outlineVariant),
         const SizedBox(height: 28),
         Text(
           data.contact.title,
@@ -838,7 +838,7 @@ class _HomeSectionHeader extends StatelessWidget {
           Text(subtitle!, style: Theme.of(context).textTheme.bodySmall),
         ],
         const SizedBox(height: 14),
-        const Divider(height: 1, color: Theme.of(context).colorScheme.outlineVariant),
+        Divider(height: 1, color: Theme.of(context).colorScheme.outlineVariant),
       ],
     );
   }
