@@ -190,7 +190,7 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
       padding: const pw.EdgeInsets.only(bottom: 12),
       decoration: const pw.BoxDecoration(
         border: pw.Border(
-          bottom: pw.BorderSide(color: PdfColors.blueGrey300, width: 1),
+          bottom: pw.BorderSide(color: PdfColors.grey700, width: 1),
         ),
       ),
       child: pw.Row(
@@ -205,7 +205,7 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
                   style: pw.TextStyle(
                     fontWeight: pw.FontWeight.bold,
                     fontSize: 9,
-                    color: PdfColors.blueGrey600,
+                    color: PdfColors.grey700,
                     letterSpacing: 1.2,
                   ),
                 ),
@@ -244,7 +244,7 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
                     ResumePdfGenerator.portfolioUrl,
                     style: const pw.TextStyle(
                       fontSize: 9,
-                      color: PdfColors.blue700,
+                      color: PdfColors.black,
                     ),
                   ),
                 ),
@@ -293,7 +293,7 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
           ? const pw.BoxDecoration(
               color: PdfColors.grey100,
               border: pw.Border(
-                left: pw.BorderSide(color: PdfColors.blueGrey600, width: 2),
+                left: pw.BorderSide(color: PdfColors.grey700, width: 2),
               ),
             )
           : null,
@@ -345,7 +345,7 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
               tech.join(' · '),
               style: const pw.TextStyle(
                 fontSize: 8.5,
-                color: PdfColors.blueGrey600,
+                color: PdfColors.grey700,
               ),
             ),
           ],
@@ -375,7 +375,7 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
       decoration: prominent
           ? pw.BoxDecoration(
               color: PdfColors.white,
-              border: pw.Border.all(color: PdfColors.blueGrey200),
+              border: pw.Border.all(color: PdfColors.grey700),
               borderRadius: const pw.BorderRadius.all(pw.Radius.circular(4)),
             )
           : null,
@@ -407,7 +407,7 @@ final class PortfolioPdfRenderer implements PortfolioReportRenderer {
               '${labels.techStack}: ${tags.join(', ')}',
               style: const pw.TextStyle(
                 fontSize: 8.5,
-                color: PdfColors.blueGrey600,
+                color: PdfColors.grey700,
               ),
             ),
           ],

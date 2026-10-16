@@ -140,8 +140,8 @@ class _Hero extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
               decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.9),
-                border: Border.all(color: AppTheme.outline),
+                color: Theme.of(context).colorScheme.surfaceContainerLow,
+                border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
                 borderRadius: BorderRadius.circular(999),
               ),
               child: Row(
@@ -174,7 +174,7 @@ class _Hero extends StatelessWidget {
           data.site.ownerName,
           style: Theme.of(
             context,
-          ).textTheme.labelLarge?.copyWith(color: AppTheme.metaText),
+          ).textTheme.labelLarge?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
         ),
         const SizedBox(height: 8),
         Text(
@@ -186,7 +186,7 @@ class _Hero extends StatelessWidget {
           hero.subheadline,
           style: Theme.of(
             context,
-          ).textTheme.labelLarge?.copyWith(color: AppTheme.metaText),
+          ).textTheme.labelLarge?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
         ),
         const SizedBox(height: 20),
         ConstrainedBox(
@@ -252,28 +252,28 @@ class _Hero extends StatelessWidget {
       width: wide ? 280 : double.infinity,
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.92),
-        border: Border.all(color: AppTheme.outline),
-        borderRadius: BorderRadius.circular(AppTheme.cardRadius),
+        color: Theme.of(context).colorScheme.surfaceContainerLow,
+        border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
+        borderRadius: BorderRadius.circular(20),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (profileImage.isNotEmpty)
             ClipRRect(
-              borderRadius: BorderRadius.circular(AppTheme.cardRadius),
+              borderRadius: BorderRadius.circular(20),
               child: AspectRatio(
                 aspectRatio: 1,
                 child: Image.asset(
                   profileImage,
                   fit: BoxFit.cover,
                   errorBuilder: (_, __, ___) => Container(
-                    color: AppTheme.surfaceLow,
+                    color: Theme.of(context).colorScheme.surfaceContainerLow,
                     alignment: Alignment.center,
                     child: const Icon(
                       Icons.person_outline,
                       size: 72,
-                      color: AppTheme.metaText,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                     ),
                   ),
                 ),
@@ -343,9 +343,9 @@ class _FeaturedWork extends StatelessWidget {
               width: double.infinity,
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.94),
-                border: Border.all(color: AppTheme.outline),
-                borderRadius: BorderRadius.circular(AppTheme.cardRadius),
+                color: Theme.of(context).colorScheme.surfaceContainerLow,
+                border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
+                borderRadius: BorderRadius.circular(20),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -417,9 +417,9 @@ class _CatalogBridge extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(28),
       decoration: BoxDecoration(
-        color: AppTheme.surfaceLow.withValues(alpha: 0.92),
-        border: Border.all(color: AppTheme.outline),
-        borderRadius: BorderRadius.circular(AppTheme.cardRadius),
+        color: Theme.of(context).colorScheme.surfaceContainerLow.withValues(alpha: 0.92),
+        border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
+        borderRadius: BorderRadius.circular(20),
       ),
       child: Column(
         children: [
@@ -485,10 +485,10 @@ class _OpenSourcePreview extends StatelessWidget {
                       child: Container(
                         padding: const EdgeInsets.all(18),
                         decoration: BoxDecoration(
-                          color: Colors.white.withValues(alpha: 0.94),
-                          border: Border.all(color: AppTheme.outline),
+                          color: Theme.of(context).colorScheme.surfaceContainerLow,
+                          border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
                           borderRadius: BorderRadius.circular(
-                            AppTheme.cardRadius,
+                            20,
                           ),
                         ),
                         child: Column(
@@ -563,10 +563,10 @@ class _EngineeringApproach extends StatelessWidget {
                       child: Container(
                         padding: const EdgeInsets.all(20),
                         decoration: BoxDecoration(
-                          color: Colors.white.withValues(alpha: 0.94),
-                          border: Border.all(color: AppTheme.outline),
+                          color: Theme.of(context).colorScheme.surfaceContainerLow,
+                          border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
                           borderRadius: BorderRadius.circular(
-                            AppTheme.cardRadius,
+                            20,
                           ),
                         ),
                         child: Column(
@@ -616,7 +616,7 @@ class _SelectedExperience extends StatelessWidget {
           (item) => Container(
             padding: const EdgeInsets.symmetric(vertical: 20),
             decoration: const BoxDecoration(
-              border: Border(bottom: BorderSide(color: AppTheme.outline)),
+              border: Border(bottom: BorderSide(color: Theme.of(context).colorScheme.outlineVariant)),
             ),
             child: LayoutBuilder(
               builder: (context, constraints) {
@@ -684,9 +684,9 @@ class _PdfCallout extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: AppTheme.surfaceLow.withValues(alpha: 0.92),
-        border: Border.all(color: AppTheme.outline),
-        borderRadius: BorderRadius.circular(AppTheme.cardRadius),
+        color: Theme.of(context).colorScheme.surfaceContainerLow.withValues(alpha: 0.92),
+        border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
+        borderRadius: BorderRadius.circular(20),
       ),
       child: Wrap(
         spacing: 20,
@@ -740,7 +740,7 @@ class _ContactFooter extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Divider(height: 1, color: AppTheme.outline),
+        const Divider(height: 1, color: Theme.of(context).colorScheme.outlineVariant),
         const SizedBox(height: 28),
         Text(
           data.contact.title,
@@ -838,7 +838,7 @@ class _HomeSectionHeader extends StatelessWidget {
           Text(subtitle!, style: Theme.of(context).textTheme.bodySmall),
         ],
         const SizedBox(height: 14),
-        const Divider(height: 1, color: AppTheme.outline),
+        const Divider(height: 1, color: Theme.of(context).colorScheme.outlineVariant),
       ],
     );
   }
