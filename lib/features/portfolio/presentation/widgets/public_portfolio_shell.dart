@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../app/theme/app_theme.dart';
+import '../../../../app/theme/portfolio_theme_controller.dart';
 import '../../models/portfolio_models.dart';
 
 class PublicPortfolioShell extends StatelessWidget {
@@ -29,17 +30,22 @@ class PublicPortfolioShell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        backgroundColor: AppTheme.background.withValues(alpha: 0.94),
+        backgroundColor: Theme.of(
+          context,
+        ).colorScheme.surface.withValues(alpha: 0.94),
         surfaceTintColor: Colors.transparent,
         elevation: 0,
         scrolledUnderElevation: 0,
         toolbarHeight: 72,
         titleSpacing: 24,
-        bottom: const PreferredSize(
+        bottom: PreferredSize(
           preferredSize: Size.fromHeight(1),
-          child: Divider(height: 1, color: AppTheme.outline),
+          child: Divider(
+            height: 1,
+            color: Theme.of(context).colorScheme.outlineVariant,
+          ),
         ),
         title: InkWell(
           onTap: () =>
@@ -49,7 +55,7 @@ class PublicPortfolioShell extends StatelessWidget {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: Theme.of(context).textTheme.labelLarge?.copyWith(
-              color: AppTheme.textPrimary,
+              color: Theme.of(context).colorScheme.onSurface,
               fontWeight: FontWeight.w700,
             ),
           ),
@@ -67,6 +73,7 @@ class PublicPortfolioShell extends StatelessWidget {
                 },
               ),
             ),
+          const _ThemeSelector(),
           if (onPdfTap != null)
             Padding(
               padding: const EdgeInsets.only(left: 8, right: 16),
@@ -101,8 +108,8 @@ class PublicPortfolioShell extends StatelessWidget {
             ),
         ],
       ),
-      body: DecoratedBox(
-        decoration: const BoxDecoration(gradient: AppTheme.backgroundGradient),
+      body: ColoredBox(
+        color: Theme.of(context).colorScheme.surface,
         child: SizedBox.expand(child: child),
       ),
     );
@@ -125,7 +132,9 @@ class _NavLink extends StatelessWidget {
     return TextButton(
       onPressed: onTap,
       style: TextButton.styleFrom(
-        foregroundColor: selected ? AppTheme.textPrimary : AppTheme.textMuted,
+        foregroundColor: selected
+            ? Theme.of(context).colorScheme.onSurface
+            : Theme.of(context).colorScheme.onSurfaceVariant,
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 24),
         shape: const RoundedRectangleBorder(),
       ),
@@ -134,7 +143,9 @@ class _NavLink extends StatelessWidget {
         decoration: BoxDecoration(
           border: Border(
             bottom: BorderSide(
-              color: selected ? AppTheme.textPrimary : Colors.transparent,
+              color: selected
+                  ? Theme.of(context).colorScheme.onSurface
+                  : Colors.transparent,
               width: 2,
             ),
           ),
@@ -194,16 +205,18 @@ class PortfolioTagWrap extends StatelessWidget {
             (tag) => Container(
               padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 6),
               decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.86),
+                color: Theme.of(context).colorScheme.surfaceContainerLow,
                 borderRadius: BorderRadius.circular(999),
-                border: Border.all(color: AppTheme.outline),
+                border: Border.all(
+                  color: Theme.of(context).colorScheme.outlineVariant,
+                ),
               ),
               child: Text(
                 tag,
                 style: Theme.of(context).textTheme.labelMedium?.copyWith(
                   color: tag.toLowerCase().contains('rust')
                       ? AppTheme.rustAccent
-                      : AppTheme.metaText,
+                      : Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
               ),
             ),
@@ -222,5 +235,61 @@ Future<void> launchPortfolioUrl(String url) async {
       : LaunchMode.externalApplication;
   if (await canLaunchUrl(uri)) {
     await launchUrl(uri, mode: mode);
+  }
+}
+
+/// Available on every public page; preferences are persisted locally.
+class _ThemeSelector extends StatelessWidget {
+  const _ThemeSelector();
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = PortfolioThemeController.instance;
+    return PopupMenuButton<String>(
+      tooltip: 'Color theme / สีธีม',
+      icon: Icon(
+        Icons.palette_outlined,
+        color: Theme.of(context).colorScheme.primary,
+      ),
+      onSelected: (value) {
+        if (value == 'mode') {
+          controller.setDark(!controller.dark);
+        } else {
+          controller.choose(value);
+        }
+      },
+      itemBuilder: (context) => [
+        for (final entry in PortfolioThemeController.presets.entries)
+          PopupMenuItem<String>(
+            value: entry.key,
+            child: Row(
+              children: [
+                CircleAvatar(radius: 9, backgroundColor: entry.value),
+                const SizedBox(width: 12),
+                Text(entry.key[0].toUpperCase() + entry.key.substring(1)),
+                if (controller.preset == entry.key) ...[
+                  const Spacer(),
+                  const Icon(Icons.check, size: 18),
+                ],
+              ],
+            ),
+          ),
+        const PopupMenuDivider(),
+        PopupMenuItem<String>(
+          value: 'mode',
+          child: Row(
+            children: [
+              Icon(
+                controller.dark
+                    ? Icons.light_mode_outlined
+                    : Icons.dark_mode_outlined,
+              ),
+              const SizedBox(width: 12),
+              Text(controller.dark ? 'Light mode' : 'Dark mode'),
+            ],
+          ),
+        ),
+      ],
+    );
   }
 }

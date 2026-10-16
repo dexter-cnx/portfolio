@@ -91,3 +91,10 @@ Home should remain concise and route visitors deeper rather than duplicate every
 5. Keep commits small and reviewable.
 6. Run format/analyze/tests before push when tooling is available.
 7. After each slice, do a coherence pass for spacing, typography, responsive behavior, status terminology, and print compatibility.
+
+## Theme and print contract
+- Screen uses PortfolioThemeController and ThemeData colorScheme with five presets and true light/dark modes.
+- Never hardcode screen accent colors in new feature widgets.
+- PDF rendering must remain monochrome and must not access screen theme state.
+- Preserve both compact resume and full engineering portfolio templates; keep project selection rules intact.
+- Review changes against `design/DESIGN.md` and run flutter analyze and flutter test before merge.

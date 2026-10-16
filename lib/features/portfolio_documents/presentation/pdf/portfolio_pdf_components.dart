@@ -13,11 +13,11 @@ final class PortfolioPdfComponents {
           style: pw.TextStyle(
             fontWeight: pw.FontWeight.bold,
             fontSize: 13,
-            color: PdfColors.blueGrey700,
+            color: PdfColors.grey700,
           ),
         ),
         pw.SizedBox(height: 4),
-        pw.Container(height: 1.5, width: 40, color: PdfColors.blueGrey700),
+        pw.Container(height: 1.5, width: 40, color: PdfColors.grey700),
         pw.SizedBox(height: 8),
       ],
     );
@@ -33,7 +33,7 @@ final class PortfolioPdfComponents {
       destination: url,
       child: pw.Text(
         text,
-        style: const pw.TextStyle(fontSize: 10, color: PdfColors.blue700),
+        style: const pw.TextStyle(fontSize: 10, color: PdfColors.black),
       ),
     );
   }

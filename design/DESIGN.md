@@ -259,3 +259,9 @@ Do not introduce:
 - excessive card nesting
 
 The portfolio should communicate seniority through information quality, engineering evidence, and disciplined visual hierarchy.
+
+
+## 14. Editorial Theme Presets (2026)
+The screen UI now offers five semantic accent presets (Indigo, Emerald, Amber, Rose, Slate) and independent light/dark modes. User selection is persisted via shared_preferences. Screen components should read Theme.of(context).colorScheme rather than AppTheme static colors. The hero and featured cards use rounded editorial composition; do not reproduce the job-ad information structure literally.
+
+**Print is a different rendering target:** both A4 templates use monochrome ink, white paper, gray dividers and text. Never pass the selected screen color palette into PortfolioPdfRenderer. Hyperlinks remain actionable and text remains selectable. Verify Thai and English PDF samples and inspect page breaks manually before production deployment.
