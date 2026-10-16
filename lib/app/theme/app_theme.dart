@@ -40,7 +40,6 @@ class AppTheme {
   static ThemeData light([String locale = 'en']) => themed(locale, Brightness.light);
 
   static ThemeData themed(String locale, Brightness brightness) {
-    final dark = brightness == Brightness.dark;
     final scheme = ColorScheme.fromSeed(seedColor: PortfolioThemeController.instance.seed, brightness: brightness);
     final isThai = locale == 'th';
     final headingFont = isThai ? GoogleFonts.sarabun : GoogleFonts.geist;
@@ -146,7 +145,7 @@ class AppTheme {
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           foregroundColor: scheme.onSurface,
-          side: const BorderSide(color: outline),
+          side: BorderSide(color: scheme.outlineVariant),
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(cardRadius),
@@ -179,7 +178,7 @@ class AppTheme {
           fontWeight: FontWeight.w600,
         ),
       ),
-      progressIndicatorTheme: const ProgressIndicatorThemeData(color: scheme.primary),
+      progressIndicatorTheme: ProgressIndicatorThemeData(color: scheme.primary),
     );
   }
 
