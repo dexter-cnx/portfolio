@@ -67,25 +67,25 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _Hero(data: data, onLocaleChanged: widget.onLocaleChanged),
-                  const SizedBox(height: 72),
+                  const SizedBox(height: 48),
                   _FeaturedWork(
                     projects: data.featuredProjects
                         .take(3)
                         .toList(growable: false),
                   ),
-                  const SizedBox(height: 72),
+                  const SizedBox(height: 48),
                   const _CatalogBridge(),
-                  const SizedBox(height: 72),
+                  const SizedBox(height: 48),
                   _OpenSourcePreview(
                     projects: openSource.take(5).toList(growable: false),
                   ),
-                  const SizedBox(height: 72),
+                  const SizedBox(height: 48),
                   _EngineeringApproach(skills: data.about.skills),
-                  const SizedBox(height: 72),
+                  const SizedBox(height: 48),
                   _SelectedExperience(
                     experience: data.experience.take(3).toList(growable: false),
                   ),
-                  const SizedBox(height: 72),
+                  const SizedBox(height: 48),
                   _PdfCallout(
                     onResume: () => _generatePdf(
                       data,
@@ -96,7 +96,7 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
                       PortfolioReportTemplateId.portfolioFull,
                     ),
                   ),
-                  const SizedBox(height: 72),
+                  const SizedBox(height: 48),
                   _ContactFooter(data: data),
                 ],
               ),
@@ -306,19 +306,44 @@ class _Hero extends StatelessWidget {
       ),
     );
 
-    return wide
-        ? Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(child: textContent),
-              const SizedBox(width: 48),
-              profile,
-            ],
-          )
-        : Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [textContent, const SizedBox(height: 32), profile],
-          );
+    final scheme = Theme.of(context).colorScheme;
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.all(wide ? 40 : 24),
+      decoration: BoxDecoration(
+        color: scheme.surfaceContainerLow,
+        border: Border.all(color: scheme.outlineVariant),
+        borderRadius: BorderRadius.circular(28),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 54,
+            height: 5,
+            decoration: BoxDecoration(
+              color: scheme.primary,
+              borderRadius: BorderRadius.circular(99),
+            ),
+          ),
+          const SizedBox(height: 28),
+          if (wide)
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(child: textContent),
+                const SizedBox(width: 40),
+                profile,
+              ],
+            )
+          else ...[
+            textContent,
+            const SizedBox(height: 30),
+            profile,
+          ],
+        ],
+      ),
+    );
   }
 }
 
@@ -696,11 +721,9 @@ class _PdfCallout extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(28),
       decoration: BoxDecoration(
-        color: Theme.of(
-          context,
-        ).colorScheme.surfaceContainerLow.withValues(alpha: 0.92),
+        color: Theme.of(context).colorScheme.primaryContainer,
         border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
         borderRadius: BorderRadius.circular(20),
       ),

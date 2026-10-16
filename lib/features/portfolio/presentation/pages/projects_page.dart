@@ -169,10 +169,10 @@ class _ProjectsPageState extends State<ProjectsPage> {
             filled: true,
             fillColor: Colors.white,
             border: const OutlineInputBorder(
-              borderSide: BorderSide(color: AppTheme.outline),
+              borderSide: BorderSide(color: Theme.of(context).colorScheme.outlineVariant),
             ),
             enabledBorder: const OutlineInputBorder(
-              borderSide: BorderSide(color: AppTheme.outline),
+              borderSide: BorderSide(color: Theme.of(context).colorScheme.outlineVariant),
             ),
           ),
         ),
@@ -275,12 +275,12 @@ class _SectionTitle extends StatelessWidget {
           eyebrow,
           style: Theme.of(
             context,
-          ).textTheme.labelLarge?.copyWith(color: AppTheme.metaText),
+          ).textTheme.labelLarge?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
         ),
         const SizedBox(height: 8),
         Text(title, style: Theme.of(context).textTheme.headlineMedium),
         const SizedBox(height: 16),
-        const Divider(height: 1, color: AppTheme.outline),
+        Divider(height: 1, color: Theme.of(context).colorScheme.outlineVariant),
       ],
     );
   }
@@ -297,9 +297,9 @@ class _FeaturedProjectRow extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.94),
-        border: Border.all(color: AppTheme.outline),
-        borderRadius: BorderRadius.circular(AppTheme.cardRadius),
+        color: Theme.of(context).colorScheme.surfaceContainerLow,
+        border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
+        borderRadius: BorderRadius.circular(24),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -369,9 +369,9 @@ class _ProjectCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.94),
-        border: Border.all(color: AppTheme.outline),
-        borderRadius: BorderRadius.circular(AppTheme.cardRadius),
+        color: Theme.of(context).colorScheme.surfaceContainerLow,
+        border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
+        borderRadius: BorderRadius.circular(24),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -414,9 +414,9 @@ class _EmptyProjects extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(32),
       decoration: BoxDecoration(
-        color: AppTheme.surfaceLow,
-        border: Border.all(color: AppTheme.outline),
-        borderRadius: BorderRadius.circular(AppTheme.cardRadius),
+        color: Theme.of(context).colorScheme.surfaceContainerLow,
+        border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
+        borderRadius: BorderRadius.circular(24),
       ),
       child: Column(
         children: [

@@ -265,3 +265,11 @@ The portfolio should communicate seniority through information quality, engineer
 The screen UI now offers five semantic accent presets (Indigo, Emerald, Amber, Rose, Slate) and independent light/dark modes. User selection is persisted via shared_preferences. Screen components should read Theme.of(context).colorScheme rather than AppTheme static colors. The hero and featured cards use rounded editorial composition; do not reproduce the job-ad information structure literally.
 
 **Print is a different rendering target:** both A4 templates use monochrome ink, white paper, gray dividers and text. Never pass the selected screen color palette into PortfolioPdfRenderer. Hyperlinks remain actionable and text remains selectable. Verify Thai and English PDF samples and inspect page breaks manually before production deployment.
+
+## 15. PR2 — Editorial Card Composition
+- Hero uses a contained, generously padded editorial panel with a small semantic primary accent rule; keep identity, CTAs, profile and bilingual copy driven by portfolio data.
+- Featured work and catalog use 24px radius, low-contrast semantic surfaces and thin borders rather than colored gradients or heavy elevation.
+- Home sections use a 48px vertical rhythm, allowing large featured content without dashboard density.
+- Mobile hero stacks naturally; desktop preserves copy/profile split.
+- Prefer `Theme.of(context).colorScheme` for surfaces, borders and type to support all screen presets and both brightness modes.
+- Print renderer remains independent and unchanged by this web-only visual PR.
